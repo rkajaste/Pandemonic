@@ -10,5 +10,5 @@ int main() {
         return -1;
     }
     Game game(1024, 768, "Test");
-    game.start()
+    game.start();
 };

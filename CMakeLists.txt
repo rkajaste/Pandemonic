@@ -30,6 +30,8 @@ add_definitions(
 
 add_executable(EngineSample 
 	main.cpp
+	src/Game.cpp
+	src/Game.hpp
 	src/Renderer.cpp
 	src/Renderer.hpp
     common/shader.cpp

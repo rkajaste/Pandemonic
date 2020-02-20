@@ -6,5 +6,8 @@ class Renderer {
         Renderer();
         void draw();
     private:
-        GLfloat vertex_data;
+        GLuint programID;
+        GLuint vertexbuffer;
+        GLuint VertexArrayID;
+        static const GLfloat vertex_data[];
 };
