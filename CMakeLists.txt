@@ -30,12 +30,17 @@ add_definitions(
 
 add_executable(EngineSample 
 	main.cpp
+	src/GameState.hpp
 	src/Game.cpp
 	src/Game.hpp
-	src/Renderer.cpp
-	src/Renderer.hpp
+	src/SpriteRenderer.cpp
+	src/SpriteRenderer.hpp
     common/shader.cpp
-    common/shader.hpp
+	common/shader.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/ResourceManager.cpp
+	common/ResourceManager.hpp
     shaders/FragmentShader.glsl
     shaders/VertexShader.glsl
 )

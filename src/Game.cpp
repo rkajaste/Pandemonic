@@ -1,54 +1,49 @@
-#include <src/Game.hpp>
-#include <stdio.h>
-#include <stdlib.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
-#include <src/Renderer.hpp>
+#include "Game.hpp"
+#include <common/ResourceManager.hpp>
+#include <src/SpriteRenderer.hpp>
+#include <src/GameState.hpp>
 
+SpriteRenderer  *Renderer;
 
+Game::Game(GLuint width, GLuint height) 
+	: state(GAME_START), keys(), width(width), height(height) 
+{ 
 
-Game::Game(int width = 1024, int height = 768, const char* title = "Game") {
-    GLFWwindow* window;
-    int windowWidth = width;
-    int windowHeight = height;
-    const char* windowTitle = title;
-    createWindow();
 }
-void Game::createWindow(){
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
-}
-void Game::start() {
-    if(window == NULL){
-        fprintf(stderr, "Failed to open GLFW window");
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-    glfwMakeContextCurrent(window);
-    glewExperimental=true;
-    if(glewInit() != GLEW_OK){
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        exit(EXIT_FAILURE);
-    }
-    // Ensure we can capture ESC key
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    Renderer renderer();
-    do {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        renderer.draw();
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    } while (
-        glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-        glfwWindowShouldClose(window) == 0
-    );
+Game::~Game()
+{
+    delete Renderer;
 }
+
+void Game::init()
+{
+    // Load shaders
+    ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
+    // Configure shaders
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width), 
+        static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
+    ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
+    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+    // Set render-specific controls
+    Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+    // Load textures
+    ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
+}
+
+void Game::update(GLfloat dt)
+{
+
+}
+
+
+void Game::processInput(GLfloat dt)
+{
+
+}
+
+void Game::render()
+{
+    Renderer->DrawSprite(ResourceManager::GetTexture("face"), 
+        glm::vec2(200, 200), glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+} 
