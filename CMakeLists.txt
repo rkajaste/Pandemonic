@@ -11,6 +11,7 @@ include_directories(
 	external/glfw-3.3.2/include/
 	external/glm/
 	external/glew-2.1.0/include/
+	external/soil/inc/SOIL/
 	.
 )
 
@@ -18,6 +19,7 @@ set(ALL_LIBS
 	${OPENGL_LIBRARY}
 	glfw
 	GLEW_210
+	soil
 )
 
 add_definitions(
@@ -35,6 +37,8 @@ add_executable(EngineSample
 	src/Game.hpp
 	src/SpriteRenderer.cpp
 	src/SpriteRenderer.hpp
+	src/sprites/Sprite.cpp
+	src/sprites/Sprite.hpp
     common/shader.cpp
 	common/shader.hpp
 	common/texture.cpp
