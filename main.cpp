@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <src/Game.hpp>
 #include <common/ResourceManager.hpp>
 

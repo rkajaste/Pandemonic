@@ -8,14 +8,16 @@
 class Sprite {
     public:
         glm::vec2 coords;
-        Texture2D image;
-        Sprite(glm::vec2, Texture2D, SpriteRenderer, size = {{255.0f}, {170.0f}});
+        Texture2D texture;
+        Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer* renderer);
         void update(GLfloat);
-        void draw(GLfloat);
+        void draw();
         void setRotation(GLfloat);
         void setColor(glm::vec3);
+        void setSize(glm::vec2);
     private: 
-        SpriteRenderer renderer;
+        SpriteRenderer *renderer;
+        glm::vec2 size;
         glm::vec3 color;
         GLfloat rotation;
-}
+};

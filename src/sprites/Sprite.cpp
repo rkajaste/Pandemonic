@@ -1,21 +1,26 @@
 #include "Sprite.hpp"
 
-Sprite::Sprite(
-    glm::vec2 coords, 
-    Texture2D image, 
-    SpriteRenderer renderer, 
-    glm::vec2 size
-){
+Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer) {
     this->coords = coords;
-    this->image = image;
+    this->texture = texture;
     this->renderer = renderer;
-    this->size = size;
-    this->rotate = 0.0f;
+    this->size = glm::vec2(255.0f, 170.0f);
+    this->rotation = 0.0f;
     this->color = glm::vec3(1.0f);
 }
-Sprite::update(GLfloat dt) {
+
+void Sprite::update(GLfloat dt) {
 
 }
-Sprite::draw(GLfloat dt) {
-    this->renderer.DrawSprite(this->image, this->coords, this->size, this->rotate, this->color);
+
+void Sprite::draw() {
+    this->renderer->DrawSprite(this->texture, this->coords, this->size, this->rotation, this->color);
+}
+
+void Sprite::setRotation(GLfloat degrees) {
+    this->rotation = degrees;
+}
+
+void Sprite::setSize(glm::vec2 size) {
+    this->size = size;
 }

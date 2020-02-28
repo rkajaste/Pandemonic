@@ -39,6 +39,8 @@ add_executable(EngineSample
 	src/SpriteRenderer.hpp
 	src/sprites/Sprite.cpp
 	src/sprites/Sprite.hpp
+	src/sprites/Player/Player.cpp
+	src/sprites/Player/Player.hpp
     common/shader.cpp
 	common/shader.hpp
 	common/texture.cpp
