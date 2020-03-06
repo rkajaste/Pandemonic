@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include <iostream>
 
 Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer) {
     this->coords = coords;
@@ -14,7 +15,13 @@ void Sprite::update(GLfloat dt) {
 }
 
 void Sprite::draw() {
-    this->renderer->DrawSprite(this->texture, this->coords, this->size, this->rotation, this->color);
+    this->renderer->DrawSprite(
+        this->texture,
+        this->coords,
+        this->size,
+        this->rotation,
+        this->color
+    );
 }
 
 void Sprite::setRotation(GLfloat degrees) {

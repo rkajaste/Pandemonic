@@ -27,7 +27,7 @@ void Game::init()
     // Load textures
     ResourceManager::LoadTexture("assets/graphics/sprites/player/idle.png", GL_TRUE, "player");
     // Load shaders
-    ResourceManager::LoadShader("shaders/VertexShader.glsl", "shaders/FragmentShader.glsl", nullptr, "sprite");    
+    ResourceManager::LoadShader("../shaders/VertexShader.glsl", "../shaders/FragmentShader.glsl", nullptr, "sprite");    
     renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
     this->player = new Player(
@@ -39,7 +39,7 @@ void Game::init()
 
 void Game::update(GLfloat dt)
 {
-
+    
 }
 
 
