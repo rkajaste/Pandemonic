@@ -21,8 +21,6 @@ void Game::init()
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
         static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
-    ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
 
     // Load shaders
     ResourceManager::LoadShader(
@@ -31,18 +29,20 @@ void Game::init()
         "",
         "sprite"
     );
-
+    ResourceManager::GetShader("sprite").Use();
+    ResourceManager::GetShader("sprite").SetInteger("image", 0);
+    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
     renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
     // Load textures
     ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/avatar.png",
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle.png",
         GL_TRUE,
         "player"
     );
 
     this->player = new Player(
-        glm::vec2(500.0f, 600.0f),
+        glm::vec2(100.0f, 200.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );
