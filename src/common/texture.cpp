@@ -7,7 +7,6 @@
 ** option) any later version.
 ******************************************************************/
 #include <iostream>
-
 #include "texture.hpp"
 
 

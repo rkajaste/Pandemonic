@@ -1,9 +1,9 @@
 #pragma once
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <src/GameState.hpp>
-#include <src/SpriteRenderer.hpp>
-#include <src/sprites/Player/Player.hpp>
+#include <glad/glad.h>
+#include "GameState.hpp"
+#include "SpriteRenderer.hpp"
+#include "Player.hpp"
 
 class Game
 {

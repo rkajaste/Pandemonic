@@ -1,33 +1,34 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <src/Game.hpp>
-#include <common/ResourceManager.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+
+#include "Main.hpp"
+#include "Game.hpp"
+#include "ResourceManager.hpp"
+
+#include <cstdio>
+#include <cstdlib>
 
 // GLFW function declerations
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-// The Width of the screen
-const GLuint SCREEN_WIDTH = 800;
-// The height of the screen
-const GLuint SCREEN_HEIGHT = 600;
-
 Game game(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-int main(int argc, char *argv[])
+int main()
 {
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Test", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pandemonic", nullptr, nullptr);
 
-    glewExperimental = GL_TRUE;
-    glewInit();
-    glGetError(); // Call it once to catch glewInit() bug, all other errors are now from our application.
+    glfwMakeContextCurrent(window);
+    gladLoadGL();
+    fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
 
     glfwSetKeyCallback(window, key_callback);
 
@@ -61,11 +62,11 @@ int main(int argc, char *argv[])
 
         // Update Game state
         game.update(deltaTime);
+        game.render();
 
         // Render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        game.render();
 
         glfwSwapBuffers(window);
     }
@@ -77,7 +78,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void key_callback(GLFWwindow* window, int key, int /*scancode*/, int action, int /*mode*/)
 {
     // When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)

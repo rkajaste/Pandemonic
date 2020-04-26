@@ -1,9 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
-#include <SOIL.h>
-#include <GL/glew.h>
-#include <common/ResourceManager.hpp>
-#include <src/SpriteRenderer.hpp>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "ResourceManager.hpp"
+#include "SpriteRenderer.hpp"
 
 class Sprite {
     public:
@@ -15,7 +15,7 @@ class Sprite {
         void setRotation(GLfloat);
         void setColor(glm::vec3);
         void setSize(glm::vec2);
-    private: 
+    private:
         SpriteRenderer *renderer;
         glm::vec2 size;
         glm::vec3 color;

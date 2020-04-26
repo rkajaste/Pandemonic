@@ -5,12 +5,12 @@ Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer) {
     this->coords = coords;
     this->texture = texture;
     this->renderer = renderer;
-    this->size = glm::vec2(255.0f, 170.0f);
+    this->size = glm::vec2(texture.Width, texture.Height);
     this->rotation = 0.0f;
     this->color = glm::vec3(1.0f);
 }
 
-void Sprite::update(GLfloat dt) {
+void Sprite::update(GLfloat /*dt*/) {
 
 }
 

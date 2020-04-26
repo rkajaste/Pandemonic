@@ -1,11 +1,11 @@
+#include "ResourceManager.hpp"
+#include "GameState.hpp"
 #include "Game.hpp"
-#include <common/ResourceManager.hpp>
-#include <src/GameState.hpp>
 #include <iostream>
 
 SpriteRenderer *renderer;
 
-Game::Game(GLuint width, GLuint height) 
+Game::Game(GLuint width, GLuint height)
 	: state(GAME_START), keys(), width(width), height(height)
 {
     this->player = NULL;
@@ -20,18 +20,30 @@ Game::~Game()
 void Game::init()
 {
     // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width), 
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
         static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-    // Load textures
-    ResourceManager::LoadTexture("assets/graphics/sprites/player/idle.png", GL_TRUE, "player");
+
     // Load shaders
-    ResourceManager::LoadShader("../shaders/VertexShader.glsl", "../shaders/FragmentShader.glsl", nullptr, "sprite");    
+    ResourceManager::LoadShader(
+        (std::string(PROJECT_SOURCE_DIR) + "shaders/VertexShader.glsl").c_str(),
+        (std::string(PROJECT_SOURCE_DIR) + "shaders/FragmentShader.glsl").c_str(),
+        nullptr,
+        std::string("sprite")
+    );
+
     renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
+    // Load textures
+    ResourceManager::LoadTexture(
+        (std::string(PROJECT_SOURCE_DIR) + "assets/graphics/sprites/player/idle.png").c_str(),
+        GL_TRUE,
+        std::string("player")
+    );
+
     this->player = new Player(
-        glm::vec2(600.0f, 300.0f),
+        glm::vec2(200.0f, 200.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );
@@ -39,7 +51,7 @@ void Game::init()
 
 void Game::update(GLfloat dt)
 {
-    
+
 }
 
 

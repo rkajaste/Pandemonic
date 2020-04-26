@@ -7,7 +7,6 @@
 ** option) any later version.
 ******************************************************************/
 #include "shader.hpp"
-
 #include <iostream>
 
 Shader &Shader::Use()
