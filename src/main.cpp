@@ -54,21 +54,20 @@ int main()
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        glfwPollEvents();
 
-        //deltaTime = 0.001f;
         // Manage user input
         game.processInput(deltaTime);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         // Update Game state
         game.update(deltaTime);
         game.render();
 
-        // Render
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     // Delete all resources as loaded using the resource manager

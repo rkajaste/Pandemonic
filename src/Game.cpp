@@ -1,5 +1,4 @@
 #include "ResourceManager.hpp"
-#include "GameState.hpp"
 #include "Game.hpp"
 #include <iostream>
 
@@ -27,23 +26,23 @@ void Game::init()
 
     // Load shaders
     ResourceManager::LoadShader(
-        (std::string(PROJECT_SOURCE_DIR) + "shaders/VertexShader.glsl").c_str(),
-        (std::string(PROJECT_SOURCE_DIR) + "shaders/FragmentShader.glsl").c_str(),
-        nullptr,
-        std::string("sprite")
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/VertexShader.glsl",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/FragmentShader.glsl",
+        "",
+        "sprite"
     );
 
     renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
     // Load textures
     ResourceManager::LoadTexture(
-        (std::string(PROJECT_SOURCE_DIR) + "assets/graphics/sprites/player/idle.png").c_str(),
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/avatar.png",
         GL_TRUE,
-        std::string("player")
+        "player"
     );
 
     this->player = new Player(
-        glm::vec2(200.0f, 200.0f),
+        glm::vec2(500.0f, 600.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );

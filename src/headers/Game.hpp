@@ -1,10 +1,10 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include "GameState.hpp"
 #include "SpriteRenderer.hpp"
 #include "Player.hpp"
 
+enum GameState {GAME_START};
 class Game
 {
     public:
