@@ -42,7 +42,7 @@ void Game::init()
     );
 
     this->player = new Player(
-        glm::vec2(100.0f, 200.0f),
+        glm::vec2(100.0f, 0.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );
@@ -50,13 +50,13 @@ void Game::init()
 
 void Game::update(GLfloat dt)
 {
-
+    this->player->update(dt);
 }
 
 
 void Game::processInput(GLfloat dt)
 {
-
+    this->player->handleInput(this->keys);
 }
 
 void Game::render()

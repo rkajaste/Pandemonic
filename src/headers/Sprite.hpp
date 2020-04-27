@@ -7,9 +7,11 @@
 
 class Sprite {
     public:
+        int direction = 1;
         glm::vec2 coords;
         Texture2D texture;
         Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer* renderer);
+        ~Sprite(){};
         void update(GLfloat);
         void draw();
         void setRotation(GLfloat);
