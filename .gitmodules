@@ -14,3 +14,7 @@
     path = submodules/stb
     url = https://github.com/nothings/stb.git
     branch = master
+[submodule "submodules/tmxparser"]
+    path = submodules/tmxparser
+    url = https://github.com/sainteos/tmxparser.git
+    branch = master

@@ -3,12 +3,13 @@ cmake_minimum_required (VERSION 3.0)
 project (Pandemonic)
 
 find_package(OpenGL REQUIRED)
-
+find_package(ZLIB)
 # Compile external dependencies
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(submodules/glfw)
+
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -24,12 +25,16 @@ include_directories(
 	src/common/
 	submodules/glad/include/
 	submodules/glfw/include/
+	submodules/tmxparser/include/
 	submodules/glm/
 	submodules/stb/
 )
 
 set(ALL_LIBS
 	glfw
+	tmxparser
+	tinyxml2
+	ZLIB::ZLIB
 	${GLAD_LIBRARIES}
 )
 

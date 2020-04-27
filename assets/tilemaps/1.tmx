@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2017.08.29" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" infinite="0" nextobjectid="30">
+ <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="174" columns="29">
+  <image source="../gfx/tilesets/village.png" trans="ffffff" width="1900" height="409"/>
+ </tileset>
+ <tileset firstgid="175" name="home" tilewidth="64" tileheight="64" tilecount="72" columns="12">
+  <image source="../gfx/tilesets/home.png" trans="ffffff" width="768" height="438"/>
+ </tileset>
+ <tileset firstgid="247" name="village_assets" tilewidth="64" tileheight="64" tilecount="289" columns="17">
+  <image source="../gfx/tilesets/Umc6jIn - Imgur.png" trans="ffffff" width="1111" height="1111"/>
+ </tileset>
+ <tileset firstgid="536" name="oak" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="../gfx/tilesets/RQIokxR - Imgur.png" trans="ffffff" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="552" name="interior" tilewidth="64" tileheight="64" tilecount="252" columns="12">
+  <image source="../gfx/tilesets/kw94Kri - Imgur.png" trans="ffffff" width="800" height="1360"/>
+ </tileset>
+ <tileset firstgid="804" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
+  <image source="../gfx/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
+ </tileset>
+ <layer name="Background" width="31" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztkkcOwjAQRW2vKBeAJPQmUU4A3AC4AeUElBMAuTRlxdtESSwTJwGJDSM9xY6+Zv58WYh//eu3dYM7POD5xb5FKURJJmsKMtSVLdp3FXiPlkMv19KvKkOdF9FmycO044j7GCYJ84fSrLPlEfVm2nHGfW7ZeyrNOj2PiuIfOOCquDeT9yXnlWX2Qpp1eh4e82pQh4aKe9O9rzlvYAu7HG9Iz6PJvBa0oaPi3nTve84HOMIpx2w9jy7zetCHgQq9mXY8873AFfyUs/0MuQXePt3RVLaegbc0O74A96IpdQ==
+  </data>
+ </layer>
+ <layer name="Midground" width="31" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztzcVxQgEAAFHaQ4JLB0hw6QC3AB2QIEmwGnlFfE78nXnnjUTCwsLC3rMoMeIk+CBJijQZsuTIU6BIKYB3mQpVanxSp0GTFm06dOnRZxDAe8iIMROmzJizYMmKNV9s2LIL4L3nmx8OHDlx5pc//rlw5cadRwDvV/QEPGcc8w==
+  </data>
+ </layer>
+ <layer name="Foreground" width="31" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt0tkyFnAcBuBPkijdA7KUe7BkyT0QIfeQRHIPabFdAtmjRKEUKtkrbbaQqMRhj+HwO/jOmmm+d+Y5eE9+7/xn/oFAOOGE87+mhVbu00Y7HXTSRTc9PKA3hHtRR04QzUliiOUUp4njDH085BH9PGaAQZ7wlCGGGQnxPQkkcpYkkkkhlXOcJ41nPGeUF7xkjHEmeMVr3jAZwm46GWSSxQWyySGXPC6Sz1ummGaGWeaYZ4F3vOcDi0G2liMCgRVWIw57AYVcoohiLlNCKWVcoZyPfOIzX/jK0sFNVlhljW+sB9n+Y3OPfY7rV6ngGpVcp4pqblDDTWrZYJPvbPGDbXb4yS9+s3uwE2Q7+pj/RAzx+i3quM0d7nKPehpopIlm0iL/nb9rtFuK
+  </data>
+ </layer>
+ <layer name="NPC" width="31" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMJCAcQDtlsMiJk8nu62xiNkAsS2d7KcGAADSPADz
+  </data>
+ </layer>
+ <objectgroup name="triggers">
+  <object id="1" name="blockers" x="0" y="896" width="1983.5" height="63.6667">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="2" name="player" x="130" y="719" width="64" height="64">
+   <properties>
+    <property name="player_l" value=""/>
+   </properties>
+  </object>
+  <object id="7" name="blockers" x="721" y="765" width="1" height="131">
+   <properties>
+    <property name="blockers" value="d_o"/>
+   </properties>
+  </object>
+  <object id="10" name="blockers" x="656" y="764" width="1" height="131">
+   <properties>
+    <property name="blockers" value="d_c"/>
+   </properties>
+  </object>
+  <object id="17" name="level" x="5" y="351" width="12" height="609">
+   <properties>
+    <property name="level" value="prev"/>
+   </properties>
+  </object>
+  <object id="18" name="level" x="1960" y="328" width="12" height="628">
+   <properties>
+    <property name="level" value="next"/>
+   </properties>
+  </object>
+  <object id="19" name="player" x="1726.67" y="744" width="65" height="66.6667">
+   <properties>
+    <property name="player_r" value=""/>
+   </properties>
+  </object>
+  <object id="22" name="loadgame" x="773" y="748" width="60" height="61">
+   <properties>
+    <property name="loadgame" value=""/>
+   </properties>
+  </object>
+  <object id="28" name="npc" x="829.333" y="766" width="55.3333" height="122">
+   <properties>
+    <property name="npc" value=""/>
+   </properties>
+  </object>
+  <object id="29" name="npc" x="1163" y="772.333" width="55.3333" height="122">
+   <properties>
+    <property name="npc" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="Door" width="31" height="15" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzetSQWEAhtE9riYqkUoHhJJTdKQTRUVJuP9/1kV8M800+51Zf98niuLFi/dft5GIoiQpNtlimzQ7ZMiySy4Rtr3nb58D8hxyxDEnFChS4jRwu+yvQpUzzqlxQZ0GTVq0A7cv/XXocsU1N9xyxz09+jwEbj/6e+KZFwYMeeWNEWPe+Qjc/vQ3YcoX38z4Yc4vC5asArf/cmvaJBXN
+  </data>
+ </layer>
+</map>
