@@ -1,8 +1,8 @@
-#include "ResourceManager.hpp"
 #include "Game.hpp"
 #include <iostream>
 
 SpriteRenderer *renderer;
+MapManager *mapManager;
 
 Game::Game(GLuint width, GLuint height)
 	: state(GAME_START), keys(), width(width), height(height)
@@ -18,7 +18,7 @@ Game::~Game()
 
 void Game::init()
 {
-    MapLoader::loadMap();
+    mapManager = new MapManager();
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
         static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);

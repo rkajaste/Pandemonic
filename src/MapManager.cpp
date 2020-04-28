@@ -1,16 +1,24 @@
-#include "MapLoader.hpp"
+#include "MapManager.hpp"
 
-int MapLoader::loadMap() {
+namespace fs = std::experimental::filesystem;
+static const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
+
+MapManager::MapManager() {
+    for (const auto & entry : fs::directory_iterator(mapsPath))
+        this->maps.push_back(entry.path().filename());
+    this->currentMap = "1.tmx";
+    this->loadMap();
+}
+
+Tmx::Map* MapManager::loadMap() {
     Tmx::Map *map;
     map = new Tmx::Map();
-    map->ParseFile(std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/1.tmx");
+    map->ParseFile(mapsPath + this->currentMap);
 
     if (map->HasError())
     {
         printf("error code: %d\n", map->GetErrorCode());
         printf("error text: %s\n", map->GetErrorText().c_str());
-
-        return map->GetErrorCode();
     }
 
     printf("====================================\n");
@@ -18,14 +26,7 @@ int MapLoader::loadMap() {
     printf("====================================\n");
     printf("Version: %1.1f\n", map->GetVersion());
     printf("Orientation: %d\n", map->GetOrientation());
-    if (!map->GetBackgroundColor().IsTransparent())
-        printf("Background Color (hex): %s\n",
-               map->GetBackgroundColor().ToString().c_str());
     printf("Render Order: %d\n", map->GetRenderOrder());
-    if (map->GetStaggerAxis())
-        printf("Stagger Axis: %d\n", map->GetStaggerAxis());
-    if (map->GetStaggerIndex())
-        printf("Stagger Index: %d\n", map->GetStaggerIndex());
     printf("Width: %d\n", map->GetWidth());
     printf("Height: %d\n", map->GetHeight());
     printf("Tile Width: %d\n", map->GetTileWidth());
@@ -187,41 +188,16 @@ int MapLoader::loadMap() {
         {
             for (int x = 0; x < tileLayer->GetWidth(); ++x)
             {
-                if (tileLayer->GetTileTilesetIndex(x, y) == -1)
+                if (tileLayer->GetTileTilesetIndex(x, y) != -1)
                 {
-                    printf("........    ");
-                }
-                else
-                {
-                    // Get the tile's id and gid.
-                    printf("%03d(%03d)", tileLayer->GetTileId(x, y), tileLayer->GetTileGid(x, y));
+                    const Tmx::Tileset *tileset = map->GetTileset(tileLayer->GetTileTilesetIndex(x, y));
+                    if(tileset != NULL) {
+                        const Tmx::Tile *tile = tileset->GetTile(tileLayer->GetTileGid(x, y));
+                        if (tile != NULL) {
+                            const Tmx::Image *image = tile->GetImage();
+                        }
+                    }
 
-                    // Find a tileset for that id.
-                    //const Tmx::Tileset *tileset = map->FindTileset(layer->GetTileId(x, y));
-                    if (tileLayer->IsTileFlippedHorizontally(x, y))
-                    {
-                        printf("h");
-                    }
-                    else
-                    {
-                        printf(" ");
-                    }
-                    if (tileLayer->IsTileFlippedVertically(x, y))
-                    {
-                        printf("v");
-                    }
-                    else
-                    {
-                        printf(" ");
-                    }
-                    if (tileLayer->IsTileFlippedDiagonally(x, y))
-                    {
-                        printf("d ");
-                    }
-                    else
-                    {
-                        printf("  ");
-                    }
                 }
             }
 
@@ -328,6 +304,5 @@ int MapLoader::loadMap() {
         }
     }
 
-    delete map;
-    return 1;
+    return map;
 }

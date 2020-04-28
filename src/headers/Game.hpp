@@ -3,7 +3,9 @@
 #include <glad/glad.h>
 #include "SpriteRenderer.hpp"
 #include "Player.hpp"
-#include "MapLoader.hpp"
+#include "MapManager.hpp"
+#include "ResourceManager.hpp"
+
 
 enum GameState {GAME_START, MAIN_MENU};
 class Game

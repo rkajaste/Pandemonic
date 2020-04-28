@@ -36,6 +36,7 @@ set(ALL_LIBS
 	tmxparser
 	tinyxml2
 	ZLIB::ZLIB
+	stdc++fs
 	${GLAD_LIBRARIES}
 )
 
