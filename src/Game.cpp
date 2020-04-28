@@ -18,6 +18,7 @@ Game::~Game()
 
 void Game::init()
 {
+    MapLoader::loadMap();
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
         static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
