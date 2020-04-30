@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="120" height="40" tilewidth="64" tileheight="64" nextobjectid="91">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="120" height="40" tilewidth="64" tileheight="64" nextobjectid="91">
  <tileset firstgid="1" name="scouting_misc" tilewidth="64" tileheight="64" tilecount="60" columns="15">
-  <image source="../gfx/tilesets/misc/scouting_misc.png" trans="ffffff" width="968" height="256"/>
+  <image source="../graphics/tilesets/misc/scouting_misc.png" trans="ffffff" width="968" height="256"/>
  </tileset>
  <tileset firstgid="61" name="ladder" tilewidth="64" tileheight="64" tilecount="1" columns="1">
-  <image source="../gfx/tilesets/misc/ladder.png" trans="ffffff" width="64" height="64"/>
+  <image source="../graphics/tilesets/misc/ladder.png" trans="ffffff" width="64" height="64"/>
  </tileset>
  <tileset firstgid="62" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
-  <image source="../gfx/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
+  <image source="../graphics/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
  <tileset firstgid="83" name="trees" tilewidth="64" tileheight="64" tilecount="144" columns="16">
-  <image source="../gfx/tilesets/trees.png" trans="ffffff" width="1024" height="576"/>
+  <image source="../graphics/tilesets/trees.png" trans="ffffff" width="1024" height="576"/>
  </tileset>
  <layer name=" forest bg 2" width="120" height="40" visible="0">
   <data encoding="base64" compression="zlib">

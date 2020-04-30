@@ -1,12 +1,11 @@
 #include "Player.hpp"
-#include "Physics.hpp"
-#include <algorithm>
+
 
 void Player::update(GLfloat dt) {
     this->coords.y = Physics::calculateHeight(this->coords.y, dt);
-    if (this->hasState(MOVING)) {
+    if (Util::existsInVector(MOVING, this->states)) {
         this->move(dt);
-    } else if (this->hasState(JUMPING)) {
+    } else if (Util::existsInVector(JUMPING, this->states)) {
         this->jump(dt);
     }
 }
@@ -34,8 +33,4 @@ void Player::handleInput(GLboolean keys[2048]) {
     if (keys[GLFW_KEY_UP]) {
         this->states.push_back(JUMPING);
     }
-}
-
-GLboolean Player::hasState(PlayerState state) {
-    return std::find(this->states.begin(), this->states.end(), state) != this->states.end();
 }

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="2017.08.29" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" infinite="0" nextobjectid="30">
  <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="174" columns="29">
-  <image source="../gfx/tilesets/village.png" trans="ffffff" width="1900" height="409"/>
+  <image source="../graphics/tilesets/village.png" trans="ffffff" width="1900" height="409"/>
  </tileset>
  <tileset firstgid="175" name="home" tilewidth="64" tileheight="64" tilecount="72" columns="12">
-  <image source="../gfx/tilesets/home.png" trans="ffffff" width="768" height="438"/>
+  <image source="../graphics/tilesets/home.png" trans="ffffff" width="768" height="438"/>
  </tileset>
  <tileset firstgid="247" name="village_assets" tilewidth="64" tileheight="64" tilecount="289" columns="17">
-  <image source="../gfx/tilesets/Umc6jIn - Imgur.png" trans="ffffff" width="1111" height="1111"/>
+  <image source="../graphics/tilesets/Umc6jIn - Imgur.png" trans="ffffff" width="1111" height="1111"/>
  </tileset>
  <tileset firstgid="536" name="oak" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="../gfx/tilesets/RQIokxR - Imgur.png" trans="ffffff" width="256" height="256"/>
+  <image source="../graphics/tilesets/RQIokxR - Imgur.png" trans="ffffff" width="256" height="256"/>
  </tileset>
  <tileset firstgid="552" name="interior" tilewidth="64" tileheight="64" tilecount="252" columns="12">
-  <image source="../gfx/tilesets/kw94Kri - Imgur.png" trans="ffffff" width="800" height="1360"/>
+  <image source="../graphics/tilesets/kw94Kri - Imgur.png" trans="ffffff" width="800" height="1360"/>
  </tileset>
  <tileset firstgid="804" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
-  <image source="../gfx/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
+  <image source="../graphics/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
  <layer name="Background" width="31" height="15">
   <data encoding="base64" compression="zlib">

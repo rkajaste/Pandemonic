@@ -1,5 +1,7 @@
 #pragma once
 #include "Sprite.hpp"
+#include "Util.hpp"
+#include "Physics.hpp"
 #include <vector>
 
 enum PlayerState { IDLE, MOVING, JUMPING };
@@ -12,7 +14,6 @@ class Player: public Sprite {
         std::vector<PlayerState> states;
         GLfloat speed = 1100.0f;
         GLfloat jumpForce = 2000.0f;
-        GLboolean hasState(PlayerState);
         void move(GLfloat);
         void jump(GLfloat);
 
