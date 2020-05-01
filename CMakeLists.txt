@@ -23,6 +23,7 @@ endif()
 include_directories(
 	src/headers/
 	src/common/
+	src/renderers/
 	submodules/glad/include/
 	submodules/glfw/include/
 	submodules/tmxparser/include/

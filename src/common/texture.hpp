@@ -11,7 +11,7 @@
 #define TEXTURE_H
 
 #include <glad/glad.h>
-
+#include <glm/glm.hpp>
 // Texture2D is able to store and configure a texture in OpenGL.
 // It also hosts utility functions for easy management.
 class Texture2D
@@ -29,11 +29,9 @@ public:
     GLuint Wrap_T; // Wrapping mode on T axis
     GLuint Filter_Min; // Filtering mode if texture pixels < screen pixels
     GLuint Filter_Max; // Filtering mode if texture pixels > screen pixels
-    // Constructor (sets default texture modes)
     Texture2D();
-    // Generates texture from image data
+
     void Generate(GLuint width, GLuint height, unsigned char* data);
-    // Binds the texture as the current active GL_TEXTURE_2D texture object
     void Bind() const;
 };
 

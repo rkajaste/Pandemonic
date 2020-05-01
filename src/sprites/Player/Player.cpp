@@ -2,7 +2,7 @@
 
 
 void Player::update(GLfloat dt) {
-    this->coords.y = Physics::calculateHeight(this->coords.y, dt);
+    // this->coords.y = Physics::calculateHeight(this->coords.y, dt);
     if (Util::existsInVector(MOVING, this->states)) {
         this->move(dt);
     } else if (Util::existsInVector(JUMPING, this->states)) {

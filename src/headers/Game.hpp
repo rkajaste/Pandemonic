@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "MapManager.hpp"
 #include "ResourceManager.hpp"
+#include "MapRenderer.hpp"
 
 
 enum GameState {GAME_START, MAIN_MENU};

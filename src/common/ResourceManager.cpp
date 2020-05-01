@@ -29,7 +29,11 @@ Shader ResourceManager::GetShader(std::string name)
     return Shaders[name];
 }
 
-Texture2D ResourceManager::LoadTexture(const std::string file, GLboolean alpha, std::string name)
+Texture2D ResourceManager::LoadTexture(
+    const std::string file,
+    std::string name,
+    GLboolean alpha
+)
 {
     Textures[name] = loadTextureFromFile(file, alpha);
     return Textures[name];
@@ -104,7 +108,7 @@ Shader ResourceManager::loadShaderFromFile(const std::string vShaderFile, const 
     return shader;
 }
 
-Texture2D ResourceManager::loadTextureFromFile(const std::string file, GLboolean alpha)
+Texture2D ResourceManager::loadTextureFromFile(const std::string file, GLboolean alpha = GL_TRUE)
 {
     // Create Texture object
     Texture2D texture;

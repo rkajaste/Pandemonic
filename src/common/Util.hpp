@@ -2,7 +2,9 @@
 #include <vector>
 #include <algorithm>
 
-class Util{
-    public:
-        template <typename T> static bool existsInVector(T, std::vector<T>);
-};
+namespace Util{
+    template <typename T>
+    bool existsInVector(T element, std::vector<T> vec) {
+        return std::find(vec.begin(), vec.end(), element) != vec.end();
+    }
+}
