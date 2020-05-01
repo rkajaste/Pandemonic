@@ -63,24 +63,25 @@ void MapRenderer::drawMap()
         GLfloat texCoordsY = 1.0f - 1.0f / tileY;
         GLfloat tileSizeUV = 1.0f / tilesetColumns;
 
-        // Something fucky going on in here
-        this->texCoords[0] = texCoordsX;
-        this->texCoords[1] = texCoordsY + tileSizeUV;
-        this->texCoords[2] = texCoordsX + tileSizeUV;
-        this->texCoords[3] = texCoordsY;
-        this->texCoords[4] = texCoordsX;
-        this->texCoords[5] = texCoordsY;
+        // // Something fucky going on in here
+        // this->texCoords[0] = texCoordsX;
+        // this->texCoords[1] = texCoordsY + tileSizeUV;
+        // this->texCoords[2] = texCoordsX + tileSizeUV;
+        // this->texCoords[3] = texCoordsY;
+        // this->texCoords[4] = texCoordsX;
+        // this->texCoords[5] = texCoordsY;
 
-        this->texCoords[6] = texCoordsX;
-        this->texCoords[7] = texCoordsY + tileSizeUV;
-        this->texCoords[8] = texCoordsX + tileSizeUV;
-        this->texCoords[9] = texCoordsY + tileSizeUV;
-        this->texCoords[10] = texCoordsX + tileSizeUV;
-        this->texCoords[11] = texCoordsY;
+        // this->texCoords[6] = texCoordsX;
+        // this->texCoords[7] = texCoordsY + tileSizeUV;
+        // this->texCoords[8] = texCoordsX + tileSizeUV;
+        // this->texCoords[9] = texCoordsY + tileSizeUV;
+        // this->texCoords[10] = texCoordsX + tileSizeUV;
+        // this->texCoords[11] = texCoordsY;
 
-        glBindBuffer(GL_ARRAY_BUFFER, this->vboIds[1]);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(texCoords), texCoords);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // glBindBuffer(GL_ARRAY_BUFFER, this->vboIds[1]);
+        // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(this->texCoords), this->texCoords);
+        // glBindBuffer(GL_ARRAY_BUFFER, 0);
+
         glBindVertexArray(this->quadVAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
@@ -117,7 +118,9 @@ void MapRenderer::initRenderData(
     glBindVertexArray(this->quadVAO);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

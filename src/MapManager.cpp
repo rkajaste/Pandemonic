@@ -1,7 +1,8 @@
 #include "MapManager.hpp"
 
 namespace fs = std::experimental::filesystem;
-static const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
+const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
+const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
 
 MapManager::MapManager() {
     for (const auto & entry : fs::directory_iterator(mapsPath))
@@ -40,9 +41,8 @@ Tmx::Map* MapManager::loadMap() {
     // pair image source path and first tile gid
     for (unsigned int i = 0; i < tilesets.size(); i++) {
         Tmx::Tileset* tileset = tilesets.at(i);
-        std::string imagePath = std::string(PROJECT_SOURCE_DIR) +
-                                std::string(tileset->GetImage()->GetSource())
-                                .erase(0, 2);
+        std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
+
         ResourceManager::LoadTexture(
             imagePath,
             tileset->GetName()
