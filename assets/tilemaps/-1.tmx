@@ -16,7 +16,7 @@
   <image source="../gfx/tilesets/misc/scouting_misc.png" trans="ffffff" width="968" height="256"/>
  </tileset>
  <tileset firstgid="233" name="Umc6jIn - Imgur" tilewidth="64" tileheight="64" tilecount="289" columns="17">
-  <image source="../gfx/tilesets/Umc6jIn - Imgur.png" trans="ffffff" width="1111" height="1111"/>
+  <image source="../gfx/tilesets/misc.png" trans="ffffff" width="1111" height="1111"/>
  </tileset>
  <tileset firstgid="522" name="water" tilewidth="64" tileheight="64" tilecount="4" columns="4">
   <image source="../gfx/sprites/water/water.png" trans="ffffff" width="256" height="64"/>

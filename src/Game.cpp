@@ -37,22 +37,28 @@ void Game::init()
         "",
         "tile"
     );
+
     ResourceManager::GetShader("sprite").Use();
     ResourceManager::GetShader("sprite").SetInteger("image", 0);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
     ResourceManager::GetShader("tile").Use();
     ResourceManager::GetShader("tile").SetInteger("image", 0);
     ResourceManager::GetShader("tile").SetMatrix4("projection", projection);
-    renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-    mapManager = new MapManager();
+
     // Load textures
     ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle.png",
         "player"
     );
 
+    // Initialize renderers/map
+    renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+    mapManager = new MapManager();
+
+
+    // Create sprites
     this->player = new Player(
-        glm::vec2(400.0f, 300.0f),
+        glm::vec2(200.0f, 64.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );

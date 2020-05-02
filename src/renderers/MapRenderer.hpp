@@ -6,6 +6,7 @@
 #include "shader.hpp"
 #include "ResourceManager.hpp"
 
+typedef std::tuple<int, std::__cxx11::string, int, int> TilesetInfo;
 class MapRenderer{
     public:
         MapRenderer(Shader);
@@ -18,19 +19,24 @@ class MapRenderer{
     private:
         Shader shader;
         GLuint quadVAO;
-        GLuint vboIds[2];
-        GLfloat texCoords[12] = {
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            0.0f, 0.0f,
+        GLuint VBOids[2];
 
-            0.0f, 1.0f,
-            1.0f, 1.0f,
-            1.0f, 0.0f
+        GLfloat texVertices[12] = {
+            // Left triangle
+            // Pos      // Tex
+            0.0f, 1.0f, // Bottom left corner
+            1.0f, 0.0f, // Top right corner
+            0.0f, 0.0f,  // Upper left corner
+
+            // Right triangle
+            0.0f, 1.0f, // Lower left corner
+            1.0f, 1.0f, // Bottom right corner
+            1.0f, 0.0f  // Top right corner
         };
 
         std::vector<std::pair<glm::vec2, int>> tileCoordsGid;
         std::vector<std::tuple<int, std::string, int, int>> tilesetInfo;
 
-        std::tuple<int, std::string, int, int>* getTilesetInfoByGid(int);
+        void drawTile(int index);
+        TilesetInfo* getTilesetInfoByGid(int gid);
 };

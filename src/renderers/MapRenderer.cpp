@@ -9,7 +9,7 @@ MapRenderer::~MapRenderer()
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-std::tuple<int, std::string, int, int>* MapRenderer::getTilesetInfoByGid(int gid) {
+TilesetInfo* MapRenderer::getTilesetInfoByGid(int gid) {
     for (int i = this->tilesetInfo.size() - 1; i > -1; --i)
         {
             if (gid >= std::get<0>(this->tilesetInfo.at(i)))
@@ -21,71 +21,76 @@ std::tuple<int, std::string, int, int>* MapRenderer::getTilesetInfoByGid(int gid
     return NULL;
 }
 
-void MapRenderer::drawMap()
+void MapRenderer::drawTile(int index)
 {
-    glm::vec2 size = glm::vec2(64.0f, 64.0f);
+        glm::vec2 positionCoords = this->tileCoordsGid.at(index).first;
+        int tileGid = this->tileCoordsGid.at(index).second;
 
-    // Iterate over every tile and draw them
-    for(unsigned int i = 0; i < this->tileCoordsGid.size(); i++) {
-        GLfloat tileSize = 64.0f;
-        glm::vec2 position = this->tileCoordsGid.at(i).first;
-        int tileGid = this->tileCoordsGid.at(i).second;
-
-        std::tuple<int, std::string, int, int> tilesetInfo =
-            *this->getTilesetInfoByGid(tileGid);
+        TilesetInfo tilesetInfo = *this->getTilesetInfoByGid(tileGid);
         int firstGid = std::get<0>(tilesetInfo);
+
         std::string textureName = std::get<1>(tilesetInfo);
         int tilesetColumns = std::get<2>(tilesetInfo);
         int tilesetTileCount = std::get<3>(tilesetInfo);
 
-        Texture2D texture = ResourceManager::GetTexture(textureName);
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(glm::vec2(position.x * tileSize, position.y * tileSize), 0.0f));
-        model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-        model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-        model = glm::scale(model, glm::vec3(size, 1.0f));
-
-        this->shader.Use();
-        this->shader.SetMatrix4("model", model);
-        // Render textured quad
-        this->shader.SetVector3f("spriteColor", glm::vec3(1.0f));
+        // Initialize model matrixes
+        glm::mat4 position = glm::mat4(1.0f);
+        glm::mat4 texPosition = glm::mat4(1.0f);
 
         // bind tileset texture
+        Texture2D texture = ResourceManager::GetTexture(textureName);
         glActiveTexture(GL_TEXTURE0);
         texture.Bind();
+
         int tileId = tileGid - firstGid;
         int tilesetRows = tilesetTileCount / tilesetColumns;
+        GLfloat tileSize = 64.0f;
 
-        GLfloat tileX = tileId % tilesetColumns + 1.0f;
-        GLfloat tileY = tileId / tilesetRows + 1.0f;
-        GLfloat texCoordsX = 1.0f - 1.0f / tileX;
-        GLfloat texCoordsY = 1.0f - 1.0f / tileY;
-        GLfloat tileSizeUV = 1.0f / tilesetColumns;
+        // Calculate texture coordinates
+        GLfloat tileUnit = tileSize / texture.Width;
+        glm::vec2 texCoords = glm::vec2(
+            tileId % tilesetColumns * tileUnit,
+            tileId / tilesetRows * tileUnit
+        );
 
-        // // Something fucky going on in here
-        // this->texCoords[0] = texCoordsX;
-        // this->texCoords[1] = texCoordsY + tileSizeUV;
-        // this->texCoords[2] = texCoordsX + tileSizeUV;
-        // this->texCoords[3] = texCoordsY;
-        // this->texCoords[4] = texCoordsX;
-        // this->texCoords[5] = texCoordsY;
+        // Calculate tile position in world space
+        glm::vec2 size = glm::vec2(tileSize);
+        positionCoords.x *= tileSize;
+        positionCoords.y *= tileSize;
 
-        // this->texCoords[6] = texCoordsX;
-        // this->texCoords[7] = texCoordsY + tileSizeUV;
-        // this->texCoords[8] = texCoordsX + tileSizeUV;
-        // this->texCoords[9] = texCoordsY + tileSizeUV;
-        // this->texCoords[10] = texCoordsX + tileSizeUV;
-        // this->texCoords[11] = texCoordsY;
+        position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
+        position = glm::scale(position, glm::vec3(size, 1.0f));
+        //texPosition = glm::translate(texPosition, glm::vec3(texCoords, 0.0f));
 
-        // glBindBuffer(GL_ARRAY_BUFFER, this->vboIds[1]);
-        // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(this->texCoords), this->texCoords);
-        // glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //this->shader.SetMatrix4("texPosition", texPosition);
+        this->shader.SetMatrix4("position", position);
 
-        glBindVertexArray(this->quadVAO);
+        GLfloat texVertices[] = {
+
+            texCoords.x, texCoords.y + tileUnit,// Bottom left corner
+            texCoords.x + tileUnit, texCoords.y, // Top right corner
+            texCoords.x, texCoords.y, // Upper left corner
+
+            texCoords.x, texCoords.y + tileUnit,// Lower left corner
+            texCoords.x + tileUnit, texCoords.y + tileUnit, // Bottom right corner
+            texCoords.x + tileUnit, texCoords.y // Top right corner texCoords.x, texCoords.y + tileUnit, // Bottom left corner
+        };
+
+        glBindBuffer(GL_ARRAY_BUFFER, this->VBOids[1]);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(texVertices), texVertices);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
+}
+
+void MapRenderer::drawMap()
+{
+    this->shader.Use();
+    glBindVertexArray(this->quadVAO);
+    // Iterate over every tile and draw them
+    for(unsigned int i = 0; i < this->tileCoordsGid.size(); i++) {
+        this->drawTile(i);
     }
+    glBindVertexArray(0);
 }
 
 void MapRenderer::initRenderData(
@@ -95,27 +100,43 @@ void MapRenderer::initRenderData(
 {
     this->tilesetInfo = tilesetInfo;
     this->tileCoordsGid = tileCoordsGid;
-    // Configure VAO/VBO
-    GLfloat positions[] = {
-        0.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 0.0f,
 
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f
+    GLfloat vertices[] = {
+        // Left triangle
+        // Pos      // Tex
+        0.0f, 1.0f, // Bottom left corner
+        1.0f, 0.0f, // Top right corner
+        0.0f, 0.0f,  // Upper left corner
+
+        // Right triangle
+        0.0f, 1.0f, // Lower left corner
+        1.0f, 1.0f, // Bottom right corner
+        1.0f, 0.0f  // Top right corner
     };
 
+
+    // GLfloat vertices[] = {
+    //     0.0f, 1.0f, 0.0f, 1.0f,
+    //     1.0f, 0.0f, 1.0f, 0.0f,
+    //     0.0f, 0.0f, 0.0f, 0.0f,
+
+    //     0.0f, 1.0f, 0.0f, 1.0f,
+    //     1.0f, 1.0f, 1.0f, 1.0f,
+    //     1.0f, 0.0f, 1.0f, 0.0f
+    // };
+
     glGenVertexArrays(1, &this->quadVAO);
-    glGenBuffers(2, this->vboIds);
+    glGenBuffers(2, this->VBOids);
 
     // Load positions.
-    glBindBuffer(GL_ARRAY_BUFFER, this->vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, this->vboIds[1]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(this->texCoords), this->texCoords, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, this->VBOids[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->VBOids[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->texVertices), this->texVertices, GL_DYNAMIC_DRAW);
 
     glBindVertexArray(this->quadVAO);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(1);

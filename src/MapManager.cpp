@@ -28,13 +28,6 @@ Tmx::Map* MapManager::loadMap() {
         printf("error text: %s\n", map->GetErrorText().c_str());
     }
 
-    printf("====================================\n");
-    printf("Map\n");
-    printf("====================================\n");
-    printf("Version: %1.1f\n", map->GetVersion());
-    printf("Width: %d\n", map->GetWidth());
-    printf("Height: %d\n", map->GetHeight());
-
     const std::vector<Tmx::Tileset *> tilesets = map->GetTilesets();
     std::vector<std::tuple<int, std::string, int, int>> tilesetInfoList;
     std::vector<std::pair<glm::vec2, int>> tileGids;

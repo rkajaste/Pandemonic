@@ -4,7 +4,7 @@
   <image source="../gfx/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
  <tileset firstgid="22" name="misc" tilewidth="64" tileheight="64" tilecount="289" columns="17">
-  <image source="../gfx/tilesets/Umc6jIn - Imgur.png" trans="ffffff" width="1111" height="1111"/>
+  <image source="../gfx/tilesets/misc.png" trans="ffffff" width="1111" height="1111"/>
  </tileset>
  <tileset firstgid="311" name="trees" tilewidth="64" tileheight="64" tilecount="144" columns="16">
   <image source="../gfx/tilesets/trees.png" trans="ffffff" width="1024" height="576"/>
