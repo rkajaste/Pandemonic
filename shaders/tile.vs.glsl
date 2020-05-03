@@ -10,6 +10,7 @@ uniform vec2 tileSize;
 uniform vec2 offset;
 uniform mat4 position;
 uniform mat4 projection;
+uniform mat4 view;
 
 void main()
 {
@@ -18,5 +19,5 @@ void main()
     vTextureCoordOffset = vec2(u, v);
     vZoom = vec2(tileSize.x / tilesetDimensions.y, tileSize.y / tilesetDimensions.x);
     TexCoords = vertex.zw;
-    gl_Position = projection * position * vec4(vertex.xy, 0.0, 1.0);
+    gl_Position = projection * view * position * vec4(vertex.xy, 0.0, 1.0);
 }

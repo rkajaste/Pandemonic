@@ -21,9 +21,11 @@ else()
 endif()
 
 include_directories(
+	src/
 	src/headers/
 	src/common/
 	src/renderers/
+	src/camera/
 	submodules/glad/include/
 	submodules/glfw/include/
 	submodules/tmxparser/include/

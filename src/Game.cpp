@@ -3,6 +3,7 @@
 
 SpriteRenderer *renderer;
 MapManager *mapManager;
+Camera *camera;
 
 Game::Game(GLuint width, GLuint height)
 	: state(GAME_START), keys(), width(width), height(height)
@@ -14,6 +15,7 @@ Game::~Game()
 {
     delete renderer;
     delete mapManager;
+    delete camera;
     delete this->player;
 }
 
@@ -55,19 +57,22 @@ void Game::init()
     renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     mapManager = new MapManager();
 
-
     // Create sprites
     this->player = new Player(
-        glm::vec2(200.0f, 64.0f),
+        glm::vec2(200.0f, 812.0f),
         ResourceManager::GetTexture("player"),
         renderer
     );
+
+    camera = new Camera();
 }
 
 void Game::update(GLfloat dt)
 {
     this->player->update(dt);
+    camera->setPosition(glm::vec2(this->player->coords.x, mapManager->worldHeight - this->player->coords.y));
 }
+
 
 
 void Game::processInput(GLfloat dt)
@@ -77,6 +82,6 @@ void Game::processInput(GLfloat dt)
 
 void Game::render()
 {
-    this->player->draw();
     mapManager->renderer->drawMap();
+    this->player->draw();
 }

@@ -14,6 +14,7 @@ class MapManager {
         MapManager();
         ~MapManager();
         MapRenderer* renderer;
+        GLfloat worldHeight;
     private:
         std::string currentMap;
         std::vector<std::string> maps;

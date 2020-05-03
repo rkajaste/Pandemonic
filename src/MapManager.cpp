@@ -21,12 +21,13 @@ Tmx::Map* MapManager::loadMap() {
     Tmx::Map *map;
     map = new Tmx::Map();
     map->ParseFile(mapsPath + this->currentMap);
-
     if (map->HasError())
     {
         printf("error code: %d\n", map->GetErrorCode());
         printf("error text: %s\n", map->GetErrorText().c_str());
     }
+
+    this->worldHeight = map->GetHeight() * map->GetTileHeight();
 
     const std::vector<Tmx::Tileset *> tilesets = map->GetTilesets();
     std::vector<std::tuple<int, std::string, int, int>> tilesetInfoList;

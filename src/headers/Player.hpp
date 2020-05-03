@@ -11,6 +11,7 @@ class Player: public Sprite {
         void update(GLfloat);
         void handleInput(GLboolean keys[2048]);
     private:
+        int noClipDirection = 1;
         std::vector<PlayerState> states;
         GLfloat speed = 1100.0f;
         GLfloat jumpForce = 2000.0f;

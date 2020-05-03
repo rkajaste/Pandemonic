@@ -6,7 +6,7 @@
 #include "MapManager.hpp"
 #include "ResourceManager.hpp"
 #include "MapRenderer.hpp"
-
+#include "Camera.hpp"
 
 enum GameState {GAME_START, MAIN_MENU};
 class Game

@@ -3,7 +3,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "Main.hpp"
+#include "config.hpp"
 #include "Game.hpp"
 #include "ResourceManager.hpp"
 
