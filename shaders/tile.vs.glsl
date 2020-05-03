@@ -1,14 +1,22 @@
 #version 330 core
-layout (location = 0) in vec2 vertex; // <vec2 position, vec2 texCoords>
-layout (location = 1) in vec2 texVertex;
-out vec2 TexCoords;
+layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
-//uniform mat4 texPosition;
+out vec2 TexCoords;
+out vec2 vTextureCoordOffset;
+out vec2 vZoom;
+
+uniform vec2 tilesetDimensions;
+uniform vec2 tileSize;
+uniform vec2 offset;
 uniform mat4 position;
 uniform mat4 projection;
 
 void main()
 {
-    TexCoords = texVertex.xy;
+    float u = offset.x / tilesetDimensions.x;
+    float v = offset.y / tilesetDimensions.y;
+    vTextureCoordOffset = vec2(u, v);
+    vZoom = vec2(tileSize.x / tilesetDimensions.y, tileSize.y / tilesetDimensions.x);
+    TexCoords = vertex.zw;
     gl_Position = projection * position * vec4(vertex.xy, 0.0, 1.0);
 }

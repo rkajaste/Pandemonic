@@ -19,20 +19,6 @@ class MapRenderer{
     private:
         Shader shader;
         GLuint quadVAO;
-        GLuint VBOids[2];
-
-        GLfloat texVertices[12] = {
-            // Left triangle
-            // Pos      // Tex
-            0.0f, 1.0f, // Bottom left corner
-            1.0f, 0.0f, // Top right corner
-            0.0f, 0.0f,  // Upper left corner
-
-            // Right triangle
-            0.0f, 1.0f, // Lower left corner
-            1.0f, 1.0f, // Bottom right corner
-            1.0f, 0.0f  // Top right corner
-        };
 
         std::vector<std::pair<glm::vec2, int>> tileCoordsGid;
         std::vector<std::tuple<int, std::string, int, int>> tilesetInfo;

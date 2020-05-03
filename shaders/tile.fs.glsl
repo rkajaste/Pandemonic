@@ -1,10 +1,11 @@
 #version 330 core
 in vec2 TexCoords;
-out vec4 color;
+in vec2 vTextureCoordOffset;
+in vec2 vZoom;
 
 uniform sampler2D image;
 
 void main()
 {
-    color = texture(image, TexCoords);
+    gl_FragColor = texture(image, TexCoords.xy * vZoom + vTextureCoordOffset);
 }

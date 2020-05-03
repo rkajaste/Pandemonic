@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" nextobjectid="30">
- <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="174" columns="29">
-  <image source="../graphics/tilesets/village.png" trans="ffffff" width="1900" height="384"/>
+ <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="174" columns="27">
+  <image source="../graphics/tilesets/village.png" trans="ffffff" width="1728" height="384"/>
  </tileset>
  <tileset firstgid="175" name="home" tilewidth="64" tileheight="64" tilecount="66" columns="11">
   <image source="../graphics/tilesets/home.png" trans="ffffff" width="704" height="384"/>
  </tileset>
- <tileset firstgid="241" name="village_assets" tilewidth="64" tileheight="64" tilecount="289" columns="17">
-  <image source="../graphics/tilesets/misc.png" trans="ffffff" width="1111" height="1111"/>
+ <tileset firstgid="241" name="village_assets" tilewidth="64" tileheight="64" tilecount="289" columns="15">
+  <image source="../graphics/tilesets/misc.png" trans="ffffff" width="960" height="576"/>
  </tileset>
- <tileset firstgid="530" name="oak" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="../graphics/tilesets/oak.png" trans="ffffff" width="256" height="256"/>
- </tileset>
- <tileset firstgid="546" name="interior" tilewidth="64" tileheight="64" tilecount="240" columns="12">
+ <tileset firstgid="530" name="interior" tilewidth="64" tileheight="64" tilecount="240" columns="12">
   <image source="../graphics/tilesets/home_interior.png" trans="ffffff" width="768" height="1280"/>
  </tileset>
- <tileset firstgid="786" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
+ <tileset firstgid="770" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
   <image source="../graphics/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
  <layer name="Background" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJztktkNwjAQRG0DDUAS7kviqADoAOiAowKOCoA0zVEA7ydKYpk4CUj8ZKWn2NFod3ZkIYoq6r91hwc84fXDviUpRFkma5QMdRWL9lMF3qPl0Mu19KvJUOdFtFnyMO045j6BacL8kTTrbHlEvZl2nHNfWPaeSbNOz6Oq+AcOuCruzeR9xXltmb2UZp2eh8e8OjSgqeLedO8bzlvYwT7HG9LzaDGvDR3oqrg33fuB8xFOcM4xW8+jx7w+DGCoQm+mHS98r3ADP+VsP0NugbdvdzSVrWfgLc2Ob+b5Jks=
+   eJztkNsNwlAMQ1sYgMcAwALAAsACFAbgMQCP5aELcH4iRVGSKwFSf2rVX3Zt31RVjx7d4gXfsO0is+aDAzis/9SjMjOM0MdwAqfK+812LzPDDH0OF9ZXuIds83rCTIMl+gqujS+6h93m9USZFhv0LdwZX2m7bPN6okyLPXoDD8ZX2i7bvB6deU36T2hneDGe0nbZ5m3Xmc+k+4Z2hw/j05lH53/ZpiFv1Jm/IrubRvTGD5iMIRs=
   </data>
  </layer>
  <layer name="Midground" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJztzcVxQgEAAFHaQ4JLB0hw6QC3AB2QIEmwGnlFfE78nXnnjUTCwsLC3rMoMeIk+CBJijQZsuTIU6BIKYB3mQpVanxSp0GTFm06dOnRZxDAe8iIMROmzJizYMmKNV9s2LIL4L3nmx8OHDlx5pc//rlw5cadRwDvV/QEPGcc8w==
+   eJztzcVxQgEAAFF6Q4JLA0hwaQC3AA2QIEmwSnlFfE78nXnnjUTCwsLC3qsoMeIk+CBJijQZsuTIU6BIKYB3mQpVanxSp0GTFm06dOnRZxDAe8iIMROmzJizYMmKNV9s2LIL4L3nmx8OHDlx5pc//rlw5cadRwDvV/YEV5ka1w==
   </data>
  </layer>
  <layer name="NPC_Background" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAogwHqgHTDEAABNVAA8
+   eJxjYBgFo2AUjIJRMNKB+UA7YIgCAEpMADg=
   </data>
  </layer>
  <layer name="Foreground" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJztz9ky1QEcB/D/IS2W7l1qsb5Dtqh3EEW8gxaSd5BCPEKokLSiUNqEynYOSlpsT9DnDLdn5nRlxpzvzOfid/P9zi8IEkkkkYOae3TTQy/3ecBD+uhngEcMxtGXsucwRzjKMVJJI50Mju/1PWaIJzzlGc95wUuGGfmPf05wklOcJpsccskjnwJGecVrxhhngje8ZZJ3vI9z9wyFFFFMCaWcpYxyznGeD3zkE1N8ZpoZZvnCV77F2FoKBUGYSGj3ruAClVRxkUtUU8NlaqljjnkWWIx2ESbCMius8j3G9pbNbXY45K7nCle5xnUaaOQGTdykmR+s8ZN1fvGbP/xlg83oRoztUFIQJJFMlruFW7Rymzu00U4Hd+mki8zk/fMPNFFUKw==
+   eJztz+ky12EYBmBGZe0U7EtOIFH2wQnYKjmFlBY6hLI7EEsoytJiSaWIEopKWkgOwdX0++DDfybfzDT/e+b68M48z3vPExERTjjh/K/poZc++rnLAIMMcY/7DDPyj7+iOMZxThBNDLHEEU8CJ4P5P/894CGjjDHOBI94zBOeHuKORJJIJoVU0kgng0yyOBXMTzLFNDM8Y5bnvOAlc7w6RHcueZzlHPkUUEgRxZRQGsy/Zp4F3rDIEm95xzLvWQnRlRXpBrIj/74rqaKaGmo5zwUuUscl6oP9Vdb4wEfW2eATn/nCJl9DdJ/WmcOZoPsyDVzhKo1c4zo3uEkTzdxii2985wc/2WaHX+zym70Q3WU6y6kIum9zhxZaaaOdDjrpovvAfmzU0dkHwvBNAw==
   </data>
  </layer>
  <layer name="NPC" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMFIBIxYxJjrZLYdFTB6IbelkPzUAAGAgAH4=
+   eJxjYBgFo2AUjIJRMFIBIwF5JhraLUNAXpaGdlMLAAAyyAA9
   </data>
  </layer>
- <objectgroup name="triggers">
+ <objectgroup name="triggers" visible="0">
   <object id="1" name="blockers" x="0" y="896" width="1983.5" height="63.6667">
    <properties>
     <property name="blockers" value="t"/>
@@ -97,7 +94,7 @@
  </objectgroup>
  <layer name="Door" width="31" height="15" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzetSgWEAhdFvXEpUIpUOCCWn6EgnioqScP83YF3EO9NM8+2Z9Xc/URQvXrz/uo1EFCVJsckW26TZIUOWXXKJsO09f/sckOeQI445oUCREqeB22V/FaqccU6NC+o0aNKiHbh96a9DlyuuueGWO+7p0echcPvR3xPPvDBgyCtvjBjzzkfg9qe/CVO++GbGD3N+WbBkFbj9l1sDUXcUHQ==
+   eJztzetSgWEAhdFvXEJUIpUOCCWn6EgnioqScP83Yl3EO9NM8+2Z9Xc/URQvXrz/uo1EFCVJsckW26TZIUOWXXKJsO09f/sckOeQI445oUCREqeB22V/FaqccU6NC+o0aNKiHbh96a9DlyuuueGWO+7p0echcPvR3xPPvDBgyCtvjBjzzkfg9qe/CVO++GbGD3N+WbBkFbj9l1sD5OEPnQ==
   </data>
  </layer>
 </map>
