@@ -33,7 +33,7 @@ void MapRenderer::drawTile(int index)
         int tilesetColumns = std::get<2>(tilesetInfo);
         int tilesetTileCount = std::get<3>(tilesetInfo);
         // Just to debug tilesets
-        if (textureName == "home") {
+        if (textureName != "") {
             // Initialize model matrix
             glm::mat4 position = glm::mat4(1.0f);
 
@@ -48,8 +48,8 @@ void MapRenderer::drawTile(int index)
 
             // Calculate texture coordinates
             glm::vec2 texCoords = glm::vec2(
-                tileId % tilesetColumns * tileSize,
-                tileId / tilesetRows * tileSize + 20.0f
+                (tileId % tilesetColumns) * tileSize,
+                (tileId / tilesetColumns) * tileSize// + 20.0f
             );
             glm::vec2 tilesetDimensions = glm::vec2(tilesetRows * tileSize, tilesetColumns * tileSize);
 

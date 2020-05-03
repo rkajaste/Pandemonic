@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" nextobjectid="30">
- <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="174" columns="27">
+ <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="162" columns="27">
   <image source="../graphics/tilesets/village.png" trans="ffffff" width="1728" height="384"/>
  </tileset>
- <tileset firstgid="175" name="home" tilewidth="64" tileheight="64" tilecount="66" columns="11">
+ <tileset firstgid="163" name="home" tilewidth="64" tileheight="64" tilecount="66" columns="11">
   <image source="../graphics/tilesets/home.png" trans="ffffff" width="704" height="384"/>
  </tileset>
- <tileset firstgid="241" name="village_assets" tilewidth="64" tileheight="64" tilecount="289" columns="15">
-  <image source="../graphics/tilesets/misc.png" trans="ffffff" width="960" height="576"/>
- </tileset>
- <tileset firstgid="530" name="interior" tilewidth="64" tileheight="64" tilecount="240" columns="12">
+ <tileset firstgid="229" name="interior" tilewidth="64" tileheight="64" tilecount="240" columns="12">
   <image source="../graphics/tilesets/home_interior.png" trans="ffffff" width="768" height="1280"/>
  </tileset>
- <tileset firstgid="770" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
+ <tileset firstgid="469" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
   <image source="../graphics/tilesets/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
+ </tileset>
+ <tileset firstgid="490" name="village_assets" tilewidth="64" tileheight="64" tilecount="135" columns="15">
+  <image source="../graphics/tilesets/misc.png" width="960" height="576"/>
+ </tileset>
+ <tileset firstgid="625" name="oak" tilewidth="64" tileheight="64" tilecount="12" columns="3">
+  <image source="../graphics/tilesets/oak.png" width="192" height="256"/>
  </tileset>
  <layer name="Background" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJztkNsNwlAMQ1sYgMcAwALAAsACFAbgMQCP5aELcH4iRVGSKwFSf2rVX3Zt31RVjx7d4gXfsO0is+aDAzis/9SjMjOM0MdwAqfK+812LzPDDH0OF9ZXuIds83rCTIMl+gqujS+6h93m9USZFhv0LdwZX2m7bPN6okyLPXoDD8ZX2i7bvB6deU36T2hneDGe0nbZ5m3Xmc+k+4Z2hw/j05lH53/ZpiFv1Jm/IrubRvTGD5iMIRs=
+   eJxjYBgFo2AUDDbAzcTAwMM00K4YGFAI9HcREBcPgP9LgHaWAnHZANhdDrSzAogroXb70MkNYUB7qoC4GohrgDgKiKPpZHcq1J50IJ0BxJlAnDXE0j0AmOQJMg==
   </data>
  </layer>
  <layer name="Midground" width="31" height="15">
@@ -32,7 +35,7 @@
  </layer>
  <layer name="Foreground" width="31" height="15">
   <data encoding="base64" compression="zlib">
-   eJztz+ky12EYBmBGZe0U7EtOIFH2wQnYKjmFlBY6hLI7EEsoytJiSaWIEopKWkgOwdX0++DDfybfzDT/e+b68M48z3vPExERTjjh/K/poZc++rnLAIMMcY/7DDPyj7+iOMZxThBNDLHEEU8CJ4P5P/894CGjjDHOBI94zBOeHuKORJJIJoVU0kgng0yyOBXMTzLFNDM8Y5bnvOAlc7w6RHcueZzlHPkUUEgRxZRQGsy/Zp4F3rDIEm95xzLvWQnRlRXpBrIj/74rqaKaGmo5zwUuUscl6oP9Vdb4wEfW2eATn/nCJl9DdJ/WmcOZoPsyDVzhKo1c4zo3uEkTzdxii2985wc/2WaHX+zym70Q3WU6y6kIum9zhxZaaaOdDjrpovvAfmzU0dkHwvBNAw==
+   eJztz9sy1WEYB2BW2im3kNUidaYOJWuJW7Ap4RZKSLoEKtQloCjbNsgmFJVNoX0hJRfiafofOFgz1pkZs34zz8E3877fb96UlGSSSWa/pp0OOnnAQ7ro5hGP6aGXvl3+OkAaBznEYY5wlHSOcZyMYP7ff/0MMMgTnvKM5wwxzEgCd5wgkzAniZBFNqfI4TRngvkXjDLGOBO8ZJIppnnF6wS68zhPPhcoIEqMQi5SRHEwP8Msb3jLO+aYZ4FF3vMhTlc45D4iof/vEkopo5xLXKaCK1RSRXWwv8QyK3zkE5/5wle+8Z0fcbpzdZ7lXNB9lWvUcJ1a6qjnBg3cpJFb/GSVNdb5xQa/+cMmf9mK0x3VGaMw6G6imdvc4S4ttNLGPe7v2F9L3TvbLt1i+A==
   </data>
  </layer>
  <layer name="NPC" width="31" height="15">
@@ -94,7 +97,7 @@
  </objectgroup>
  <layer name="Door" width="31" height="15" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzetSgWEAhdFvXEJUIpUOCCWn6EgnioqScP83Yl3EO9NM8+2Z9Xc/URQvXrz/uo1EFCVJsckW26TZIUOWXXKJsO09f/sckOeQI445oUCREqeB22V/FaqccU6NC+o0aNKiHbh96a9DlyuuueGWO+7p0echcPvR3xPPvDBgyCtvjBjzzkfg9qe/CVO++GbGD3N+WbBkFbj9l1sD5OEPnQ==
+   eJztzelSwVEcx2FCiRZLaKOSstT93xEloWxFpR73cGbMNP/vnOfFefP7xGLRokX7r+vS44ln+rww4JUhI8a8BW6/M2HKjDkLPvhkyYovvgO3f1jzu/nEPXZIkCTFLnuk42Hb++5lyHLAIUcckyNPgSIngdsl98pUOOWMcy64pEqNK64Dt2/cq3NLgzvuadKiTYcHHgO3t7k/OTYdkg==
   </data>
  </layer>
 </map>

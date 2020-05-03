@@ -13,8 +13,8 @@ uniform mat4 projection;
 
 void main()
 {
-    float u = offset.x / tilesetDimensions.x;
-    float v = offset.y / tilesetDimensions.y;
+    float u = offset.x / tilesetDimensions.y;
+    float v = offset.y / tilesetDimensions.x;
     vTextureCoordOffset = vec2(u, v);
     vZoom = vec2(tileSize.x / tilesetDimensions.y, tileSize.y / tilesetDimensions.x);
     TexCoords = vertex.zw;
