@@ -4,37 +4,37 @@ namespace fs = std::experimental::filesystem;
 const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
 const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
 
-MapManager::MapManager() {
-    for (const auto & entry : fs::directory_iterator(mapsPath))
-        this->maps.push_back(entry.path().filename());
-    this->currentMap = "1.tmx";
-    this->renderer = new MapRenderer(ResourceManager::GetShader("tile"));
-    this->loadMap();
-}
-
-MapManager::~MapManager() {
-    delete this->renderer;
-}
+std::vector<std::string> MapManager::maps;
+std::vector<TileCoordsAndGid> MapManager::tileCoordsAndGidArray;
+std::vector<TilesetInfo> MapManager::tilesetInfoArray;
+GLfloat MapManager::worldHeight;
+std::string MapManager::currentMap;
 
 
-Tmx::Map* MapManager::loadMap() {
+void MapManager::loadMap()
+{
     Tmx::Map *map;
     map = new Tmx::Map();
-    map->ParseFile(mapsPath + this->currentMap);
+
+    for (const auto & entry : fs::directory_iterator(mapsPath))
+        maps.push_back(entry.path().filename());
+    currentMap = "1.tmx";
+
+    map->ParseFile(mapsPath + currentMap);
     if (map->HasError())
     {
         printf("error code: %d\n", map->GetErrorCode());
         printf("error text: %s\n", map->GetErrorText().c_str());
     }
 
-    this->worldHeight = map->GetHeight() * map->GetTileHeight();
+    worldHeight = map->GetHeight() * map->GetTileHeight();
 
-    const std::vector<Tmx::Tileset *> tilesets = map->GetTilesets();
+    const std::vector<Tmx::Tileset*> tilesets = map->GetTilesets();
     std::vector<std::tuple<int, std::string, int, int>> tilesetInfoList;
     std::vector<std::pair<glm::vec2, int>> tileGids;
     // pair image source path and first tile gid
-    for (unsigned int i = 0; i < tilesets.size(); i++) {
-        Tmx::Tileset* tileset = tilesets.at(i);
+    for (unsigned int i = 0; i < tilesets.size(); ++i) {
+        Tmx::Tileset *tileset = tilesets.at(i);
         std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
 
         ResourceManager::LoadTexture(
@@ -47,7 +47,8 @@ Tmx::Map* MapManager::loadMap() {
             tileset->GetColumns(),
             tileset->GetTileCount()
         );
-        tilesetInfoList.push_back(tilesetInfo);
+        tilesetInfoArray.push_back(tilesetInfo);
+        delete tileset;
     }
 
     // Iterate through the tile layers.
@@ -66,7 +67,7 @@ Tmx::Map* MapManager::loadMap() {
                         glm::vec2(x, y),
                         tileLayer->GetTileGid(x, y)
                     );
-                    tileGids.push_back(tileGidCoordsPair);
+                    tileCoordsAndGidArray.push_back(tileGidCoordsPair);
                         // if tileset image not loaded yet, add to list
                             // if (tile->IsAnimated())
                             // {
@@ -101,40 +102,63 @@ Tmx::Map* MapManager::loadMap() {
                 }
             }
         }
+        delete tileLayer;
         printf("\n");
     }
-    this->renderer->initRenderData(tilesetInfoList, tileGids);
-    // // Iterate through all of the object groups.
-    // for (int i = 0; i < map->GetNumObjectGroups(); ++i)
-    // {
-    //     printf("                                    \n");
-    //     printf("====================================\n");
-    //     printf("Object group : %02d\n", i);
-    //     printf("====================================\n");
+    // Iterate through all of the object groups.
+    for (int i = 0; i < map->GetNumObjectGroups(); ++i)
+    {
+        printf("                                    \n");
+        printf("====================================\n");
+        printf("Object group : %02d\n", i);
+        printf("====================================\n");
 
-    //     // Get an object group.
-    //     const Tmx::ObjectGroup *objectGroup = map->GetObjectGroup(i);
+        // Get an object group.
+        const Tmx::ObjectGroup *objectGroup = map->GetObjectGroup(i);
 
-    //     // Iterate through all objects in the object group.
-    //     for (int j = 0; j < objectGroup->GetNumObjects(); ++j)
-    //     {
-    //         // Get an object.
-    //         const Tmx::Object *object = objectGroup->GetObject(j);
+        // Iterate through all objects in the object group.
+        for (int j = 0; j < objectGroup->GetNumObjects(); ++j)
+        {
+            // Get an object.
+            const Tmx::Object *object = objectGroup->GetObject(j);
 
-    //         // Print information about the object.
-    //         printf("Object Name: %s\n", object->GetName().c_str());
-    //         printf("Object Position: (%03d, %03d)\n", object->GetX(),
-    //                 object->GetY());
-    //         printf("Object Size: (%03d, %03d)\n", object->GetWidth(),
-    //                 object->GetHeight());
+            // Print information about the object.
+            printf("Object Name: %s\n", object->GetName().c_str());
+            printf("Object Position: (%03d, %03d)\n", object->GetX(),
+                    object->GetY());
+            printf("Object Size: (%03d, %03d)\n", object->GetWidth(),
+                    object->GetHeight());
 
-    //         if(object->GetGid() != 0) {
-    //           printf("Object(tile) gid: %d\n", object->GetGid());
-    //           printf("Object(tile) type: %s\n", object->GetType().c_str());
-    //         }
+            if(object->GetGid() != 0) {
+              printf("Object(tile) gid: %d\n", object->GetGid());
+              printf("Object(tile) type: %s\n", object->GetType().c_str());
+            }
 
-    //     }
-    // }
+        }
+    }
+}
 
-    return map;
+std::vector<std::string> MapManager::getMaps()
+{
+    return MapManager::maps;
+}
+
+std::vector<TileCoordsAndGid> MapManager::getTileCoordsAndGids()
+{
+    return tileCoordsAndGidArray;
+}
+
+std::vector<TilesetInfo> MapManager::getTilesetInfo()
+{
+    return tilesetInfoArray;
+}
+
+GLfloat MapManager::getWorldHeight()
+{
+    return worldHeight;
+}
+
+std::string MapManager::getCurrentMap()
+{
+    return currentMap;
 }

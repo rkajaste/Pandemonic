@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "ResourceManager.hpp"
+#include "MapManager.hpp"
 #include "SpriteRenderer.hpp"
 
 class Sprite {

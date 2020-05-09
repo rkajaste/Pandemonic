@@ -10,11 +10,11 @@ MapRenderer::~MapRenderer()
 }
 
 TilesetInfo* MapRenderer::getTilesetInfoByGid(int gid) {
-    for (int i = this->tilesetInfo.size() - 1; i > -1; --i)
+    for (int i = MapManager::getTilesetInfo().size() - 1; i > -1; --i)
         {
-            if (gid >= std::get<0>(this->tilesetInfo.at(i)))
+            if (gid >= std::get<0>(MapManager::getTilesetInfo().at(i)))
             {
-                return &this->tilesetInfo.at(i);
+                return &MapManager::getTilesetInfo().at(i);
             }
         }
 
@@ -23,8 +23,8 @@ TilesetInfo* MapRenderer::getTilesetInfoByGid(int gid) {
 
 void MapRenderer::drawTile(int index)
 {
-        glm::vec2 positionCoords = this->tileCoordsGid.at(index).first;
-        int tileGid = this->tileCoordsGid.at(index).second;
+        glm::vec2 positionCoords = MapManager::getTileCoordsAndGids().at(index).first;
+        int tileGid = MapManager::getTileCoordsAndGids().at(index).second;
 
         TilesetInfo tilesetInfo = *this->getTilesetInfoByGid(tileGid);
         int firstGid = std::get<0>(tilesetInfo);
@@ -32,41 +32,40 @@ void MapRenderer::drawTile(int index)
         std::string textureName = std::get<1>(tilesetInfo);
         int tilesetColumns = std::get<2>(tilesetInfo);
         int tilesetTileCount = std::get<3>(tilesetInfo);
-        // Just to debug tilesets
-        if (textureName != "") {
-            // Initialize model matrix
-            glm::mat4 position = glm::mat4(1.0f);
 
-            // Bind tileset texture
-            Texture2D texture = ResourceManager::GetTexture(textureName);
-            glActiveTexture(GL_TEXTURE0);
-            texture.Bind();
+        // Initialize model matrix
+        glm::mat4 position = glm::mat4(1.0f);
 
-            int tileId = tileGid - firstGid;
-            int tilesetRows = tilesetTileCount / tilesetColumns;
-            GLfloat tileSize = 64.0f;
+        // Bind tileset texture
+        Texture2D texture = ResourceManager::GetTexture(textureName);
+        glActiveTexture(GL_TEXTURE0);
+        texture.Bind();
 
-            // Calculate texture coordinates
-            glm::vec2 texCoords = glm::vec2(
-                (tileId % tilesetColumns) * tileSize,
-                (tileId / tilesetColumns) * tileSize// + 20.0f
-            );
-            glm::vec2 tilesetDimensions = glm::vec2(tilesetRows * tileSize, tilesetColumns * tileSize);
+        int tileId = tileGid - firstGid;
+        int tilesetRows = tilesetTileCount / tilesetColumns;
+        GLfloat tileSize = 64.0f;
 
-            // Calculate tile position in world space
-            glm::vec2 size = glm::vec2(tileSize);
-            positionCoords.x *= tileSize;
-            positionCoords.y *= tileSize;
-            position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
-            position = glm::scale(position, glm::vec3(size, 1.0f));
+        // Calculate texture coordinates
+        glm::vec2 texCoords = glm::vec2(
+            (tileId % tilesetColumns) * tileSize,
+            (tileId / tilesetColumns) * tileSize
+        );
+        glm::vec2 tilesetDimensions = glm::vec2(tilesetRows * tileSize, tilesetColumns * tileSize);
 
-            this->shader.SetVector2f("offset", texCoords);
-            this->shader.SetVector2f("tileSize", glm::vec2(tileSize));
-            this->shader.SetVector2f("tilesetDimensions", tilesetDimensions);
-            this->shader.SetMatrix4("position", position);
+        // Calculate tile position in world space
+        glm::vec2 size = glm::vec2(tileSize);
+        positionCoords.x *= tileSize;
+        positionCoords.y *= tileSize;
+        position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
+        position = glm::scale(position, glm::vec3(size, 1.0f));
 
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
+        this->shader.SetVector2f("offset", texCoords);
+        this->shader.SetVector2f("tileSize", glm::vec2(tileSize));
+        this->shader.SetVector2f("tilesetDimensions", tilesetDimensions);
+        this->shader.SetMatrix4("position", position);
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
 }
 
 void MapRenderer::drawMap()
@@ -74,19 +73,14 @@ void MapRenderer::drawMap()
     this->shader.Use();
     glBindVertexArray(this->quadVAO);
     // Iterate over every tile and draw them
-    for(unsigned int i = 0; i < this->tileCoordsGid.size(); i++) {
+    for(unsigned int i = 0; i < MapManager::getTileCoordsAndGids().size(); ++i) {
         this->drawTile(i);
     }
     glBindVertexArray(0);
 }
 
-void MapRenderer::initRenderData(
-    std::vector<std::tuple<int, std::string, int, int>> tilesetInfo,
-    std::vector<std::pair<glm::vec2, int>> tileCoordsGid
-)
+void MapRenderer::initRenderData()
 {
-    this->tilesetInfo = tilesetInfo;
-    this->tileCoordsGid = tileCoordsGid;
     GLuint VBO;
     GLfloat vertices[24] = {
         // Pos      // Tex

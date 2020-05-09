@@ -8,6 +8,9 @@ Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer) {
     this->size = glm::vec2(texture.Width, texture.Height);
     this->rotation = 0.0f;
     this->color = glm::vec3(1.0f);
+
+    // flip y
+    this->coords.y = MapManager::getWorldHeight() - this->coords.y;
 }
 
 void Sprite::update(GLfloat /*dt*/) {

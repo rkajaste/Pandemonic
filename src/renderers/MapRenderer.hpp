@@ -5,23 +5,21 @@
 #include "texture.hpp"
 #include "shader.hpp"
 #include "ResourceManager.hpp"
+#include "MapManager.hpp"
 
 typedef std::tuple<int, std::__cxx11::string, int, int> TilesetInfo;
+typedef std::pair<glm::vec2, int> TileCoordsAndGid;
+
 class MapRenderer{
     public:
         MapRenderer(Shader);
         ~MapRenderer();
 
-        void initRenderData(
-            std::vector<std::tuple<int, std::string, int, int>> tilesetInfo,
-            std::vector<std::pair<glm::vec2, int>> tileCoordsGid);
+        void initRenderData();
         void drawMap();
     private:
         Shader shader;
         GLuint quadVAO;
-
-        std::vector<std::pair<glm::vec2, int>> tileCoordsGid;
-        std::vector<std::tuple<int, std::string, int, int>> tilesetInfo;
 
         void drawTile(int index);
         TilesetInfo* getTilesetInfoByGid(int gid);
