@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <stb_image.h>
+#include <memory>
 
 const GLuint SCREEN_WIDTH = 800.0f;
 const GLuint SCREEN_HEIGHT = 600.0f;

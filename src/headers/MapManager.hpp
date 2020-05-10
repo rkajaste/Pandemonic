@@ -4,18 +4,18 @@
 #include <iostream>
 #include <vector>
 #include <utility>
-#include <tuple>
+#include <map>
 #include "Util.hpp"
 #include "ResourceManager.hpp"
 #include "MapRenderer.hpp"
 
-typedef std::tuple<int, std::__cxx11::string, int, int> TilesetInfo;
+typedef std::map<std::string, std::string> TilesetInfo;
 typedef std::pair<glm::vec2, int> TileCoordsAndGid;
 class MapManager {
     public:
         static std::vector<std::string> getMaps();
-        static std::vector<TilesetInfo> getTilesetInfo();
-        static std::vector<TileCoordsAndGid> getTileCoordsAndGids();
+        static std::vector<TilesetInfo> getTilesetInfoArray();
+        static std::vector<TileCoordsAndGid> getTileCoordsAndGidArray();
         static GLfloat getWorldHeight();
         static std::string getCurrentMap();
         static void loadMap();

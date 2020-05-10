@@ -30,9 +30,7 @@ void MapManager::loadMap()
     worldHeight = map->GetHeight() * map->GetTileHeight();
 
     const std::vector<Tmx::Tileset*> tilesets = map->GetTilesets();
-    std::vector<std::tuple<int, std::string, int, int>> tilesetInfoList;
-    std::vector<std::pair<glm::vec2, int>> tileGids;
-    // pair image source path and first tile gid
+
     for (unsigned int i = 0; i < tilesets.size(); ++i) {
         Tmx::Tileset *tileset = tilesets.at(i);
         std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
@@ -41,14 +39,14 @@ void MapManager::loadMap()
             imagePath,
             tileset->GetName()
         );
-        std::tuple<int, std::string, int, int> tilesetInfo (
-            tileset->GetFirstGid(),
-            tileset->GetName(),
-            tileset->GetColumns(),
-            tileset->GetTileCount()
-        );
+
+        TilesetInfo tilesetInfo;
+        tilesetInfo["firstGid"] = std::to_string(tileset->GetFirstGid());
+        tilesetInfo["name"] = tileset->GetName();
+        tilesetInfo["columns"] = std::to_string(tileset->GetColumns());
+        tilesetInfo["tileCount"] = std::to_string(tileset->GetTileCount());
+
         tilesetInfoArray.push_back(tilesetInfo);
-        delete tileset;
     }
 
     // Iterate through the tile layers.
@@ -102,7 +100,6 @@ void MapManager::loadMap()
                 }
             }
         }
-        delete tileLayer;
         printf("\n");
     }
     // Iterate through all of the object groups.
@@ -140,15 +137,15 @@ void MapManager::loadMap()
 
 std::vector<std::string> MapManager::getMaps()
 {
-    return MapManager::maps;
+    return maps;
 }
 
-std::vector<TileCoordsAndGid> MapManager::getTileCoordsAndGids()
+std::vector<TileCoordsAndGid> MapManager::getTileCoordsAndGidArray()
 {
     return tileCoordsAndGidArray;
 }
 
-std::vector<TilesetInfo> MapManager::getTilesetInfo()
+std::vector<TilesetInfo> MapManager::getTilesetInfoArray()
 {
     return tilesetInfoArray;
 }

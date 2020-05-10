@@ -7,7 +7,7 @@
 #include "ResourceManager.hpp"
 #include "MapManager.hpp"
 
-typedef std::tuple<int, std::__cxx11::string, int, int> TilesetInfo;
+typedef std::map<std::string, std::string> TilesetInfo;
 typedef std::pair<glm::vec2, int> TileCoordsAndGid;
 
 class MapRenderer{
@@ -22,5 +22,5 @@ class MapRenderer{
         GLuint quadVAO;
 
         void drawTile(int index);
-        TilesetInfo* getTilesetInfoByGid(int gid);
+        TilesetInfo getTilesetInfoByGid(int gid);
 };

@@ -3,35 +3,44 @@
 MapRenderer::MapRenderer(Shader shader)
 {
     this->shader = shader;
+    this->initRenderData();
 }
 MapRenderer::~MapRenderer()
 {
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-TilesetInfo* MapRenderer::getTilesetInfoByGid(int gid) {
-    for (int i = MapManager::getTilesetInfo().size() - 1; i > -1; --i)
-        {
-            if (gid >= std::get<0>(MapManager::getTilesetInfo().at(i)))
+TilesetInfo MapRenderer::getTilesetInfoByGid(int gid)
+{
+    std::vector<TilesetInfo> tilesets = MapManager::getTilesetInfoArray();
+    for (int i = tilesets.size() - 1; i > -1; --i)
+    {
+        try {
+            if (gid >= std::stoi(tilesets.at(i).at("firstGid")))
             {
-                return &MapManager::getTilesetInfo().at(i);
+                return tilesets.at(i);
             }
+        } catch (const std::out_of_range& err) {
+            std::cerr << "Out of range error: " << tilesets.at(i)["firstGid"] << '\n';
         }
-
-    return NULL;
+    }
+    return tilesets.front();
 }
 
 void MapRenderer::drawTile(int index)
 {
-        glm::vec2 positionCoords = MapManager::getTileCoordsAndGids().at(index).first;
-        int tileGid = MapManager::getTileCoordsAndGids().at(index).second;
+    std::vector<TileCoordsAndGid> tileCoordsAndGidArray = MapManager::getTileCoordsAndGidArray();
+    glm::vec2 positionCoords = tileCoordsAndGidArray.at(index).first;
+    int tileGid = tileCoordsAndGidArray.at(index).second;
 
-        TilesetInfo tilesetInfo = *this->getTilesetInfoByGid(tileGid);
-        int firstGid = std::get<0>(tilesetInfo);
+    TilesetInfo tilesetInfo = this->getTilesetInfoByGid(tileGid);
 
-        std::string textureName = std::get<1>(tilesetInfo);
-        int tilesetColumns = std::get<2>(tilesetInfo);
-        int tilesetTileCount = std::get<3>(tilesetInfo);
+    try {
+        std::string textureName = tilesetInfo.at("name");
+        int firstGid = std::stoi(tilesetInfo.at("firstGid"));
+        int tilesetColumns = std::stoi(tilesetInfo.at("columns"));
+        int tilesetTileCount = std::stoi(tilesetInfo.at("tileCount"));
+
 
         // Initialize model matrix
         glm::mat4 position = glm::mat4(1.0f);
@@ -65,6 +74,9 @@ void MapRenderer::drawTile(int index)
         this->shader.SetMatrix4("position", position);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
+    } catch (const std::out_of_range& err) {
+        std::cerr << "Out of range error: " << err.what() << '\n';
+    }
 
 }
 
@@ -73,7 +85,7 @@ void MapRenderer::drawMap()
     this->shader.Use();
     glBindVertexArray(this->quadVAO);
     // Iterate over every tile and draw them
-    for(unsigned int i = 0; i < MapManager::getTileCoordsAndGids().size(); ++i) {
+    for(unsigned int i = 0; i < MapManager::getTileCoordsAndGidArray().size(); ++i) {
         this->drawTile(i);
     }
     glBindVertexArray(0);

@@ -72,7 +72,7 @@ void Game::init()
 void Game::update(GLfloat dt)
 {
     this->player->update(dt);
-    camera->setPosition(glm::vec2(this->player->coords.x, this->player->coords.y));
+    camera->setPosition(this->player->coords);
 }
 
 
