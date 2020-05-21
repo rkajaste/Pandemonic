@@ -14,8 +14,8 @@
 #include <string>
 
 #include <glad/glad.h>
-#include "texture.hpp"
-#include "shader.hpp"
+#include "Texture.hpp"
+#include "Shader.hpp"
 
 
 // A static singleton ResourceManager class that hosts several

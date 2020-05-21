@@ -4,8 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "texture.hpp"
-#include "shader.hpp"
+#include "Texture.hpp"
+#include "Shader.hpp"
 
 class SpriteRenderer
 {

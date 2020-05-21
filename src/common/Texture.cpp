@@ -7,7 +7,7 @@
 ** option) any later version.
 ******************************************************************/
 #include <iostream>
-#include "texture.hpp"
+#include "Texture.hpp"
 
 
 Texture2D::Texture2D()

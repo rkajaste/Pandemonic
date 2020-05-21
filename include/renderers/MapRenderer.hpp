@@ -2,8 +2,8 @@
 #include <vector>
 #include <utility>
 #include <tuple>
-#include "texture.hpp"
-#include "shader.hpp"
+#include "Texture.hpp"
+#include "Shader.hpp"
 #include "ResourceManager.hpp"
 #include "MapManager.hpp"
 

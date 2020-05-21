@@ -26,11 +26,12 @@ endif()
 
 
 include_directories(
-	src/
-	src/headers/
-	src/common/
-	src/renderers/
-	src/camera/
+	include/
+	include/common/
+	include/renderers/
+	include/camera/
+	include/sprites/
+	include/managers/
 	submodules/glad/include/
 	submodules/glfw/include/
 	submodules/tmxparser/include/
@@ -49,9 +50,9 @@ set(ALL_LIBS
 )
 
 file(GLOB VENDORS_SOURCES submodules/glad/src/glad.c)
-file(GLOB PROJECT_HEADERS src/*.hpp src/**/*.hpp src/**/**/*.hpp)
+file(GLOB PROJECT_HEADERS include/*.hpp include/**/*.hpp)
 file(GLOB PROJECT_SOURCES src/*.cpp src/**/*.cpp src/**/**/*.cpp)
-file(GLOB PROJECT_SHADERS shaders/*.glsl)
+file(GLOB PROJECT_SHADERS shaders/*.vs shaders/*.fs)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           README.md
                          .gitignore
