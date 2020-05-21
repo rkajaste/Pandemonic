@@ -2,8 +2,10 @@
 cmake_minimum_required (VERSION 3.0)
 project (Pandemonic)
 
+set(OpenGL_GL_PREFERENCE "GLVND")
 find_package(OpenGL REQUIRED)
 find_package(ZLIB)
+
 # Compile external dependencies
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
@@ -15,7 +17,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-	set(CMAKE_CXX_COMPILER  "/usr/bin/g++-7")
+	set(CMAKE_CXX_COMPILER  "/bin/g++")
 	set(CMAKE_CXX_FLAGS "-std=c++1z")
     if(NOT WIN32)
         set(GLAD_LIBRARIES dl)

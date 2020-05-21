@@ -28,14 +28,14 @@ void Game::init()
 
     // Load shaders
     ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.vs.glsl",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.fs.glsl",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.fs",
         "",
         "sprite"
     );
     ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.vs.glsl",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.fs.glsl",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.fs",
         "",
         "tile"
     );
