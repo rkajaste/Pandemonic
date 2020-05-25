@@ -3,11 +3,12 @@
 MapRenderer::MapRenderer(Shader shader)
 {
     this->shader = shader;
+    this->hitboxShader = ResourceManager::GetShader("hitbox");
     this->initRenderData();
 }
 MapRenderer::~MapRenderer()
 {
-    glDeleteVertexArrays(1, &this->quadVAO);
+    //glDeleteVertexArrays(1, &this->quadVAO);
 }
 
 TilesetInfo MapRenderer::getTilesetInfoByGid(int gid)
@@ -65,7 +66,14 @@ void MapRenderer::drawTile(int index)
         glm::vec2 size = glm::vec2(tileSize);
         positionCoords.x *= tileSize;
         positionCoords.y *= tileSize;
+        //printf("originalY: %02f,", positionCoords.y);
+        //("coordsY: %02f, worldHeight: %02f, textureName: %s \n", positionCoords.y, MapManager::getWorldHeight(), textureName.c_str());
         position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
+
+        // position = glm::translate(position, glm::vec3(0.5f * tileSize, 0.5f * tileSize, 0.0f)); // Move origin of rotation to center of quad
+        // position = glm::rotate(position, glm::pi<GLfloat>(), glm::vec3(0.0f, 0.0f, 1.0f));
+        // position = glm::translate(position, glm::vec3(-0.5f * tileSize, -0.5f * tileSize, 0.0f));
+
         position = glm::scale(position, glm::vec3(size, 1.0f));
 
         this->shader.SetVector2f("offset", texCoords);
@@ -87,6 +95,22 @@ void MapRenderer::drawMap()
     // Iterate over every tile and draw them
     for(unsigned int i = 0; i < MapManager::getTileCoordsAndGidArray().size(); ++i) {
         this->drawTile(i);
+    }
+    glBindVertexArray(0);
+}
+
+void MapRenderer::debugMap()
+{
+    this->hitboxShader.Use();
+    glBindVertexArray(this->quadVAO);
+    for(const auto& terrain: MapManager::getTerrainObjects()) {
+        glm::mat4 hitboxModel = glm::mat4(1.0f);
+        glm::vec2 size(terrain->GetWidth(), terrain->GetHeight());
+        hitboxModel = glm::translate(hitboxModel, glm::vec3(glm::vec2(terrain->GetX(), terrain->GetY()), 0.0f));
+        hitboxModel = glm::scale(hitboxModel, glm::vec3(size, 1.0f));
+        this->hitboxShader.SetMatrix4("model", hitboxModel);
+        this->hitboxShader.SetVector2f("size", size);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
     glBindVertexArray(0);
 }

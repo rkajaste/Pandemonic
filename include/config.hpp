@@ -10,7 +10,8 @@
 #include <stb_image.h>
 #include <memory>
 
-const GLuint SCREEN_WIDTH = 800.0f;
-const GLuint SCREEN_HEIGHT = 600.0f;
+const GLuint SCREEN_WIDTH = 1900.0f;
+const GLuint SCREEN_HEIGHT = 1080.0f;
+const GLboolean DEBUG = false;
 
 #endif

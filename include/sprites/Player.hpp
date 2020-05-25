@@ -5,6 +5,7 @@
 #include <vector>
 
 enum PlayerState { IDLE, MOVING, JUMPING };
+
 class Player: public Sprite {
     public:
         using Sprite::Sprite;

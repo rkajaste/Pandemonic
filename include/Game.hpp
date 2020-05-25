@@ -1,6 +1,7 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <iostream>
 #include "SpriteRenderer.hpp"
 #include "Player.hpp"
 #include "MapManager.hpp"
@@ -25,4 +26,8 @@ class Game
         void processInput(GLfloat dt);
         void update(GLfloat dt);
         void render();
+    private:
+        void loadShaders();
+        void loadTextures();
+        void initRenderers();
 };

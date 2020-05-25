@@ -9,5 +9,5 @@ uniform sampler2D image;
 
 void main()
 {
-    color = texture(image, texCoords.xy * zoom + textureCoordOffset);
+    color = texture(image, texCoords * zoom + textureCoordOffset);
 }

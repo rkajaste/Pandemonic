@@ -9,13 +9,18 @@ std::vector<TileCoordsAndGid> MapManager::tileCoordsAndGidArray;
 std::vector<TilesetInfo> MapManager::tilesetInfoArray;
 GLfloat MapManager::worldHeight;
 std::string MapManager::currentMap;
-
+MapObjects MapManager::playerObjects;
+MapObjects MapManager::npcObjects;
+MapObjects MapManager::savePointObjects;
+MapObjects MapManager::terrainObjects;
+MapObjects MapManager::interactionObjects;
 
 void MapManager::loadMap()
 {
     Tmx::Map *map;
     map = new Tmx::Map();
 
+    // TODO
     for (const auto & entry : fs::directory_iterator(mapsPath))
         maps.push_back(entry.path().filename());
     currentMap = "1.tmx";
@@ -49,10 +54,8 @@ void MapManager::loadMap()
         tilesetInfoArray.push_back(tilesetInfo);
     }
 
-    // Iterate through the tile layers.
     for (int i = 0; i < map->GetNumTileLayers(); ++i)
     {
-        // Get a layer.
         const Tmx::TileLayer *tileLayer = map->GetTileLayer(i);
 
         for (int y = 0; y < tileLayer->GetHeight(); ++y)
@@ -66,7 +69,6 @@ void MapManager::loadMap()
                         tileLayer->GetTileGid(x, y)
                     );
                     tileCoordsAndGidArray.push_back(tileGidCoordsPair);
-                        // if tileset image not loaded yet, add to list
                             // if (tile->IsAnimated())
                             // {
                             //     printf(
@@ -84,53 +86,30 @@ void MapManager::loadMap()
                             //                 it->GetTileID(), it->GetDuration());
                             //     }
                             // }
-                            // // Iterate through all Collision objects in the tile.
-                            // for (int j = 0; j < tile->GetNumObjects(); ++j)
-                            // {
-                            //     // Get an object.
-                            //     const Tmx::Object *object = tile->GetObject(j);
-
-                            //     // Print information about the object.
-                            //     printf("Object Name: %s\n", object->GetName().c_str());
-                            //     printf("Object Position: (%03d, %03d)\n", object->GetX(),
-                            //         object->GetY());
-                            //     printf("Object Size: (%03d, %03d)\n", object->GetWidth(),
-                            //         object->GetHeight());
-                            // }
                 }
             }
         }
-        printf("\n");
     }
-    // Iterate through all of the object groups.
     for (int i = 0; i < map->GetNumObjectGroups(); ++i)
     {
-        printf("                                    \n");
-        printf("====================================\n");
-        printf("Object group : %02d\n", i);
-        printf("====================================\n");
-
-        // Get an object group.
         const Tmx::ObjectGroup *objectGroup = map->GetObjectGroup(i);
 
-        // Iterate through all objects in the object group.
         for (int j = 0; j < objectGroup->GetNumObjects(); ++j)
         {
-            // Get an object.
+
             const Tmx::Object *object = objectGroup->GetObject(j);
 
-            // Print information about the object.
-            printf("Object Name: %s\n", object->GetName().c_str());
-            printf("Object Position: (%03d, %03d)\n", object->GetX(),
-                    object->GetY());
-            printf("Object Size: (%03d, %03d)\n", object->GetWidth(),
-                    object->GetHeight());
-
-            if(object->GetGid() != 0) {
-              printf("Object(tile) gid: %d\n", object->GetGid());
-              printf("Object(tile) type: %s\n", object->GetType().c_str());
+            if (object->GetName() == "player") {
+                playerObjects.push_back(object);
+            } else if (object->GetName() == "triggers") {
+                interactionObjects.push_back(object);
+            } else if (object->GetName() == "npc") {
+                npcObjects.push_back(object);
+            } else if (object->GetName() == "savepoint") {
+                savePointObjects.push_back(object);
+            } else if (object->GetName() == "blockers") {
+                terrainObjects.push_back(object);
             }
-
         }
     }
 }
@@ -159,3 +138,35 @@ std::string MapManager::getCurrentMap()
 {
     return currentMap;
 }
+
+glm::vec2 MapManager::getPlayerSpawnPoint()
+{
+    glm::vec2 position;
+    for(const auto& playerObject: playerObjects) {
+        position = glm::vec2(playerObject->GetX(), playerObject->GetY() + playerObject->GetHeight());
+    };
+    printf("Object Position: (%03f, %03f)\n", position.x, position.y);
+    return position;
+}
+
+MapObjects MapManager::getNpcObjects()
+{
+    return npcObjects;
+}
+
+MapObjects MapManager::getSavePointObjects()
+{
+    return savePointObjects;
+}
+
+MapObjects MapManager::getTerrainObjects()
+{
+    return terrainObjects;
+}
+
+MapObjects MapManager::getInteractionObjects()
+{
+    return interactionObjects;
+}
+
+

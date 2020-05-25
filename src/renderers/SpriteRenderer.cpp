@@ -3,15 +3,16 @@
 SpriteRenderer::SpriteRenderer(Shader shader)
 {
     this->shader = shader;
+    this->hitboxShader = ResourceManager::GetShader("hitbox");
     this->initRenderData();
 }
 
 SpriteRenderer::~SpriteRenderer()
 {
-    glDeleteVertexArrays(1, &this->quadVAO);
+    //glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture2D texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 color)
+void SpriteRenderer::drawSprite(Texture2D texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 color)
 {
     // Prepare transformations
     this->shader.Use();
@@ -25,15 +26,27 @@ void SpriteRenderer::DrawSprite(Texture2D texture, glm::vec2 position, glm::vec2
     model = glm::scale(model, glm::vec3(size, 1.0f)); // Last scale
 
     this->shader.SetMatrix4("model", model);
-
-    // Render textured quad
     this->shader.SetVector3f("spriteColor", color);
 
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
-
     glBindVertexArray(this->quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+}
+
+void SpriteRenderer::debug(glm::vec2 position, glm::vec2 hitboxSize)
+{
+    this->hitboxShader.Use();
+    glBindVertexArray(this->quadVAO);
+
+    glm::mat4 hitboxModel = glm::mat4(1.0f);
+    hitboxModel = glm::translate(hitboxModel, glm::vec3(position, 0.0f));
+    hitboxModel = glm::scale(hitboxModel, glm::vec3(hitboxSize, 1.0f));
+    this->hitboxShader.SetMatrix4("model", hitboxModel);
+    this->hitboxShader.SetVector2f("size", hitboxSize);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
     glBindVertexArray(0);
 }
 

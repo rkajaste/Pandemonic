@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" nextobjectid="30">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="30">
  <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="162" columns="27">
   <image source="../graphics/tilesets/village.png" trans="ffffff" width="1728" height="384"/>
  </tileset>
@@ -18,33 +18,33 @@
  <tileset firstgid="625" name="oak" tilewidth="64" tileheight="64" tilecount="12" columns="3">
   <image source="../graphics/tilesets/oak.png" width="192" height="256"/>
  </tileset>
- <layer name="Background" width="31" height="15">
+ <layer id="1" name="Background" width="31" height="15">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUDDbAzcTAwMM00K4YGFAI9HcREBcPgP9LgHaWAnHZANhdDrSzAogroXb70MkNYUB7qoC4GohrgDgKiKPpZHcq1J50IJ0BxJlAnDXE0j0AmOQJMg==
   </data>
  </layer>
- <layer name="Midground" width="31" height="15">
+ <layer id="2" name="Midground" width="31" height="15">
   <data encoding="base64" compression="zlib">
    eJztzcVxQgEAAFF6Q4JLA0hwaQC3AA2QIEmwSnlFfE78nXnnjUTCwsLC3qsoMeIk+CBJijQZsuTIU6BIKYB3mQpVanxSp0GTFm06dOnRZxDAe8iIMROmzJizYMmKNV9s2LIL4L3nmx8OHDlx5pc//rlw5cadRwDvV/YEV5ka1w==
   </data>
  </layer>
- <layer name="NPC_Background" width="31" height="15">
+ <layer id="3" name="NPC_Background" width="31" height="15">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMNKB+UA7YIgCAEpMADg=
   </data>
  </layer>
- <layer name="Foreground" width="31" height="15">
+ <layer id="4" name="Foreground" width="31" height="15">
   <data encoding="base64" compression="zlib">
    eJztz9sy1WEYB2BW2im3kNUidaYOJWuJW7Ap4RZKSLoEKtQloCjbNsgmFJVNoX0hJRfiafofOFgz1pkZs34zz8E3877fb96UlGSSSWa/pp0OOnnAQ7ro5hGP6aGXvl3+OkAaBznEYY5wlHSOcZyMYP7ff/0MMMgTnvKM5wwxzEgCd5wgkzAniZBFNqfI4TRngvkXjDLGOBO8ZJIppnnF6wS68zhPPhcoIEqMQi5SRHEwP8Msb3jLO+aYZ4FF3vMhTlc45D4iof/vEkopo5xLXKaCK1RSRXWwv8QyK3zkE5/5wle+8Z0fcbpzdZ7lXNB9lWvUcJ1a6qjnBg3cpJFb/GSVNdb5xQa/+cMmf9mK0x3VGaMw6G6imdvc4S4ttNLGPe7v2F9L3TvbLt1i+A==
   </data>
  </layer>
- <layer name="NPC" width="31" height="15">
+ <layer id="5" name="NPC" width="31" height="15">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMFIBIwF5JhraLUNAXpaGdlMLAAAyyAA9
   </data>
  </layer>
- <objectgroup name="triggers" visible="0">
-  <object id="1" name="blockers" x="0" y="896" width="1983.5" height="63.6667">
+ <objectgroup id="6" name="triggers">
+  <object id="1" name="blockers" x="0" y="896" width="1984" height="64">
    <properties>
     <property name="blockers" value="t"/>
    </properties>
@@ -52,16 +52,6 @@
   <object id="2" name="player" x="130" y="719" width="64" height="64">
    <properties>
     <property name="player_l" value=""/>
-   </properties>
-  </object>
-  <object id="7" name="blockers" x="721" y="765" width="1" height="131">
-   <properties>
-    <property name="blockers" value="d_o"/>
-   </properties>
-  </object>
-  <object id="10" name="blockers" x="656" y="764" width="1" height="131">
-   <properties>
-    <property name="blockers" value="d_c"/>
    </properties>
   </object>
   <object id="17" name="level" x="5" y="351" width="12" height="609">
@@ -74,7 +64,7 @@
     <property name="level" value="next"/>
    </properties>
   </object>
-  <object id="19" name="player" x="1726.67" y="744" width="65" height="66.6667">
+  <object id="19" name="player" x="1728.67" y="767" width="64.6667" height="128">
    <properties>
     <property name="player_r" value=""/>
    </properties>
@@ -95,7 +85,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer name="Door" width="31" height="15" visible="0">
+ <layer id="7" name="Door" width="31" height="15" visible="0">
   <data encoding="base64" compression="zlib">
    eJztzelSwVEcx2FCiRZLaKOSstT93xEloWxFpR73cGbMNP/vnOfFefP7xGLRokX7r+vS44ln+rww4JUhI8a8BW6/M2HKjDkLPvhkyYovvgO3f1jzu/nEPXZIkCTFLnuk42Hb++5lyHLAIUcckyNPgSIngdsl98pUOOWMcy64pEqNK64Dt2/cq3NLgzvuadKiTYcHHgO3t7k/OTYdkg==
   </data>

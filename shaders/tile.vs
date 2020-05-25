@@ -16,6 +16,7 @@ void main()
 {
     float u = offset.x / tilesetDimensions.y;
     float v = offset.y / tilesetDimensions.x;
+
     textureCoordOffset = vec2(u, v);
     texCoords = vertex.zw;
     zoom = vec2(tileSize.x / tilesetDimensions.y, tileSize.y / tilesetDimensions.x);

@@ -17,8 +17,10 @@ class MapRenderer{
 
         void initRenderData();
         void drawMap();
+        void debugMap();
     private:
         Shader shader;
+        Shader hitboxShader;
         GLuint quadVAO;
 
         void drawTile(int index);

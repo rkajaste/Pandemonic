@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <iostream>
 
 SpriteRenderer *spriteRenderer;
 MapRenderer *mapRenderer;
@@ -15,18 +14,18 @@ Game::~Game()
 {
     delete spriteRenderer;
     delete mapRenderer;
+
     delete camera;
     delete this->player;
 }
 
-void Game::init()
+void Game::loadShaders()
 {
+    glm::mat4 projection = glm::ortho(
+        0.0f, static_cast<GLfloat>(this->width),
+        static_cast<GLfloat>(this->height), 0.0f,
+        0.0f, 1.0f);
 
-    // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
-        static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
-
-    // Load shaders
     ResourceManager::LoadShader(
         std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.vs",
         std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.fs",
@@ -39,6 +38,12 @@ void Game::init()
         "",
         "tile"
     );
+    ResourceManager::LoadShader(
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/hitbox.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/hitbox.fs",
+        "",
+        "hitbox"
+    );
 
     ResourceManager::GetShader("sprite").Use();
     ResourceManager::GetShader("sprite").SetInteger("image", 0);
@@ -46,22 +51,34 @@ void Game::init()
     ResourceManager::GetShader("tile").Use();
     ResourceManager::GetShader("tile").SetInteger("image", 0);
     ResourceManager::GetShader("tile").SetMatrix4("projection", projection);
+    ResourceManager::GetShader("hitbox").Use();
+    ResourceManager::GetShader("hitbox").SetInteger("image", 0);
+    ResourceManager::GetShader("hitbox").SetMatrix4("projection", projection);
+}
 
-    // Load textures
+void Game::loadTextures()
+{
     ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle.png",
         "player"
     );
+}
 
-    // Initialize renderers/map
-    MapManager::loadMap();
+void Game::initRenderers()
+{
     spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     mapRenderer = new MapRenderer(ResourceManager::GetShader("tile"));
+}
 
+void Game::init()
+{
+    this->loadShaders();
+    this->loadTextures();
+    MapManager::loadMap();
+    this->initRenderers();
 
-    // Create sprites
     this->player = new Player(
-        glm::vec2(200.0f, 200.0f),
+        MapManager::getPlayerSpawnPoint(),
         ResourceManager::GetTexture("player"),
         spriteRenderer
     );
@@ -75,8 +92,6 @@ void Game::update(GLfloat dt)
     camera->setPosition(this->player->coords);
 }
 
-
-
 void Game::processInput(GLfloat dt)
 {
     this->player->handleInput(this->keys);
@@ -85,5 +100,9 @@ void Game::processInput(GLfloat dt)
 void Game::render()
 {
     mapRenderer->drawMap();
-    this->player->draw();
+    this->player->draw(DEBUG);
+
+    if(DEBUG){
+        mapRenderer->debugMap();
+    }
 }
