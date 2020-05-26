@@ -1,7 +1,8 @@
 #include "Physics.hpp"
 
-GLfloat Physics::calculateHeight(GLfloat height, GLfloat dt) {
-    return height + 100.0f * dt;
+GLfloat Physics::calculateGravity(GLfloat gravityForce, GLfloat dt) {
+    gravityForce += 200.0f * dt;
+    return gravityForce;
 }
 
 GLboolean Physics::collides(glm::vec2 selfCoords, glm::vec2 selfSize, glm::vec2 otherCoords, glm::vec2 otherSize) {

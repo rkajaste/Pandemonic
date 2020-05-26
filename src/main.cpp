@@ -30,6 +30,9 @@ int main()
     gladLoadGL();
     fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
 
+    //enable vsync
+    glfwSwapInterval(1);
+
     glfwSetKeyCallback(window, key_callback);
 
     // OpenGL configuration

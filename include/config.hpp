@@ -12,6 +12,6 @@
 
 const GLuint SCREEN_WIDTH = 1900.0f;
 const GLuint SCREEN_HEIGHT = 1080.0f;
-const GLboolean DEBUG = false;
+const GLboolean DEBUG = true;
 
 #endif

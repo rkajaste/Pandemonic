@@ -2,11 +2,11 @@
 
 
 void Player::update(GLfloat dt) {
-    this->coords.y = Physics::calculateHeight(this->coords.y, dt);
-    if (Util::existsInVector(MOVING, this->states)) {
+    this->enableGravity(dt);
+    if (this->hasState(MOVING)) {
         this->move(dt);
     }
-    if (Util::existsInVector(JUMPING, this->states)) {
+    if (this->hasState(JUMPING)) {
         this->jump(dt);
     }
     Sprite::update(dt);
@@ -17,28 +17,29 @@ void Player::move(GLfloat dt) {
 }
 
 void Player::jump(GLfloat dt) {
-    this->coords.y -= this->jumpForce * dt; // * this->noClipDirection;
+    this->gravityForce = -this->jumpForce;
+    this->removeState(JUMPING);
+    this->removeState(GROUNDED);
 }
 
 void Player::handleInput(GLboolean keys[2048]) {
-    this->states.clear();
-    this->states.push_back(IDLE);
-
+    
     if(keys[GLFW_KEY_RIGHT]) {
         this->direction = 1;
-        this->states.push_back(MOVING);
+        this->removeState(IDLE);
+        this->addState(MOVING);
     } else if (keys[GLFW_KEY_LEFT]) {
         this->direction = -1;
-        this->states.push_back(MOVING);
+        this->removeState(IDLE);
+        this->addState(MOVING);
     }
 
-    if (keys[GLFW_KEY_UP]) {
-        this->noClipDirection = 1;
-        this->states.push_back(JUMPING);
+    if(!keys[GLFW_KEY_RIGHT] && !keys[GLFW_KEY_LEFT]) {
+        this->removeState(MOVING);
+        this->addState(IDLE);
     }
 
-    // if (keys[GLFW_KEY_DOWN]) {
-    //     this->noClipDirection = -1;
-    //     this->states.push_back(JUMPING);
-    // }
+    if (keys[GLFW_KEY_UP] && this->hasState(GROUNDED)) {
+        this->addState(JUMPING);
+    }
 }
