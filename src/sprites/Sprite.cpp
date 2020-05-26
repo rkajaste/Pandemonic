@@ -18,10 +18,15 @@ Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer)
 
 void Sprite::update(GLfloat /*dt*/)
 {
+    this->addState(FALLING);
+    this->checkCollision();
     this->spriteCoords.x = this->coords.x - this->spriteSize.x / 2 + this->hitboxSize.x / 2;
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
+    this->last_coords = this->coords;
+}
 
-    this->addState(FALLING);
+void Sprite::checkCollision()
+{
     for (const auto& terrainObj: MapManager::getTerrainObjects()) {
         glm::vec2 terrainSize(terrainObj->GetWidth(), terrainObj->GetHeight());
         glm::vec2 terrainCoords(terrainObj->GetX(), terrainObj->GetY() - terrainSize.y);
@@ -44,7 +49,6 @@ void Sprite::update(GLfloat /*dt*/)
             }
         }
     }
-    this->last_coords = this->coords;
 }
 
 void Sprite::draw(GLboolean debug)
@@ -102,4 +106,15 @@ void Sprite::removeState(SpriteState state)
 GLboolean Sprite::hasState(SpriteState state)
 {
     return Util::existsInVector(state, this->states);
+}
+
+void Sprite::jump()
+{
+    this->gravityForce = -this->jumpForce;
+    this->removeState(JUMPING);
+    this->removeState(GROUNDED);
+}
+
+void Sprite::move(GLfloat dt) {
+    this->coords.x += this->speed * dt * this->direction;
 }

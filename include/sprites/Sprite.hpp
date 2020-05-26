@@ -39,7 +39,10 @@ class Sprite {
         void addState(SpriteState);
         void removeState(SpriteState);
         GLboolean hasState(SpriteState);
+
+        void jump();
+        void move(GLfloat dt);
     private:
         SpriteRenderer *renderer;
-
+        void checkCollision();
 };

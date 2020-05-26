@@ -9,8 +9,4 @@ class Player: public Sprite {
         using Sprite::Sprite;
         void update(GLfloat);
         void handleInput(GLboolean keys[2048]);
-    private:
-        void move(GLfloat);
-        void jump(GLfloat);
-
 };

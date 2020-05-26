@@ -7,19 +7,9 @@ void Player::update(GLfloat dt) {
         this->move(dt);
     }
     if (this->hasState(JUMPING)) {
-        this->jump(dt);
+        this->jump();
     }
     Sprite::update(dt);
-}
-
-void Player::move(GLfloat dt) {
-    this->coords.x += this->speed * dt * this->direction;
-}
-
-void Player::jump(GLfloat dt) {
-    this->gravityForce = -this->jumpForce;
-    this->removeState(JUMPING);
-    this->removeState(GROUNDED);
 }
 
 void Player::handleInput(GLboolean keys[2048]) {
