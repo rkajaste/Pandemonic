@@ -30,8 +30,8 @@ class Sprite {
         glm::vec2 hitboxSize;
         glm::vec3 color;
         GLfloat rotation;
-        GLfloat speed = 1100.0f;
-        GLfloat jumpForce = 40.0f;
+        GLfloat speed = 1000.0f;
+        GLfloat jumpForce = 1100.0f;
         GLfloat gravityForce = 0.0f;
 
         void enableGravity(GLfloat dt);

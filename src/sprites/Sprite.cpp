@@ -85,7 +85,7 @@ void Sprite::enableGravity(GLfloat dt)
         this->gravityForce = 0;
     }
 
-    this->coords.y += this->gravityForce; 
+    this->coords.y += this->gravityForce * dt; 
 }
 
 void Sprite::clearStates()
@@ -116,5 +116,5 @@ void Sprite::jump()
 }
 
 void Sprite::move(GLfloat dt) {
-    this->coords.x += this->speed * dt * this->direction;
+    this->coords.x += glm::round(this->speed * dt * this->direction);
 }

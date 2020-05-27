@@ -24,14 +24,14 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pandemonic", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pandemonic", FULLSCREEN ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
     gladLoadGL();
     fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
 
     //enable vsync
-    glfwSwapInterval(1);
 
     glfwSetKeyCallback(window, key_callback);
 
@@ -47,7 +47,8 @@ int main()
     // DeltaTime variables
     GLfloat deltaTime = 0.0f;
     GLfloat lastFrame = 0.0f;
-
+    const GLfloat maxFPS = 144.0;
+    const GLfloat maxPeriod = 1.0 / maxFPS;
     // Start Game within Menu State
     game.state = GAME_START;
 
@@ -56,21 +57,24 @@ int main()
         // Calculate delta time
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
 
-        // Manage user input
-        game.processInput(deltaTime);
+        if(deltaTime >= maxPeriod) {
+            lastFrame = currentFrame;
+            // Manage user input
+            game.processInput(deltaTime);
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        // Update Game state
-        game.update(deltaTime);
-        game.render();
+            // Update Game state
+            game.update(deltaTime);
+            game.render();
 
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+
     }
 
     // Delete all resources as loaded using the resource manager

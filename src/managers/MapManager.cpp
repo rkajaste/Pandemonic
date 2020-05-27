@@ -8,6 +8,7 @@ std::vector<std::string> MapManager::maps;
 std::vector<TileCoordsAndGid> MapManager::tileCoordsAndGidArray;
 std::vector<TilesetInfo> MapManager::tilesetInfoArray;
 GLfloat MapManager::worldHeight;
+GLfloat MapManager::worldWidth;
 std::string MapManager::currentMap;
 MapObjects MapManager::playerObjects;
 MapObjects MapManager::npcObjects;
@@ -33,6 +34,7 @@ void MapManager::loadMap()
     }
 
     worldHeight = map->GetHeight() * map->GetTileHeight();
+    worldWidth = map->GetWidth() * map->GetTileWidth();
 
     const std::vector<Tmx::Tileset*> tilesets = map->GetTilesets();
 
@@ -132,6 +134,11 @@ std::vector<TilesetInfo> MapManager::getTilesetInfoArray()
 GLfloat MapManager::getWorldHeight()
 {
     return worldHeight;
+}
+
+GLfloat MapManager::getWorldWidth()
+{
+    return worldWidth;
 }
 
 std::string MapManager::getCurrentMap()

@@ -19,6 +19,7 @@ class MapManager {
         static std::vector<TilesetInfo> getTilesetInfoArray();
         static std::vector<TileCoordsAndGid> getTileCoordsAndGidArray();
         static GLfloat getWorldHeight();
+        static GLfloat getWorldWidth();
         static std::string getCurrentMap();
 
         static glm::vec2 getPlayerSpawnPoint();
@@ -33,6 +34,7 @@ class MapManager {
         static std::vector<TilesetInfo> tilesetInfoArray;
         static std::vector<TileCoordsAndGid> tileCoordsAndGidArray;
         static GLfloat worldHeight;
+        static GLfloat worldWidth;
         static std::string currentMap;
         static MapObjects playerObjects;
         static MapObjects npcObjects;

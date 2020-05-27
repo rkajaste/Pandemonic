@@ -1,7 +1,7 @@
 #include "Physics.hpp"
 
 GLfloat Physics::calculateGravity(GLfloat gravityForce, GLfloat dt) {
-    gravityForce += 200.0f * dt;
+    gravityForce += 3000.0f * dt;
     return gravityForce;
 }
 
