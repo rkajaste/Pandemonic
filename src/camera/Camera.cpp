@@ -1,12 +1,14 @@
 #include "Camera.hpp"
 
+GLfloat responsiveOffsetY = SCREEN_HEIGHT - 768.0f;
+
 Camera::Camera()
 {
     this->view = glm::translate(this->view, glm::vec3(glm::vec2(0.0f), -1.0f));
     this->offset.x = SCREEN_WIDTH / 2;
     this->offset.y = SCREEN_HEIGHT / 2;
-    // 192.0f = player hitbox size Y + one tile Y
-    this->minCameraY = MapManager::getWorldHeight() - SCREEN_HEIGHT + 240.0f;
+    // 192.0f = player hitbox size Y + one tile size Y
+    this->minCameraY = responsiveOffsetY - 192.0f;
 }
 
 void Camera::setPosition(glm::vec2 playerCoords)
@@ -30,7 +32,7 @@ void Camera::contain(glm::vec2 playerCoords)
     if(playerCoords.x > MapManager::getWorldWidth() - SCREEN_WIDTH / 2) {
         this->position.x = -MapManager::getWorldWidth() + SCREEN_WIDTH;
     }
-    if(playerCoords.y + this->offset.y >= MapManager::getWorldHeight()){
+    if(playerCoords.y + this->offset.y >= responsiveOffsetY - MapManager::getWorldHeight()){
         this->position.y = this->minCameraY; //??
     }
 }
