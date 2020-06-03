@@ -63,11 +63,32 @@ void Game::loadTextures()
         "player_idle"
     );
     ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle_attack_stance.png",
+        "player_idle_attack_stance"
+    );
+    ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/run.png",
         "player_run",
         true,
         2
     );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/run_attack_stance.png",
+        "player_run_attack_stance"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/sheathe.png",
+        "player_sheathe"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathe.png",
+        "player_unsheathe"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/attack.png",
+        "player_attack"
+    );
+
 }
 
 void Game::initRenderers()

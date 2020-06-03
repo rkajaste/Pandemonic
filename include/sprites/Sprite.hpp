@@ -8,7 +8,10 @@
 #include "Physics.hpp"
 #include "Animator.hpp"
 
-enum SpriteState { IDLE, MOVING, JUMPING, FALLING, ATTACKING, GROUNDED };
+enum SpriteState {
+    IDLE, MOVING, JUMPING, FALLING, GROUNDED,
+    SWITCHING_STANCE, ATTACK_STANCE, ATTACKING
+};
 
 class Sprite {
     public:

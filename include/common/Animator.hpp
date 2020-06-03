@@ -10,6 +10,8 @@ class Animator {
         ~Animator(){};
 
         void animate();
+        bool hasAnimationFinished(std::string animation);
+
         glm::vec2 getTextureCoords(std::string textureName);
         Texture2D getTexture();
         int getCurrentFrame();

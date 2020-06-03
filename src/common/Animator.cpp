@@ -12,7 +12,6 @@ void Animator::animate()
         this->prevTime = this->currentTime;
         if (this->currentFrame >= this->maxFrames - 1) {
             this->currentFrame = ResourceManager::transitionFrameAmounts[this->currentTextureName];
-            printf("%s\n", this->currentTextureName.c_str());
         } else {
             ++this->currentFrame;
         }
@@ -49,6 +48,14 @@ Texture2D Animator::getTexture()
 int Animator::getCurrentFrame()
 {
     return this->currentFrame;
+}
+
+bool Animator::hasAnimationFinished(std::string animation)
+{
+    if (this->currentTextureName == animation) {
+        return this->currentFrame >= this->maxFrames - 1;
+    }
+    return false;
 }
 
 std::string Animator::getCurrentTextureName()

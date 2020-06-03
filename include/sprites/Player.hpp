@@ -11,4 +11,11 @@ class Player: public Sprite {
 
         void update(GLfloat);
         void handleInput(GLboolean keys[2048]);
+
+    private:
+        void handleIdling();
+        void handleMoving(GLfloat dt);
+        void handleJumping();
+        void handleStanceSwitching();
+        void handleAttacking();
 };
