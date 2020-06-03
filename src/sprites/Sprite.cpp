@@ -1,19 +1,24 @@
 #include "Sprite.hpp"
 #include <iostream>
 
-Sprite::Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer *renderer)
+Sprite::Sprite(glm::vec2 coords, SpriteRenderer *renderer)
 {
     this->coords = coords;
-    this->texture = texture;
     this->renderer = renderer;
-    this->spriteSize = glm::vec2(texture.Width, texture.Height);
     this->hitboxSize = glm::vec2(64.0f, 128.0f);
+    this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->rotation = 0.0f;
     this->color = glm::vec3(1.0f);
     this->spriteCoords.x = this->coords.x - this->spriteSize.x / 2 + this->hitboxSize.x / 2;
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
     this->last_coords.x = this->coords.x;
     this->last_coords.y = this->coords.y;
+    this->animator = new Animator(this->spriteSize);
+}
+
+Sprite::~Sprite()
+{
+    delete this->animator;
 }
 
 void Sprite::update(GLfloat /*dt*/)
@@ -54,9 +59,11 @@ void Sprite::checkCollision()
 void Sprite::draw(GLboolean debug)
 {
     this->renderer->drawSprite(
-        this->texture,
+        this->animator,
+        this->textureName,
         this->spriteCoords,
         this->spriteSize,
+        this->direction == -1 ? true : false,
         this->rotation,
         this->color
     );

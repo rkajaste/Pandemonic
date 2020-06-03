@@ -31,6 +31,7 @@ public:
     // Compiles the shader from given source code
     void    Compile(const GLchar *vertexSource, const GLchar *fragmentSource, const GLchar *geometrySource = nullptr); // Note: geometry source code is optional
     // Utility functions
+    void    SetBoolean  (const GLchar *name, GLboolean value, GLboolean useShader = false);
     void    SetFloat    (const GLchar *name, GLfloat value, GLboolean useShader = false);
     void    SetInteger  (const GLchar *name, GLint value, GLboolean useShader = false);
     void    SetVector2f (const GLchar *name, GLfloat x, GLfloat y, GLboolean useShader = false);

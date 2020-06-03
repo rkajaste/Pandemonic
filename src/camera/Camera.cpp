@@ -13,12 +13,11 @@ Camera::Camera()
 
 void Camera::setPosition(glm::vec2 playerCoords)
 {
-    this->position.x = glm::round(-playerCoords.x + this->offset.x);
-    this->position.y = glm::round(-playerCoords.y + this->offset.y);
-    this->contain(playerCoords);
+    this->position.x = -playerCoords.x + this->offset.x;
+    this->position.y = -playerCoords.y + this->offset.y;
+    //this->contain(playerCoords);
     this->view = glm::mat4(1.0f);
     this->view = glm::translate(this->view, glm::vec3(this->position, -1.0f));
-
     ResourceManager::GetShader("sprite").SetMatrix4("view", this->view, GL_TRUE);
     ResourceManager::GetShader("tile").SetMatrix4("view", this->view, GL_TRUE);
     ResourceManager::GetShader("hitbox").SetMatrix4("view", this->view, GL_TRUE);
@@ -33,6 +32,6 @@ void Camera::contain(glm::vec2 playerCoords)
         this->position.x = -MapManager::getWorldWidth() + SCREEN_WIDTH;
     }
     if(playerCoords.y + this->offset.y >= responsiveOffsetY - MapManager::getWorldHeight()){
-        this->position.y = this->minCameraY; //??
+        this->position.y = this->minCameraY;
     }
 }

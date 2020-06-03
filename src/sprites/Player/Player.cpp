@@ -1,10 +1,11 @@
 #include "Player.hpp"
 
-
 void Player::update(GLfloat dt) {
     this->enableGravity(dt);
+    this->textureName = "player_idle";
     if (this->hasState(MOVING)) {
         this->move(dt);
+        this->textureName = "player_run";
     }
     if (this->hasState(JUMPING)) {
         this->jump();

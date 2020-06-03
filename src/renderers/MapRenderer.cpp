@@ -66,14 +66,8 @@ void MapRenderer::drawTile(int index)
         glm::vec2 size = glm::vec2(tileSize);
         positionCoords.x *= tileSize;
         positionCoords.y *= tileSize;
-        //printf("originalY: %02f,", positionCoords.y);
-        //("coordsY: %02f, worldHeight: %02f, textureName: %s \n", positionCoords.y, MapManager::getWorldHeight(), textureName.c_str());
+
         position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
-
-        // position = glm::translate(position, glm::vec3(0.5f * tileSize, 0.5f * tileSize, 0.0f)); // Move origin of rotation to center of quad
-        // position = glm::rotate(position, glm::pi<GLfloat>(), glm::vec3(0.0f, 0.0f, 1.0f));
-        // position = glm::translate(position, glm::vec3(-0.5f * tileSize, -0.5f * tileSize, 0.0f));
-
         position = glm::scale(position, glm::vec3(size, 1.0f));
 
         this->shader.SetVector2f("offset", texCoords);

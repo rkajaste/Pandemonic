@@ -17,7 +17,6 @@
 #include "Texture.hpp"
 #include "Shader.hpp"
 
-
 // A static singleton ResourceManager class that hosts several
 // functions to load Textures and Shaders. Each loaded texture
 // and/or shader is also stored for future reference by string
@@ -29,6 +28,8 @@ public:
     // Resource storage
     static std::map<std::string, Shader>    Shaders;
     static std::map<std::string, Texture2D> Textures;
+    static std::map<std::string, int> transitionFrameAmounts; // Number of animaton frames from start that should only be run once
+    static std::map<std::string, GLfloat> animationSpeeds;
     // Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
     static Shader   LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name);
     // Retrieves a stored sader
@@ -37,7 +38,9 @@ public:
     static Texture2D LoadTexture(
         const std::string file,
         std::string name,
-        GLboolean alpha = GL_TRUE
+        GLboolean alpha = GL_TRUE,
+        int transitionFrameAmount = 0,
+        GLfloat animationSpeed = 20.0f
     );
     // Retrieves a stored texture
     static Texture2D GetTexture(std::string name);

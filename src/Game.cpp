@@ -60,7 +60,13 @@ void Game::loadTextures()
 {
     ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle.png",
-        "player"
+        "player_idle"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/run.png",
+        "player_run",
+        true,
+        2
     );
 }
 
@@ -79,7 +85,6 @@ void Game::init()
 
     this->player = new Player(
         MapManager::getPlayerSpawnPoint(),
-        ResourceManager::GetTexture("player"),
         spriteRenderer
     );
 

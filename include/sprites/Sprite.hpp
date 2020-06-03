@@ -6,13 +6,14 @@
 #include "MapManager.hpp"
 #include "SpriteRenderer.hpp"
 #include "Physics.hpp"
+#include "Animator.hpp"
 
 enum SpriteState { IDLE, MOVING, JUMPING, FALLING, ATTACKING, GROUNDED };
 
 class Sprite {
     public:
-        Sprite(glm::vec2 coords, Texture2D texture, SpriteRenderer* renderer);
-        ~Sprite(){};
+        Sprite(glm::vec2 coords, SpriteRenderer* renderer);
+        ~Sprite();
 
         glm::vec2 coords;
         glm::vec2 last_coords;
@@ -22,17 +23,20 @@ class Sprite {
         void setColor(glm::vec3);
         void setSize(glm::vec2);
     protected:
-        std::vector<SpriteState> states;
         int direction = 1;
-        Texture2D texture;
+        GLfloat speed = 1000.0f;
+        GLfloat jumpForce = 1100.0f;
+        GLfloat gravityForce = 0.0f;
+
+        std::vector<SpriteState> states;
+        std::string textureName;
         glm::vec2 spriteCoords;
         glm::vec2 spriteSize;
         glm::vec2 hitboxSize;
         glm::vec3 color;
         GLfloat rotation;
-        GLfloat speed = 1000.0f;
-        GLfloat jumpForce = 1100.0f;
-        GLfloat gravityForce = 0.0f;
+        SpriteRenderer *renderer;
+        Animator *animator;
 
         void enableGravity(GLfloat dt);
         void clearStates();
@@ -43,6 +47,5 @@ class Sprite {
         void jump();
         void move(GLfloat dt);
     private:
-        SpriteRenderer *renderer;
         void checkCollision();
 };

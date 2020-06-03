@@ -16,6 +16,8 @@
 // Instantiate static variables
 std::map<std::string, Texture2D>    ResourceManager::Textures;
 std::map<std::string, Shader>       ResourceManager::Shaders;
+std::map<std::string, int>          ResourceManager::transitionFrameAmounts;
+std::map<std::string, GLfloat>      ResourceManager::animationSpeeds;
 
 
 Shader ResourceManager::LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name)
@@ -32,10 +34,14 @@ Shader ResourceManager::GetShader(std::string name)
 Texture2D ResourceManager::LoadTexture(
     const std::string file,
     std::string name,
-    GLboolean alpha
+    GLboolean alpha,
+    int transitionFrameAmount,
+    GLfloat animationSpeed
 )
 {
     Textures[name] = loadTextureFromFile(file, alpha);
+    transitionFrameAmounts[name] = transitionFrameAmount;
+    animationSpeeds[name] = animationSpeed;
     return Textures[name];
 }
 
