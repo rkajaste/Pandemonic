@@ -11,7 +11,7 @@ uniform vec2 offset;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-
+uniform bool flipX;
 
 void main()
 {
@@ -21,6 +21,8 @@ void main()
 
     textureCoordOffset = vec2(u, v);
     texCoords = vertex.zw;
+    texCoords.x = flipX ? -texCoords.x + 1.0 : texCoords.x;
+    
     zoom = vec2(spriteSize.x / spritesheetSize.x, spriteSize.y / spritesheetSize.y);
     gl_Position = projection * view * model * vec4(vertex.xy, 0.0, 1.0);
 }
