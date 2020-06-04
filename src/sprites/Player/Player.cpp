@@ -3,7 +3,26 @@
 void Player::update(GLfloat dt) {
     this->enableGravity(dt);
     this->handleIdling();
-    this->handleMoving(dt);
+    if (this->hasState(GROUNDED)) {
+        this->clearCooldown("aerial_slash");
+    } else {
+        if (this->hasState(FALLING)){
+            if (this->gravityForce > 0) {
+                this->textureName = "player_fall";
+                if (this->hasState(ATTACK_STANCE)) {
+                    this->textureName = "player_unsheathed_fall";
+                }
+            } else {
+                this->textureName = "player_jump";
+                if (this->hasState(ATTACK_STANCE)) {
+                    this->textureName = "player_unsheathed_jump";
+                }
+            }
+        }
+    }
+    if(!this->hasState(AERIAL_ATTACKING)) {
+        this->handleMoving(dt);
+    }
     this->handleJumping();
     this->handleStanceSwitching();
     this->handleAttacking();
@@ -45,8 +64,17 @@ void Player::handleInput(GLboolean keys[2048]) {
     }
 
     if (keys[GLFW_KEY_SPACE] && this->hasState(ATTACK_STANCE)) {
-        this->removeState(IDLE);
-        this->addState(ATTACKING);
+        if (!this->hasState(JUMPING) && !this->hasState(FALLING)) {
+            if (!this->hasCooldown("attack")) {
+                this->removeState(IDLE);
+                this->addState(ATTACKING);
+            }
+        } else {
+            if (!this->hasCooldown("aerial_slash")) {
+                this->removeState(IDLE);
+                this->addState(AERIAL_ATTACKING);
+            }
+        }
     }
 }
 
@@ -65,9 +93,11 @@ void Player::handleMoving(GLfloat dt)
 {
     if (this->hasState(MOVING)) {
         this->move(dt);
-        this->textureName = "player_run";
-        if(this->hasState(ATTACK_STANCE)) {
-            this->textureName = "player_run_attack_stance";
+        if(this->hasState(GROUNDED)) {
+            this->textureName = "player_run";
+            if(this->hasState(ATTACK_STANCE)) {
+                this->textureName = "player_run_attack_stance";
+            }
         }
     }
 }
@@ -109,11 +139,22 @@ void Player::handleStanceSwitching()
 
 void Player::handleAttacking()
 {
-    if (this->hasState(ATTACK_STANCE) && this->hasState(ATTACKING)) {
-        this->textureName = "player_attack";
-        if (this->animator->hasAnimationFinished(this->textureName)) {
-            this->removeState(ATTACKING);
-            this->addState(IDLE);
+    if (this->hasState(ATTACK_STANCE)) {
+        if (this->hasState(ATTACKING)) {
+            this->textureName = "player_attack";
+            if (this->animator->hasAnimationFinished(this->textureName) || !this->hasState(GROUNDED)) {
+                this->removeState(ATTACKING);
+                this->addState(IDLE);
+                this->setCooldown("attack");
+            }
+        } else if (this->hasState(AERIAL_ATTACKING)) {
+            this->textureName = "player_aerial_slash";
+            this->gravityForce = -60;
+            if (this->animator->hasAnimationFinished(this->textureName)) {
+                this->removeState(AERIAL_ATTACKING);
+                this->addState(IDLE);
+                this->setCooldown("aerial_slash");
+            }
         }
     }
 }

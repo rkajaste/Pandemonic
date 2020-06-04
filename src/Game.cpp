@@ -77,6 +77,24 @@ void Game::loadTextures()
         "player_run_attack_stance"
     );
     ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/jump.png",
+        "player_jump",
+        true,
+        1
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathed_jump.png",
+        "player_unsheathed_jump"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/fall.png",
+        "player_fall"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathed_fall.png",
+        "player_unsheathed_fall"
+    );
+    ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/sheathe.png",
         "player_sheathe"
     );
@@ -87,6 +105,10 @@ void Game::loadTextures()
     ResourceManager::LoadTexture(
         std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/attack.png",
         "player_attack"
+    );
+    ResourceManager::LoadTexture(
+        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/aerial_slash.png",
+        "player_aerial_slash"
     );
 
 }

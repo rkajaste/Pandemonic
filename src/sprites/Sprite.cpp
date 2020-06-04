@@ -5,15 +5,12 @@ Sprite::Sprite(glm::vec2 coords, SpriteRenderer *renderer)
 {
     this->coords = coords;
     this->renderer = renderer;
-    this->hitboxSize = glm::vec2(64.0f, 128.0f);
-    this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->rotation = 0.0f;
     this->color = glm::vec3(1.0f);
     this->spriteCoords.x = this->coords.x - this->spriteSize.x / 2 + this->hitboxSize.x / 2;
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
     this->last_coords.x = this->coords.x;
     this->last_coords.y = this->coords.y;
-    this->animator = new Animator(this->spriteSize);
 }
 
 Sprite::~Sprite()
@@ -28,6 +25,7 @@ void Sprite::update(GLfloat /*dt*/)
     this->spriteCoords.x = this->coords.x - this->spriteSize.x / 2 + this->hitboxSize.x / 2;
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
     this->last_coords = this->coords;
+    this->advanceCooldowns();
 }
 
 void Sprite::checkCollision()
@@ -100,17 +98,17 @@ void Sprite::clearStates()
     this->states.clear();
 }
 
-void Sprite::addState(SpriteState state)
+void Sprite::addState(Sprite::State state)
 {
     this->states.push_back(state);
 }
 
-void Sprite::removeState(SpriteState state)
+void Sprite::removeState(Sprite::State state)
 {
     this->states.erase(std::remove(this->states.begin(), this->states.end(), state), this->states.end());
 }
 
-GLboolean Sprite::hasState(SpriteState state)
+GLboolean Sprite::hasState(Sprite::State state)
 {
     return Util::existsInVector(state, this->states);
 }
@@ -124,4 +122,31 @@ void Sprite::jump()
 
 void Sprite::move(GLfloat dt) {
     this->coords.x += glm::round(this->speed * dt * this->direction);
+}
+
+void Sprite::advanceCooldowns()
+{
+    for (auto const& timer : this->timers)
+    {
+        this->timers[timer.first] += 1.0f;
+        if (timer.second >= this->cooldowns[timer.first]) {
+            this->timers[timer.first] = this->cooldowns[timer.first];
+        }
+    }
+}
+
+void Sprite::setCooldown(std::string action)
+{
+    this->timers[action] = 0.0f;
+}
+
+void Sprite::clearCooldown(std::string action)
+{
+    this->timers[action] = this->cooldowns[action];
+}
+
+GLboolean Sprite::hasCooldown(std::string action)
+{
+    printf("%s %f %f \n", action.c_str(), this->timers[action], this->cooldowns[action]);
+    return this->timers[action] < this->cooldowns[action];
 }
