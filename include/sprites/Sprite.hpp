@@ -7,6 +7,13 @@
 #include "SpriteRenderer.hpp"
 #include "Physics.hpp"
 #include "Animator.hpp"
+#include "CooldownManager.hpp"
+
+enum SpriteState {
+    IDLE, MOVING, JUMPING, FALLING, GROUNDED,
+    SWITCHING_STANCE, ATTACK_STANCE,
+    ATTACKING, AERIAL_ATTACKING
+};
 
 class Sprite {
     public:
@@ -21,44 +28,31 @@ class Sprite {
         void setColor(glm::vec3);
         void setSize(glm::vec2);
     protected:
-        enum State {
-            IDLE, MOVING, JUMPING, FALLING, GROUNDED,
-            SWITCHING_STANCE, ATTACK_STANCE,
-            ATTACKING, AERIAL_ATTACKING
-        };
-
-        SpriteRenderer *renderer;
-        Animator *animator;
+        SpriteRenderer* renderer;
+        Animator* animator;
+        CooldownManager* cooldownManager = NULL;
 
         int direction = 1;
         GLfloat speed = 1000.0f;
         GLfloat jumpForce = 1100.0f;
         GLfloat gravityForce = 0.0f;
+        glm::vec3 color = glm::vec3(1.0f);
+        GLfloat rotation = 0.0f;
 
-        std::vector<Sprite::State> states;
+        std::vector<SpriteState> states;
         std::string textureName;
         glm::vec2 spriteCoords;
         glm::vec2 spriteSize;
         glm::vec2 hitboxSize;
-        glm::vec3 color;
-        GLfloat rotation;
-
-        std::map<std::string, GLfloat> cooldowns;
-        std::map<std::string, GLfloat> timers;
 
         void enableGravity(GLfloat dt);
         void clearStates();
-        void addState(Sprite::State);
-        void removeState(Sprite::State);
+        void addState(SpriteState);
+        void removeState(SpriteState);
         void jump();
         void move(GLfloat dt);
 
-        void advanceCooldowns();
-        void setCooldown(std::string action);
-        void clearCooldown(std::string action);
-        GLboolean hasCooldown(std::string action);
-
-        GLboolean hasState(Sprite::State);
+        GLboolean hasState(SpriteState);
     private:
         void checkCollision();
 };

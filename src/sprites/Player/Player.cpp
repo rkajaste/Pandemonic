@@ -1,10 +1,37 @@
 #include "Player.hpp"
 
+Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, renderer} {
+    this->hitboxSize = glm::vec2(32.0f, 128.0f);
+    this->spriteSize = glm::vec2(255.0f, 170.0f);
+    this->animator = new Animator(this->spriteSize);
+
+    this->speed = 1000.0f;
+    this->jumpForce = 1100.0f;
+
+    Cooldowns cooldowns = {
+        {
+            "attack", 
+            {
+                {"timer", 0.0f },
+                { "cooldown", 30.0f}
+            }
+        },
+        {
+            "aerial_slash",
+            {
+                { "timer", 0.0f },
+                { "cooldown", 200.0f }
+            }
+        }
+    };
+    this->cooldownManager = new CooldownManager(cooldowns);
+}
+
 void Player::update(GLfloat dt) {
     this->enableGravity(dt);
     this->handleIdling();
     if (this->hasState(GROUNDED)) {
-        this->clearCooldown("aerial_slash");
+        this->cooldownManager->clearCooldown("aerial_slash");
     } else {
         if (this->hasState(FALLING)){
             if (this->gravityForce > 0) {
@@ -65,12 +92,12 @@ void Player::handleInput(GLboolean keys[2048]) {
 
     if (keys[GLFW_KEY_SPACE] && this->hasState(ATTACK_STANCE)) {
         if (!this->hasState(JUMPING) && !this->hasState(FALLING)) {
-            if (!this->hasCooldown("attack")) {
+            if (!this->cooldownManager->hasCooldown("attack")) {
                 this->removeState(IDLE);
                 this->addState(ATTACKING);
             }
         } else {
-            if (!this->hasCooldown("aerial_slash")) {
+            if (!this->cooldownManager->hasCooldown("aerial_slash")) {
                 this->removeState(IDLE);
                 this->addState(AERIAL_ATTACKING);
             }
@@ -145,7 +172,7 @@ void Player::handleAttacking()
             if (this->animator->hasAnimationFinished(this->textureName) || !this->hasState(GROUNDED)) {
                 this->removeState(ATTACKING);
                 this->addState(IDLE);
-                this->setCooldown("attack");
+                this->cooldownManager->setCooldown("attack");
             }
         } else if (this->hasState(AERIAL_ATTACKING)) {
             this->textureName = "player_aerial_slash";
@@ -153,7 +180,7 @@ void Player::handleAttacking()
             if (this->animator->hasAnimationFinished(this->textureName)) {
                 this->removeState(AERIAL_ATTACKING);
                 this->addState(IDLE);
-                this->setCooldown("aerial_slash");
+                this->cooldownManager->setCooldown("aerial_slash");
             }
         }
     }
