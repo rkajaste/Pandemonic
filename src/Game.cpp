@@ -148,9 +148,9 @@ void Game::processInput(GLfloat dt)
 void Game::render()
 {
     mapRenderer->drawMap();
-    this->player->draw(DEBUG);
+    this->player->draw(Config::isDebugMode());
 
-    if(DEBUG){
+    if(Config::isDebugMode()){
         mapRenderer->debugMap();
     }
 }

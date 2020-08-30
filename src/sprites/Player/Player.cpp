@@ -5,7 +5,7 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
     this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->animator = new Animator(this->spriteSize);
 
-    this->speed = 1000.0f;
+    this->speed = 600.0f;
     this->jumpForce = 1100.0f;
 
     Cooldowns cooldowns = {

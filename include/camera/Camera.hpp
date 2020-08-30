@@ -1,9 +1,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <GLFW/glfw3.h>
+
 #include "ResourceManager.hpp"
 #include "MapManager.hpp"
-#include <GLFW/glfw3.h>
-#include "config.hpp"
+#include "Config.hpp"
 
 class Camera {
     public:
