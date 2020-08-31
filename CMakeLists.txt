@@ -5,7 +5,8 @@ project (Pandemonic)
 set(OpenGL_GL_PREFERENCE "GLVND")
 find_package(OpenGL REQUIRED)
 find_package(ZLIB)
-
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JSONCPP jsoncpp)
 # Compile external dependencies
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
@@ -47,6 +48,7 @@ set(ALL_LIBS
 	ZLIB::ZLIB
 	stdc++fs
 	${GLAD_LIBRARIES}
+	${JSONCPP_LIBRARIES}
 )
 
 file(GLOB VENDORS_SOURCES submodules/glad/src/glad.c)

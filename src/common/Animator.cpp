@@ -11,7 +11,7 @@ void Animator::animate()
         this->currentTime = 0;
         this->prevTime = this->currentTime;
         if (this->currentFrame >= this->maxFrames - 1) {
-            this->currentFrame = ResourceManager::transitionFrameAmounts[this->currentTextureName];
+            this->currentFrame = ResourceManager::transitionFrames[this->currentTextureName];
         } else {
             ++this->currentFrame;
         }

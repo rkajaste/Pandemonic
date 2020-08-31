@@ -1,0 +1,7 @@
+{
+    "player": {
+        "run": {
+            "transitionFrames": 2
+        }
+    }
+}

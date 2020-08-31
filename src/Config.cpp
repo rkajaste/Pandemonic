@@ -2,7 +2,7 @@
 
 
 std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = { 
-    std::pair<GLfloat, GLfloat>(2560.0f, 1080.0f),
+    std::pair<GLfloat, GLfloat>(2560.0f, 1440.0f),
     std::pair<GLfloat, GLfloat>(1920.0f, 1080.0f),
     std::pair<GLfloat, GLfloat>(1024.0f, 768.0f),
     std::pair<GLfloat, GLfloat>(800.0f, 600.0f)

@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+using recursive_directory_iterator = std::experimental::filesystem::recursive_directory_iterator;
+
 SpriteRenderer *spriteRenderer;
 MapRenderer *mapRenderer;
 Camera *camera;
@@ -58,59 +60,27 @@ void Game::loadShaders()
 
 void Game::loadTextures()
 {
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle.png",
-        "player_idle"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/idle_attack_stance.png",
-        "player_idle_attack_stance"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/run.png",
-        "player_run",
-        true,
-        2
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/run_attack_stance.png",
-        "player_run_attack_stance"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/jump.png",
-        "player_jump",
-        true,
-        1
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathed_jump.png",
-        "player_unsheathed_jump"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/fall.png",
-        "player_fall"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathed_fall.png",
-        "player_unsheathed_fall"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/sheathe.png",
-        "player_sheathe"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/unsheathe.png",
-        "player_unsheathe"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/attack.png",
-        "player_attack"
-    );
-    ResourceManager::LoadTexture(
-        std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/player/aerial_slash.png",
-        "player_aerial_slash"
-    );
-
+    const std::string spritesPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/";
+    const std::string animationConfigPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/animations.json";
+    Json::Value animationOptions;
+    std::ifstream stream(animationConfigPath, std::ifstream::binary);
+    stream >> animationOptions;
+    std::cout << animationOptions << std::endl;
+    for (const auto & entry : recursive_directory_iterator(spritesPath)) {
+        if (entry.path().filename().extension() == ".png") {
+            std::string spriteName = Util::getStringAfterLastDelimiter(entry.path().parent_path(), std::string("/"));
+            std::string animationName = entry.path().stem();
+            const int transitionFrames = animationOptions[spriteName][animationName]["transitionFrames"].asInt();
+            const GLfloat animationSpeed = animationOptions[spriteName][animationName]["animationSpeed"].asFloat();
+            
+            ResourceManager::LoadTexture(
+                entry.path(),
+                spriteName + "_" + animationName,
+                transitionFrames,
+                animationSpeed
+            );
+        }
+    }
 }
 
 void Game::initRenderers()
