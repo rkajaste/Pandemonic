@@ -1,0 +1,27 @@
+{
+    "maps": [
+        {
+            "fileName": "home_village.tmx",
+            "height": 960,
+            "width": 1984,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "forest_west.tmx",
+            "height": 1920,
+            "width": 3200,
+            "x": -3202,
+            "y": -960
+        },
+        {
+            "fileName": "forest_east.tmx",
+            "height": 960,
+            "width": 1984,
+            "x": 3197,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

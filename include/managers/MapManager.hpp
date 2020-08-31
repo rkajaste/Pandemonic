@@ -1,10 +1,12 @@
 #pragma once
+
 #include "Tmx.h"
 #include <experimental/filesystem>
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <map>
+
 #include "Util.hpp"
 #include "ResourceManager.hpp"
 #include "MapRenderer.hpp"

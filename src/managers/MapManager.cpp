@@ -22,9 +22,13 @@ void MapManager::loadMap()
     map = new Tmx::Map();
 
     // TODO
-    for (const auto & entry : fs::directory_iterator(mapsPath))
-        maps.push_back(entry.path().filename());
-    currentMap = "1.tmx";
+    for (const auto & entry : fs::directory_iterator(mapsPath)) {
+        if (entry.path().filename() != "world.world") {
+            maps.push_back(entry.path().filename());
+        }
+    }
+
+    currentMap = "home_village.tmx";
 
     map->ParseFile(mapsPath + currentMap);
     if (map->HasError())
