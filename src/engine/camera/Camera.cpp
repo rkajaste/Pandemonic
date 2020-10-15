@@ -31,7 +31,7 @@ void Camera::contain(glm::vec2 playerCoords)
     if(playerCoords.x > MapManager::getWorldWidth() - Config::getScreenWidth() / 2) {
         this->position.x = -MapManager::getWorldWidth() + Config::getScreenWidth();
     }
-    if(playerCoords.y + this->offset.y >= responsiveOffsetY - MapManager::getWorldHeight()){
-        this->position.y = this->minCameraY;
+    if(playerCoords.y + this->offset.y >= responsiveOffsetY - MapManager::getWorldHeight()) {
+        // this->position.y = this->minCameraY;
     }
 }

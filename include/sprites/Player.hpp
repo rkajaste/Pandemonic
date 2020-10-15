@@ -20,4 +20,5 @@ class Player: public Sprite {
         void handleJumping();
         void handleStanceSwitching();
         void handleAttacking();
+        void checkMapObjectsCollisions();
 };

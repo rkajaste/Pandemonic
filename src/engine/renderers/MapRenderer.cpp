@@ -106,6 +106,15 @@ void MapRenderer::debugMap()
         this->hitboxShader.SetVector2f("size", size);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
+    for(const auto& terrain: MapManager::getLevelTransitionObjects()) {
+        glm::mat4 hitboxModel = glm::mat4(1.0f);
+        glm::vec2 size(terrain->GetWidth(), terrain->GetHeight());
+        hitboxModel = glm::translate(hitboxModel, glm::vec3(glm::vec2(terrain->GetX(), terrain->GetY()), 0.0f));
+        hitboxModel = glm::scale(hitboxModel, glm::vec3(size, 1.0f));
+        this->hitboxShader.SetMatrix4("model", hitboxModel);
+        this->hitboxShader.SetVector2f("size", size);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
     glBindVertexArray(0);
 }
 

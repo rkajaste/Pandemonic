@@ -33,9 +33,9 @@ void Sprite::checkCollision()
 {
     for (const auto& terrainObj: MapManager::getTerrainObjects()) {
         glm::vec2 terrainSize(terrainObj->GetWidth(), terrainObj->GetHeight());
-        glm::vec2 terrainCoords(terrainObj->GetX(), terrainObj->GetY() - terrainSize.y);
-        float terrainTop = terrainCoords.y - terrainSize.y;
-        float terrainBottom = terrainCoords.y;
+        glm::vec2 terrainCoords(terrainObj->GetX(), terrainObj->GetY());
+        float terrainTop = terrainCoords.y - terrainSize.y * 2;
+        float terrainBottom = terrainCoords.y - terrainSize.y;
         float terrainLeft = terrainCoords.x;
         float terrainRight = terrainCoords.x + terrainSize.x;
         if (Physics::collides(this->coords, this->hitboxSize, terrainCoords, terrainSize)) {

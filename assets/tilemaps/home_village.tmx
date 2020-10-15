@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="50" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="30">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="50" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="32">
  <tileset firstgid="1" name="village" tilewidth="64" tileheight="64" tilecount="162" columns="27">
   <image source="../graphics/tilesets/buildings/village.png" trans="ffffff" width="1728" height="384"/>
  </tileset>
@@ -44,44 +44,52 @@
   </data>
  </layer>
  <objectgroup id="6" name="triggers">
-  <object id="1" name="blockers" x="0" y="896" width="3198" height="64">
-   <properties>
-    <property name="blockers" value="t"/>
-   </properties>
-  </object>
-  <object id="2" name="player" x="770" y="719" width="64" height="64">
-   <properties>
-    <property name="player_l" value=""/>
-   </properties>
-  </object>
-  <object id="17" name="level" x="1" y="351" width="12" height="609">
-   <properties>
-    <property name="level" value="prev"/>
-   </properties>
-  </object>
-  <object id="18" name="level" x="3186" y="332" width="12" height="628">
-   <properties>
-    <property name="level" value="next"/>
-   </properties>
-  </object>
-  <object id="19" name="player" x="2368.67" y="767" width="64.6667" height="128">
-   <properties>
-    <property name="player_r" value=""/>
-   </properties>
-  </object>
-  <object id="22" name="loadgame" x="1413" y="748" width="60" height="61">
-   <properties>
-    <property name="loadgame" value=""/>
-   </properties>
-  </object>
   <object id="28" name="npc" x="1469.33" y="766" width="55.3333" height="122">
    <properties>
     <property name="npc" value=""/>
    </properties>
   </object>
-  <object id="29" name="npc" x="1803" y="772.333" width="55.3333" height="122">
+  <object id="29" name="npc" x="1991" y="774.333" width="55.3333" height="122">
    <properties>
     <property name="npc" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="level_transitions">
+  <object id="18" name="level" x="3186" y="754" width="12" height="206">
+   <properties>
+    <property name="level_transition" value="forest_east"/>
+    <property name="player_spawn" value="SW"/>
+   </properties>
+  </object>
+  <object id="17" name="level" x="-0.5" y="757.667" width="13" height="202.333">
+   <properties>
+    <property name="level_transition" value="forest_west"/>
+    <property name="player_spawn" value="SE"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="spawn_points">
+  <object id="19" name="player" x="1398.67" y="767" width="64.6667" height="128">
+   <properties>
+    <property name="location" value="loadgame"/>
+   </properties>
+  </object>
+  <object id="30" name="player" x="132" y="638" width="64" height="64">
+   <properties>
+    <property name="location" value="SW"/>
+   </properties>
+  </object>
+  <object id="31" name="player" x="3006" y="642" width="64" height="64">
+   <properties>
+    <property name="location" value="SE"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="9" name="terrain">
+  <object id="1" name="blockers" x="0" y="896" width="3198" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
    </properties>
   </object>
  </objectgroup>

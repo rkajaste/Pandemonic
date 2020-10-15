@@ -24,11 +24,13 @@ class MapManager {
         static GLfloat getWorldWidth();
         static std::string getCurrentMap();
 
-        static glm::vec2 getPlayerSpawnPoint();
+        static glm::vec2 getPlayerSpawnPoint(std::string name);
         static MapObjects getNpcObjects();
         static MapObjects getSavePointObjects();
         static MapObjects getTerrainObjects();
         static MapObjects getInteractionObjects();
+        static MapObjects getLevelTransitionObjects();
+        static void clearMapInfo();
         static void loadMap(std::string mapToLoad);
 
     private:
@@ -43,4 +45,5 @@ class MapManager {
         static MapObjects savePointObjects;
         static MapObjects terrainObjects;
         static MapObjects interactionObjects;
+        static MapObjects levelTransitionObjects;
 };

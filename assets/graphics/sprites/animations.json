@@ -2,6 +2,9 @@
     "player": {
         "run": {
             "transitionFrames": 2
+        },
+        "jump": {
+            "transitionFrames": 1
         }
     }
 }

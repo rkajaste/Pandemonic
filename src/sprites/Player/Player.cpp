@@ -12,7 +12,7 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
         {
             "attack", 
             {
-                {"timer", 0.0f },
+                { "timer", 0.0f },
                 { "cooldown", 30.0f}
             }
         },
@@ -53,17 +53,39 @@ void Player::update(GLfloat dt) {
     this->handleJumping();
     this->handleStanceSwitching();
     this->handleAttacking();
-
+    this->checkMapObjectsCollisions();
     Sprite::update(dt);
+}
+
+void Player::checkMapObjectsCollisions() {
+    for (const auto& interactionObj: MapManager::getInteractionObjects()) {
+        glm::vec2 objSize(interactionObj->GetWidth(), interactionObj->GetHeight());
+        glm::vec2 objCoords(interactionObj->GetX(), interactionObj->GetY());
+
+        if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
+            // do something
+        }
+    }
+    for (const auto& levelTransitionObject: MapManager::getLevelTransitionObjects()) {
+        glm::vec2 objSize(levelTransitionObject->GetWidth(), levelTransitionObject->GetHeight());
+        glm::vec2 objCoords(levelTransitionObject->GetX(), levelTransitionObject->GetY());
+
+        if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
+            const std::string levelTransition = levelTransitionObject->GetProperties().GetStringProperty("level_transition");
+            const std::string playerSpawn = levelTransitionObject->GetProperties().GetStringProperty("player_spawn");
+            MapManager::loadMap(levelTransition);
+            this->coords = MapManager::getPlayerSpawnPoint(playerSpawn);
+        }
+    }
 }
 
 void Player::handleInput(GLboolean keys[2048]) {
 
-    if(keys[GLFW_KEY_RIGHT]) {
+    if(keys[GLFW_KEY_RIGHT] && !this->hasState(AERIAL_ATTACKING)) {
         this->direction = 1;
         this->removeState(IDLE);
         this->addState(MOVING);
-    } else if (keys[GLFW_KEY_LEFT]) {
+    } else if (keys[GLFW_KEY_LEFT] && !this->hasState(AERIAL_ATTACKING)) {
         this->direction = -1;
         this->removeState(IDLE);
         this->addState(MOVING);

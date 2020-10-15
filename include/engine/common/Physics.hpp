@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include "MapManager.hpp"
 
 namespace Physics {
     GLfloat calculateGravity(GLfloat gravityForce, GLfloat dt);

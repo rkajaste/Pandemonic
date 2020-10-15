@@ -92,11 +92,11 @@ void Game::init()
 {
     this->loadShaders();
     this->loadTextures();
-    MapManager::loadMap("home_village.tmx");
+    MapManager::loadMap("home_village");
     this->initRenderers();
 
     this->player = new Player(
-        MapManager::getPlayerSpawnPoint(),
+        MapManager::getPlayerSpawnPoint("loadgame"),
         spriteRenderer
     );
 

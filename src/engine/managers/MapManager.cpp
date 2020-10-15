@@ -15,20 +15,34 @@ MapObjects MapManager::npcObjects;
 MapObjects MapManager::savePointObjects;
 MapObjects MapManager::terrainObjects;
 MapObjects MapManager::interactionObjects;
+MapObjects MapManager::levelTransitionObjects;
+
+void MapManager::clearMapInfo()
+{
+    tileCoordsAndGidArray.clear();
+    tilesetInfoArray.clear();
+    playerObjects.clear();
+    npcObjects.clear();
+    savePointObjects.clear();
+    terrainObjects.clear();
+    interactionObjects.clear();
+    levelTransitionObjects.clear();
+}
 
 void MapManager::loadMap(std::string mapToLoad)
 {
+    clearMapInfo();
+
     Tmx::Map *map;
     map = new Tmx::Map();
 
-    // TODO
     for (const auto & entry : fs::directory_iterator(mapsPath)) {
         if (entry.path().filename() != "world.world") {
             maps.push_back(entry.path().filename());
         }
     }
 
-    currentMap = mapToLoad;
+    currentMap = mapToLoad + ".tmx";
 
     map->ParseFile(mapsPath + currentMap);
     if (map->HasError())
@@ -99,22 +113,32 @@ void MapManager::loadMap(std::string mapToLoad)
     for (int i = 0; i < map->GetNumObjectGroups(); ++i)
     {
         const Tmx::ObjectGroup *objectGroup = map->GetObjectGroup(i);
-
+        const std::string objectLayer = objectGroup->GetName();
         for (int j = 0; j < objectGroup->GetNumObjects(); ++j)
         {
 
             const Tmx::Object *object = objectGroup->GetObject(j);
 
-            if (object->GetName() == "player") {
-                playerObjects.push_back(object);
-            } else if (object->GetName() == "triggers") {
-                interactionObjects.push_back(object);
-            } else if (object->GetName() == "npc") {
-                npcObjects.push_back(object);
-            } else if (object->GetName() == "savepoint") {
-                savePointObjects.push_back(object);
-            } else if (object->GetName() == "blockers") {
-                terrainObjects.push_back(object);
+            if (objectLayer == "terrain") {
+                if (object->GetName() == "blockers") {
+                    terrainObjects.push_back(object);
+                }
+            } else if (objectLayer == "spawn_points") {
+                if (object->GetName() == "player") {
+                    playerObjects.push_back(object);
+                }
+            } else if (objectLayer == "level_transitions") {
+                if (object->GetName() == "level") {
+                    levelTransitionObjects.push_back(object);
+                }
+            } else if (objectLayer == "triggers") {
+                if (object->GetName() == "npc") {
+                    npcObjects.push_back(object);
+                } else if (object->GetName() == "savepoint") {
+                    savePointObjects.push_back(object);
+                } else {
+                    interactionObjects.push_back(object);
+                }
             }
         }
     }
@@ -150,11 +174,14 @@ std::string MapManager::getCurrentMap()
     return currentMap;
 }
 
-glm::vec2 MapManager::getPlayerSpawnPoint()
+glm::vec2 MapManager::getPlayerSpawnPoint(std::string name)
 {
     glm::vec2 position;
     for(const auto& playerObject: playerObjects) {
-        position = glm::vec2(playerObject->GetX(), playerObject->GetY() + playerObject->GetHeight());
+        const std::string location = playerObject->GetProperties().GetStringProperty("location");
+        if (location == name) {
+            position = glm::vec2(playerObject->GetX(), playerObject->GetY() + playerObject->GetHeight());
+        }
     };
 
     return position;
@@ -180,4 +207,7 @@ MapObjects MapManager::getInteractionObjects()
     return interactionObjects;
 }
 
-
+MapObjects MapManager::getLevelTransitionObjects()
+{
+    return levelTransitionObjects;
+}
