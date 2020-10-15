@@ -35,8 +35,6 @@ glm::vec2 Animator::getTextureCoords(std::string textureName)
     this->texCoords.x = !this->vertical ? this->spriteSize.x * this->currentFrame : 0.0f;
     this->texCoords.y = this->vertical ? this->spriteSize.y * this->currentFrame : 0.0f;
 
-    //printf("%s, current frame: %d, texCoords: (%02f, %02f)\n", this->currentTextureName.c_str(), this->currentFrame, this->texCoords.x, this->texCoords.y);
-
     return texCoords;
 }
 

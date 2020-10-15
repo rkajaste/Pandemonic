@@ -65,7 +65,6 @@ void Game::loadTextures()
     Json::Value animationOptions;
     std::ifstream stream(animationConfigPath, std::ifstream::binary);
     stream >> animationOptions;
-    std::cout << animationOptions << std::endl;
     for (const auto & entry : recursive_directory_iterator(spritesPath)) {
         if (entry.path().filename().extension() == ".png") {
             std::string spriteName = Util::getStringAfterLastDelimiter(entry.path().parent_path(), std::string("/"));
@@ -93,7 +92,7 @@ void Game::init()
 {
     this->loadShaders();
     this->loadTextures();
-    MapManager::loadMap();
+    MapManager::loadMap("home_village.tmx");
     this->initRenderers();
 
     this->player = new Player(

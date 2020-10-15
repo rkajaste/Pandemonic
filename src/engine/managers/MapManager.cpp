@@ -16,7 +16,7 @@ MapObjects MapManager::savePointObjects;
 MapObjects MapManager::terrainObjects;
 MapObjects MapManager::interactionObjects;
 
-void MapManager::loadMap()
+void MapManager::loadMap(std::string mapToLoad)
 {
     Tmx::Map *map;
     map = new Tmx::Map();
@@ -28,7 +28,7 @@ void MapManager::loadMap()
         }
     }
 
-    currentMap = "home_village.tmx";
+    currentMap = mapToLoad;
 
     map->ParseFile(mapsPath + currentMap);
     if (map->HasError())
@@ -156,7 +156,7 @@ glm::vec2 MapManager::getPlayerSpawnPoint()
     for(const auto& playerObject: playerObjects) {
         position = glm::vec2(playerObject->GetX(), playerObject->GetY() + playerObject->GetHeight());
     };
-    printf("Object Position: (%03f, %03f)\n", position.x, position.y);
+
     return position;
 }
 

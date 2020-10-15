@@ -28,11 +28,12 @@ endif()
 
 include_directories(
 	include/
-	include/common/
-	include/renderers/
-	include/camera/
+	include/engine/common/
+	include/engine/renderers/
+	include/engine/camera/
+	include/engine/sprite/
+	include/engine/managers/
 	include/sprites/
-	include/managers/
 	submodules/glad/include/
 	submodules/glfw/include/
 	submodules/tmxparser/include/

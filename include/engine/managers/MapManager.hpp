@@ -29,7 +29,7 @@ class MapManager {
         static MapObjects getSavePointObjects();
         static MapObjects getTerrainObjects();
         static MapObjects getInteractionObjects();
-        static void loadMap();
+        static void loadMap(std::string mapToLoad);
 
     private:
         static std::vector<std::string> maps;
