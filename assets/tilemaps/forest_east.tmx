@@ -23,7 +23,7 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="level_transitions">
-  <object id="3" name="level" x="4" y="756" width="12" height="202">
+  <object id="3" name="level" x="4" y="0" width="12" height="958">
    <properties>
     <property name="level_transition" value="home_village"/>
     <property name="player_spawn" value="SE"/>
