@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="5">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="12">
  <tileset firstgid="1" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
   <image source="../graphics/tilesets/terrain/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwzEJAAAMA7Ce9a+4MgYjgSQAAAAAAHCnTw620AGR
+   eJzt08ENACAIA0Ce7j+xC+BTkHiXdAFaIgAAgE4rCXdkt3bvt+mrjv+gmr3V8+cz/NrRaZ/TsgHkSALB
   </data>
  </layer>
  <objectgroup id="2" name="terrain">
   <object id="1" name="blockers" x="2.69697" y="1855.88" width="3198" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="5" name="blockers" x="2051" y="1278" width="382" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="6" name="blockers" x="2051" y="1022" width="382" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="7" name="blockers" x="2047" y="1602" width="382" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="8" name="blockers" x="2431" y="1732" width="316" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="9" name="blockers" x="2498" y="1474" width="316" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="10" name="blockers" x="2630" y="1152" width="316" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object id="11" name="blockers" x="2626" y="894" width="316" height="64">
    <properties>
     <property name="blockers" value="t"/>
    </properties>
