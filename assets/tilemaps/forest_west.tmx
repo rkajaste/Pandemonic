@@ -5,7 +5,7 @@
  </tileset>
  <layer id="1" name="Tile Layer 1" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt08ENACAIA0Ce7j+xC+BTkHiXdAFaIgAAgE4rCXdkt3bvt+mrjv+gmr3V8+cz/NrRaZ/TsgHkSALB
+   eJzt08ENACAIA0Ce7j+xC2B8CZjcJV2glAgAAKDLSsI7Wd86n8utavkPqtlbPX/eR+93p33+lg3saALB
   </data>
  </layer>
  <objectgroup id="2" name="terrain">
@@ -16,37 +16,37 @@
   </object>
   <object id="5" name="blockers" x="2051" y="1278" width="382" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
   <object id="6" name="blockers" x="2051" y="1022" width="382" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
   <object id="7" name="blockers" x="2047" y="1602" width="382" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
-  <object id="8" name="blockers" x="2431" y="1732" width="316" height="64">
+  <object id="8" name="blockers" x="1733" y="1724.67" width="316" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
-  <object id="9" name="blockers" x="2498" y="1474" width="316" height="64">
+  <object id="9" name="blockers" x="2499.33" y="1472.67" width="316" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
-  <object id="10" name="blockers" x="2630" y="1152" width="316" height="64">
+  <object id="10" name="blockers" x="2562" y="1152" width="316" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
-  <object id="11" name="blockers" x="2626" y="894" width="316" height="64">
+  <object id="11" name="blockers" x="2559.33" y="895.333" width="316" height="64">
    <properties>
-    <property name="blockers" value="t"/>
+    <property name="blockers" value="tblr"/>
    </properties>
   </object>
  </objectgroup>

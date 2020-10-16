@@ -92,7 +92,7 @@ void Game::init()
 {
     this->loadShaders();
     this->loadTextures();
-    MapManager::loadMap("home_village");
+    MapManager::loadMap("forest_west");
     this->initRenderers();
 
     this->player = new Player(

@@ -38,17 +38,31 @@ void Sprite::checkCollision()
         float terrainBottom = terrainCoords.y - terrainSize.y;
         float terrainLeft = terrainCoords.x;
         float terrainRight = terrainCoords.x + terrainSize.x;
+        if (terrainObj->GetProperties().GetStringProperty("blockers").find("t") != std::string::npos) {
+            printf("%02f, %02f\n", this->last_coords.y + this->hitboxSize.y, terrainTop);
+        }
         if (Physics::collides(this->coords, this->hitboxSize, terrainCoords, terrainSize)) {
             if (
-                terrainObj->GetProperties().GetStringProperty("blockers") == "t" &&
-                this->last_coords.y >= terrainTop
+                terrainObj->GetProperties().GetStringProperty("blockers").find("t") != std::string::npos &&
+                this->last_coords.y <= terrainTop
             ) {
                 this->coords.y = terrainTop;
                 this->addState(GROUNDED);
                 this->removeState(FALLING);
-            } else if (terrainObj->GetProperties().GetStringProperty("blockers") == "l") {
-                this->coords.x = terrainCoords.x;
-            } else if (terrainObj->GetProperties().GetStringProperty("blockers") == "r") {
+            } 
+            if (
+                terrainObj->GetProperties().GetStringProperty("blockers").find("b") != std::string::npos &&
+                this->last_coords.y - this->hitboxSize.y >= terrainBottom
+            ) {
+                this->coords.y = terrainBottom + this->hitboxSize.y;
+                this->gravityForce = 0.0f;
+            } 
+            if (terrainObj->GetProperties().GetStringProperty("blockers").find("l") != std::string::npos &&
+               this->last_coords.x + this->hitboxSize.x <= terrainLeft) {
+                this->coords.x = terrainCoords.x - this->hitboxSize.x;
+            }
+            if (terrainObj->GetProperties().GetStringProperty("blockers").find("r") != std::string::npos &&
+                this->last_coords.x >= terrainRight) {
                 this->coords.x = terrainCoords.x + terrainSize.x;
             }
         }
