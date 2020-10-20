@@ -4,7 +4,11 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
     this->hitboxSize = glm::vec2(32.0f, 128.0f);
     this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->animator = new Animator(this->spriteSize);
-
+    this->respawnCoords = coords;
+    this->health = 100;
+    this->maxHealth = 100;
+    this->mana = 30;
+    this->maxMana = 30;
     this->speed = 600.0f;
     this->jumpForce = 1100.0f;
 
@@ -54,7 +58,11 @@ void Player::update(GLfloat dt) {
     this->handleStanceSwitching();
     this->handleAttacking();
     this->checkMapObjectsCollisions();
+
     Sprite::update(dt);
+    if (this->health <= 0) {
+        this->die();
+    }
 }
 
 void Player::checkMapObjectsCollisions() {
@@ -75,6 +83,7 @@ void Player::checkMapObjectsCollisions() {
             const std::string playerSpawn = levelTransitionObject->GetProperties().GetStringProperty("player_spawn");
             MapManager::loadMap(levelTransition);
             this->coords = MapManager::getPlayerSpawnPoint(playerSpawn);
+            this->respawnCoords = this->coords;
         }
     }
 }
@@ -206,4 +215,10 @@ void Player::handleAttacking()
             }
         }
     }
+}
+
+void Player::die()
+{
+    this->coords = this->respawnCoords;
+    this->health = this->maxHealth;
 }

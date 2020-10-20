@@ -5,7 +5,7 @@ const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps
 const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
 
 std::vector<std::string> MapManager::maps;
-std::vector<TileCoordsAndGid> MapManager::tileCoordsAndGidArray;
+std::vector<TileLocationInfo> MapManager::tileLocationInfoArray;
 std::vector<TilesetInfo> MapManager::tilesetInfoArray;
 GLfloat MapManager::worldHeight;
 GLfloat MapManager::worldWidth;
@@ -16,10 +16,11 @@ MapObjects MapManager::savePointObjects;
 MapObjects MapManager::terrainObjects;
 MapObjects MapManager::interactionObjects;
 MapObjects MapManager::levelTransitionObjects;
+MapObjects MapManager::deathObjects;
 
 void MapManager::clearMapInfo()
 {
-    tileCoordsAndGidArray.clear();
+    tileLocationInfoArray.clear();
     tilesetInfoArray.clear();
     playerObjects.clear();
     npcObjects.clear();
@@ -27,6 +28,7 @@ void MapManager::clearMapInfo()
     terrainObjects.clear();
     interactionObjects.clear();
     levelTransitionObjects.clear();
+    deathObjects.clear();
 }
 
 void MapManager::loadMap(std::string mapToLoad)
@@ -59,19 +61,62 @@ void MapManager::loadMap(std::string mapToLoad)
     for (unsigned int i = 0; i < tilesets.size(); ++i) {
         Tmx::Tileset *tileset = tilesets.at(i);
         std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
+        std::vector<TilesetAnimation> tilesetAnimations;
 
-        ResourceManager::LoadTexture(
-            imagePath,
-            tileset->GetName()
-        );
+        if (tileset->GetTiles().size() > 0)
+        {
+            // Get all animated tiles from tileset
+            const std::vector<Tmx::Tile *> &tiles = tileset->GetTiles();
+            for (
+                std::vector<Tmx::Tile *>::const_iterator currentTile = tiles.begin();
+                currentTile != tiles.end();
+                currentTile++
+            ) 
+            {
+                if ((*currentTile)->IsAnimated())
+                {
+                    TilesetAnimation tilesetAnimation;
+                    int frameCount = (*currentTile)->GetFrameCount();
+                    float animationSpeed = (*currentTile)->GetTotalDuration() / (*currentTile)->GetFrameCount();
+                    std::vector<int> tileIds;
 
+                    const std::vector<Tmx::AnimationFrame> &frames = (*currentTile)->GetFrames();
+                    for (
+                        std::vector<Tmx::AnimationFrame>::const_iterator it = frames.begin();
+                        it != frames.end();
+                        it++
+                    )
+                    {
+                        tileIds.push_back(it->GetTileID());
+                    }
+                    tilesetAnimation.frameCount = frameCount;
+                    tilesetAnimation.animationSpeed = animationSpeed;
+                    tilesetAnimation.tileIds = tileIds;
+                    tilesetAnimations.push_back(tilesetAnimation);
+                }
+            }
+        }
         TilesetInfo tilesetInfo;
-        tilesetInfo["firstGid"] = std::to_string(tileset->GetFirstGid());
-        tilesetInfo["name"] = tileset->GetName();
-        tilesetInfo["columns"] = std::to_string(tileset->GetColumns());
-        tilesetInfo["tileCount"] = std::to_string(tileset->GetTileCount());
-
+        tilesetInfo.name = tileset->GetName();
+        tilesetInfo.firstGid = tileset->GetFirstGid();
+        tilesetInfo.columns = tileset->GetColumns();
+        tilesetInfo.tileCount = tileset->GetTileCount();
+        tilesetInfo.animations = tilesetAnimations;
         tilesetInfoArray.push_back(tilesetInfo);
+
+        if (tilesetAnimations.empty()) {
+            ResourceManager::LoadTexture(
+                imagePath,
+                tileset->GetName()
+            );
+        } else {
+            ResourceManager::LoadTexture(
+                imagePath,
+                tileset->GetName(),
+                0,
+                tilesetAnimations.at(0).animationSpeed
+            );
+        }
     }
 
     for (int i = 0; i < map->GetNumTileLayers(); ++i)
@@ -84,28 +129,10 @@ void MapManager::loadMap(std::string mapToLoad)
             {
                 if (tileLayer->GetTileTilesetIndex(x, y) != -1)
                 {
-                    std::pair<glm::vec2, int> tileGidCoordsPair (
-                        glm::vec2(x, y),
-                        tileLayer->GetTileGid(x, y)
-                    );
-                    tileCoordsAndGidArray.push_back(tileGidCoordsPair);
-                            // if (tile->IsAnimated())
-                            // {
-                            //     printf(
-                            //             "Tile is animated: %d frames with total duration of %dms.\n",
-                            //             tile->GetFrameCount(), tile->GetTotalDuration());
-
-                            //     const std::vector<Tmx::AnimationFrame> &frames =
-                            //             tile->GetFrames();
-
-                            //     int i = 0;
-                            //     for (std::vector<Tmx::AnimationFrame>::const_iterator it =
-                            //             frames.begin(); it != frames.end(); it++, i++)
-                            //     {
-                            //         printf("\tFrame %d: Tile ID = %d, Duration = %dms\n", i,
-                            //                 it->GetTileID(), it->GetDuration());
-                            //     }
-                            // }
+                    TileLocationInfo tileLocationInfo;
+                    tileLocationInfo.coords = glm::vec2(x, y);
+                    tileLocationInfo.gid = tileLayer->GetTileGid(x, y);
+                    tileLocationInfoArray.push_back(tileLocationInfo);
                 }
             }
         }
@@ -139,6 +166,10 @@ void MapManager::loadMap(std::string mapToLoad)
                 } else {
                     interactionObjects.push_back(object);
                 }
+            } else if (objectLayer == "death") {
+                if (object->GetName() == "death") {
+                    deathObjects.push_back(object);
+                }
             }
         }
     }
@@ -149,9 +180,9 @@ std::vector<std::string> MapManager::getMaps()
     return maps;
 }
 
-std::vector<TileCoordsAndGid> MapManager::getTileCoordsAndGidArray()
+std::vector<TileLocationInfo> MapManager::getTileLocationInfoArray()
 {
-    return tileCoordsAndGidArray;
+    return tileLocationInfoArray;
 }
 
 std::vector<TilesetInfo> MapManager::getTilesetInfoArray()
@@ -210,4 +241,9 @@ MapObjects MapManager::getInteractionObjects()
 MapObjects MapManager::getLevelTransitionObjects()
 {
     return levelTransitionObjects;
+}
+
+MapObjects MapManager::getDeathObjects()
+{
+    return deathObjects;
 }

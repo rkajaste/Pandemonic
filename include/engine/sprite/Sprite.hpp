@@ -31,6 +31,8 @@ class Sprite {
         SpriteRenderer* renderer;
         Animator* animator;
         CooldownManager* cooldownManager = NULL;
+        GLint health;
+        GLint maxHealth;
 
         int direction = 1;
         GLfloat speed = 1000.0f;
@@ -51,8 +53,11 @@ class Sprite {
         void removeState(SpriteState);
         void jump();
         void move(GLfloat dt);
+        virtual void die();
 
         GLboolean hasState(SpriteState);
     private:
         void checkCollision();
+        void handleCollision(const Tmx::Object* obj);
+
 };

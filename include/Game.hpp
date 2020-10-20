@@ -8,11 +8,13 @@
 #include <json/json.h>
 #include <fstream>
 
+#include "UserInterfaceRenderer.hpp"
 #include "SpriteRenderer.hpp"
+#include "MapRenderer.hpp"
 #include "Player.hpp"
+#include "UserInterface.hpp"
 #include "MapManager.hpp"
 #include "ResourceManager.hpp"
-#include "MapRenderer.hpp"
 #include "Camera.hpp"
 #include "Util.hpp"
 
@@ -24,6 +26,7 @@ class Game
         GLboolean  keys[1024];
         GLuint	   width, height;
         Player *player;
+        UserInterface *userInterface;
         // Constructor/Destructor
         Game(GLuint width, GLuint height);
         ~Game();

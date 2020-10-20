@@ -8,18 +8,15 @@
 #include "Shader.hpp"
 #include "ResourceManager.hpp"
 #include "Animator.hpp"
+#include "Renderer.hpp"
 
-class SpriteRenderer
+class SpriteRenderer : public Renderer
 {
     public:
-        SpriteRenderer(Shader shader);
-        ~SpriteRenderer();
+        SpriteRenderer();
 
         void drawSprite(Animator* animator, std::string textureName, glm::vec2 pos, glm::vec2 size, GLboolean flipX = false, GLfloat rotate = 0.0f, glm::vec3 color = glm::vec3(1.0f));
         void debug(glm::vec2 position, glm::vec2 hitboxSize);
     private:
-        Shader shader;
         Shader hitboxShader;
-        GLuint quadVAO;
-        void initRenderData();
 };

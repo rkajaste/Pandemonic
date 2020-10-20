@@ -7,19 +7,20 @@
 #include <utility>
 #include <map>
 
+#include "types.hpp"
 #include "Util.hpp"
 #include "ResourceManager.hpp"
 #include "MapRenderer.hpp"
 
-typedef std::map<std::string, std::string> TilesetInfo;
-typedef std::pair<glm::vec2, int> TileCoordsAndGid;
+
+
 typedef std::vector<const Tmx::Object*> MapObjects;
 
 class MapManager {
     public:
         static std::vector<std::string> getMaps();
         static std::vector<TilesetInfo> getTilesetInfoArray();
-        static std::vector<TileCoordsAndGid> getTileCoordsAndGidArray();
+        static std::vector<TileLocationInfo> getTileLocationInfoArray();
         static GLfloat getWorldHeight();
         static GLfloat getWorldWidth();
         static std::string getCurrentMap();
@@ -30,13 +31,14 @@ class MapManager {
         static MapObjects getTerrainObjects();
         static MapObjects getInteractionObjects();
         static MapObjects getLevelTransitionObjects();
+        static MapObjects getDeathObjects();
         static void clearMapInfo();
         static void loadMap(std::string mapToLoad);
 
     private:
         static std::vector<std::string> maps;
         static std::vector<TilesetInfo> tilesetInfoArray;
-        static std::vector<TileCoordsAndGid> tileCoordsAndGidArray;
+        static std::vector<TileLocationInfo> tileLocationInfoArray;
         static GLfloat worldHeight;
         static GLfloat worldWidth;
         static std::string currentMap;
@@ -46,4 +48,5 @@ class MapManager {
         static MapObjects terrainObjects;
         static MapObjects interactionObjects;
         static MapObjects levelTransitionObjects;
+        static MapObjects deathObjects;
 };

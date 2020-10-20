@@ -33,6 +33,7 @@ include_directories(
 	include/engine/camera/
 	include/engine/sprite/
 	include/engine/managers/
+	include/userInterface/
 	include/sprites/
 	submodules/glad/include/
 	submodules/glfw/include/
@@ -55,7 +56,7 @@ set(ALL_LIBS
 file(GLOB VENDORS_SOURCES submodules/glad/src/glad.c)
 file(GLOB PROJECT_HEADERS include/*.hpp include/**/*.hpp)
 file(GLOB PROJECT_SOURCES src/*.cpp src/**/*.cpp src/**/**/*.cpp)
-file(GLOB PROJECT_SHADERS shaders/*.vs shaders/*.fs)
+file(GLOB PROJECT_SHADERS shaders/**/*.vs shaders/**/*.fs)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           README.md
                          .gitignore

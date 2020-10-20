@@ -2,6 +2,7 @@
 
 using recursive_directory_iterator = std::experimental::filesystem::recursive_directory_iterator;
 
+UserInterfaceRenderer *uiRenderer;
 SpriteRenderer *spriteRenderer;
 MapRenderer *mapRenderer;
 Camera *camera;
@@ -14,11 +15,12 @@ Game::Game(GLuint width, GLuint height)
 
 Game::~Game()
 {
+    delete uiRenderer;
     delete spriteRenderer;
     delete mapRenderer;
-
     delete camera;
     delete this->player;
+    delete this->userInterface;
 }
 
 void Game::loadShaders()
@@ -29,38 +31,62 @@ void Game::loadShaders()
         0.0f, 1.0f);
 
     ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite.fs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite/sprite.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite/sprite.fs",
         "",
         "sprite"
     );
     ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/tile.fs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/map/tile.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/map/tile.fs",
         "",
         "tile"
     );
     ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/hitbox.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/hitbox.fs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/debug/hitbox.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/debug/hitbox.fs",
         "",
         "hitbox"
     );
+    ResourceManager::LoadShader(
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/ui.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/ui.fs",
+        "",
+        "ui"
+    );
+    ResourceManager::LoadShader(
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/statusBar.vs",
+        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/statusBar.fs",
+        "",
+        "statusBar"
+    );
+
 
     ResourceManager::GetShader("sprite").Use();
     ResourceManager::GetShader("sprite").SetInteger("image", 0);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+
     ResourceManager::GetShader("tile").Use();
     ResourceManager::GetShader("tile").SetInteger("image", 0);
     ResourceManager::GetShader("tile").SetMatrix4("projection", projection);
+
     ResourceManager::GetShader("hitbox").Use();
     ResourceManager::GetShader("hitbox").SetInteger("image", 0);
     ResourceManager::GetShader("hitbox").SetMatrix4("projection", projection);
+
+    ResourceManager::GetShader("ui").Use();
+    ResourceManager::GetShader("ui").SetInteger("image", 0);
+    ResourceManager::GetShader("ui").SetMatrix4("projection", projection);
+    
+    ResourceManager::GetShader("statusBar").Use();
+    ResourceManager::GetShader("statusBar").SetMatrix4("projection", projection);
+
 }
 
 void Game::loadTextures()
 {
     const std::string spritesPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/";
+    const std::string uiPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/ui/";
     const std::string animationConfigPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/animations.json";
     Json::Value animationOptions;
     std::ifstream stream(animationConfigPath, std::ifstream::binary);
@@ -80,12 +106,18 @@ void Game::loadTextures()
             );
         }
     }
+
+    ResourceManager::LoadTexture(
+        uiPath + "hud/status_bar.png",
+        "ui_status_bar"
+    );
 }
 
 void Game::initRenderers()
 {
-    spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-    mapRenderer = new MapRenderer(ResourceManager::GetShader("tile"));
+    spriteRenderer = new SpriteRenderer();
+    mapRenderer = new MapRenderer();
+    uiRenderer = new UserInterfaceRenderer();
 }
 
 void Game::init()
@@ -100,6 +132,7 @@ void Game::init()
         spriteRenderer
     );
 
+    this->userInterface = new UserInterface(uiRenderer);
     camera = new Camera();
 }
 
@@ -118,6 +151,7 @@ void Game::render()
 {
     mapRenderer->drawMap();
     this->player->draw(Config::isDebugMode());
+    this->userInterface->draw();
 
     if(Config::isDebugMode()){
         mapRenderer->debugMap();

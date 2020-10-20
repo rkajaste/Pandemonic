@@ -29,45 +29,66 @@ void Sprite::update(GLfloat /*dt*/)
     }
 }
 
-void Sprite::checkCollision()
-{
-    for (const auto& terrainObj: MapManager::getTerrainObjects()) {
-        glm::vec2 terrainSize(terrainObj->GetWidth(), terrainObj->GetHeight());
-        glm::vec2 terrainCoords(terrainObj->GetX(), terrainObj->GetY());
-        float terrainTop = terrainCoords.y - terrainSize.y * 2;
-        float terrainBottom = terrainCoords.y - terrainSize.y;
-        float terrainLeft = terrainCoords.x;
-        float terrainRight = terrainCoords.x + terrainSize.x;
-        if (terrainObj->GetProperties().GetStringProperty("blockers").find("t") != std::string::npos) {
-            printf("%02f, %02f\n", this->last_coords.y + this->hitboxSize.y, terrainTop);
-        }
-        if (Physics::collides(this->coords, this->hitboxSize, terrainCoords, terrainSize)) {
+void Sprite::handleCollision(const Tmx::Object* obj) {
+    glm::vec2 objSize(obj->GetWidth(), obj->GetHeight());
+    glm::vec2 objCoords(obj->GetX(), obj->GetY());
+    float objTop = objCoords.y - objSize.y * 2;
+    float objBottom = objCoords.y - objSize.y;
+    float objLeft = objCoords.x;
+    float objRight = objCoords.x + objSize.x;
+
+    if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
+        if (obj->GetName() == "blockers") {
+            std::string blockersProp = obj->GetProperties().GetStringProperty("blockers");
             if (
-                terrainObj->GetProperties().GetStringProperty("blockers").find("t") != std::string::npos &&
-                this->last_coords.y <= terrainTop
+                blockersProp.find("t") != std::string::npos &&
+                this->last_coords.y <= objTop
             ) {
-                this->coords.y = terrainTop;
+                this->coords.y = objTop;
                 this->addState(GROUNDED);
                 this->removeState(FALLING);
             } 
             if (
-                terrainObj->GetProperties().GetStringProperty("blockers").find("b") != std::string::npos &&
-                this->last_coords.y - this->hitboxSize.y >= terrainBottom
+                blockersProp.find("b") != std::string::npos &&
+                this->last_coords.y - this->hitboxSize.y >= objBottom
             ) {
-                this->coords.y = terrainBottom + this->hitboxSize.y;
+                this->coords.y = objBottom + this->hitboxSize.y;
                 this->gravityForce = 0.0f;
             } 
-            if (terrainObj->GetProperties().GetStringProperty("blockers").find("l") != std::string::npos &&
-               this->last_coords.x + this->hitboxSize.x <= terrainLeft) {
-                this->coords.x = terrainCoords.x - this->hitboxSize.x;
+            if (blockersProp.find("l") != std::string::npos &&
+                this->last_coords.x + this->hitboxSize.x <= objLeft) {
+                this->coords.x = objCoords.x - this->hitboxSize.x;
             }
-            if (terrainObj->GetProperties().GetStringProperty("blockers").find("r") != std::string::npos &&
-                this->last_coords.x >= terrainRight) {
-                this->coords.x = terrainCoords.x + terrainSize.x;
+            if (blockersProp.find("r") != std::string::npos &&
+                this->last_coords.x >= objRight) {
+                this->coords.x = objCoords.x + objSize.x;
             }
         }
+
+        if (obj->GetName() == "death") {
+            if (
+                obj->GetProperties().GetIntProperty("damage") == -1
+            ) {
+                if (obj->GetType() == "water" && this->last_coords.y - this->hitboxSize.y >= objTop) {
+                    this->health = 0;
+                }
+            }
+        }
+
     }
 }
+
+void Sprite::checkCollision()
+{
+    for (const auto& obj: MapManager::getTerrainObjects()) {
+        this->handleCollision(obj);
+    }
+    for (const auto& obj: MapManager::getDeathObjects()) {
+        this->handleCollision(obj);
+    }
+}
+
+void Sprite::die(){}
 
 void Sprite::draw(GLboolean debug)
 {

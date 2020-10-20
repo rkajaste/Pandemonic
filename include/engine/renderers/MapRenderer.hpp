@@ -6,22 +6,22 @@
 #include "Shader.hpp"
 #include "ResourceManager.hpp"
 #include "MapManager.hpp"
+#include "types.hpp"
+#include "Animator.hpp"
+#include "Renderer.hpp"
 
-typedef std::map<std::string, std::string> TilesetInfo;
 typedef std::pair<glm::vec2, int> TileCoordsAndGid;
 
-class MapRenderer{
+class MapRenderer: public Renderer {
     public:
-        MapRenderer(Shader);
+        MapRenderer();
         ~MapRenderer();
 
-        void initRenderData();
         void drawMap();
         void debugMap();
     private:
-        Shader shader;
         Shader hitboxShader;
-        GLuint quadVAO;
+        Animator* animator;
 
         void drawTile(int index);
         TilesetInfo getTilesetInfoByGid(int gid);
