@@ -30,56 +30,23 @@ void Game::loadShaders()
         static_cast<GLfloat>(this->height), 0.0f,
         0.0f, 1.0f);
 
-    ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite/sprite.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/sprite/sprite.fs",
-        "",
-        "sprite"
-    );
-    ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/map/tile.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/map/tile.fs",
-        "",
-        "tile"
-    );
-    ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/debug/hitbox.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/debug/hitbox.fs",
-        "",
-        "hitbox"
-    );
-    ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/ui.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/ui.fs",
-        "",
-        "ui"
-    );
-    ResourceManager::LoadShader(
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/statusBar.vs",
-        std::string(PROJECT_SOURCE_DIR) + "/shaders/userInterface/statusBar.fs",
-        "",
-        "statusBar"
-    );
+    const std::string shadersPath = std::string(PROJECT_SOURCE_DIR) + "/shaders/";
 
-
-    ResourceManager::GetShader("sprite").Use();
-    ResourceManager::GetShader("sprite").SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-
-    ResourceManager::GetShader("tile").Use();
-    ResourceManager::GetShader("tile").SetInteger("image", 0);
-    ResourceManager::GetShader("tile").SetMatrix4("projection", projection);
-
-    ResourceManager::GetShader("hitbox").Use();
-    ResourceManager::GetShader("hitbox").SetInteger("image", 0);
-    ResourceManager::GetShader("hitbox").SetMatrix4("projection", projection);
-
-    ResourceManager::GetShader("ui").Use();
-    ResourceManager::GetShader("ui").SetInteger("image", 0);
-    ResourceManager::GetShader("ui").SetMatrix4("projection", projection);
-    
-    ResourceManager::GetShader("statusBar").Use();
-    ResourceManager::GetShader("statusBar").SetMatrix4("projection", projection);
+    for (const auto & entry : recursive_directory_iterator(shadersPath)) {
+        if (entry.path().filename().extension() == ".vs") {
+            std::string shaderName = entry.path().stem();
+            std::string path = std::string(entry.path().parent_path()) + "/" + shaderName;
+            ResourceManager::LoadShader(
+                path + ".vs",
+                path + ".fs",
+                "",
+                shaderName
+            );
+            ResourceManager::GetShader(shaderName).Use();
+            ResourceManager::GetShader(shaderName).SetInteger("image", 0);
+            ResourceManager::GetShader(shaderName).SetMatrix4("projection", projection);
+        }
+    }
 
 }
 
