@@ -53,7 +53,8 @@ class Sprite {
         void removeState(SpriteState);
         void jump();
         void move(GLfloat dt);
-        virtual void die();
+        virtual void die() = 0;
+        virtual void takeDamage(GLint damage) = 0;
 
         GLboolean hasState(SpriteState);
     private:

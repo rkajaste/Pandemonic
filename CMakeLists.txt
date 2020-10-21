@@ -33,8 +33,10 @@ include_directories(
 	include/engine/camera/
 	include/engine/sprite/
 	include/engine/managers/
+	include/engine/stores/
 	include/userInterface/
 	include/sprites/
+	include/stores/
 	submodules/glad/include/
 	submodules/glfw/include/
 	submodules/tmxparser/include/

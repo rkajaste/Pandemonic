@@ -70,7 +70,7 @@ void Sprite::handleCollision(const Tmx::Object* obj) {
                 obj->GetProperties().GetIntProperty("damage") == -1
             ) {
                 if (obj->GetType() == "water" && this->last_coords.y - this->hitboxSize.y >= objTop) {
-                    this->health = 0;
+                    this->takeDamage(this->maxHealth);
                 }
             }
         }
@@ -87,8 +87,6 @@ void Sprite::checkCollision()
         this->handleCollision(obj);
     }
 }
-
-void Sprite::die(){}
 
 void Sprite::draw(GLboolean debug)
 {

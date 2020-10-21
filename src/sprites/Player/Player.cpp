@@ -5,7 +5,7 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
     this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->animator = new Animator(this->spriteSize);
     this->respawnCoords = coords;
-    this->health = 100;
+    this->health = 50;
     this->maxHealth = 100;
     this->mana = 30;
     this->maxMana = 30;
@@ -29,6 +29,18 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
         }
     };
     this->cooldownManager = new CooldownManager(cooldowns);
+    this->updateStore();
+}
+
+void Player::updateStore()
+{
+    PlayerStatus status;
+    status.currentHP = this->health;
+    status.currentMP = this->mana;
+    status.maxHP = this->maxHealth;
+    status.maxMP = this->maxMana;
+
+    Store::setPlayerStatus(status);
 }
 
 void Player::update(GLfloat dt) {
@@ -217,8 +229,15 @@ void Player::handleAttacking()
     }
 }
 
+void Player::takeDamage(GLint damage)
+{
+    this->health -= damage;
+    this->updateStore();
+}
+
 void Player::die()
 {
     this->coords = this->respawnCoords;
     this->health = this->maxHealth;
+    this->updateStore();
 }

@@ -16,7 +16,8 @@ class UserInterfaceRenderer: public Renderer
         UserInterfaceRenderer();
 
         void drawComponent(std::string textureName, glm::vec2 position, glm::vec2 size);
-        void drawHealthBar(glm::vec2 position, glm::vec2 size);
+        void drawBar(glm::vec2 position, glm::vec2 size, glm::vec4 color, GLint maxValue = 0, GLint currentValue = 0);
+        GLfloat calculateBarWidth(GLfloat maxWidth, GLint maxValue, GLint currentValue);
     
     private:
         Shader statusBarShader;

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <algorithm>
+#include <glm/glm.hpp>
+#include <glad/glad.h>
 
 namespace Util{
     template <typename T>
@@ -19,5 +21,13 @@ namespace Util{
         }
 
         return s;
+    }
+
+    inline glm::vec4 formatRGB(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1.0f) {
+        GLfloat formattedRed = red / 255;
+        GLfloat formattedGreen = green / 255;
+        GLfloat formattedBlue = blue / 255;
+
+        return glm::vec4(formattedRed, formattedGreen, formattedBlue, alpha);
     }
 }

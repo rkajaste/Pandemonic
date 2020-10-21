@@ -5,18 +5,20 @@
 #include "Sprite.hpp"
 #include "Util.hpp"
 #include "Physics.hpp"
+#include "Store.hpp"
 
 
 class Player: public Sprite {
     public:
         Player(glm::vec2 coords, SpriteRenderer* renderer);
         glm::vec2 respawnCoords;
-        GLint mana;
-        GLint maxMana;
         void update(GLfloat);
         void handleInput(GLboolean keys[2048]);
 
     private:
+        GLint mana;
+        GLint maxMana;
+
         void handleIdling();
         void handleMoving(GLfloat dt);
         void handleJumping();
@@ -24,4 +26,6 @@ class Player: public Sprite {
         void handleAttacking();
         void checkMapObjectsCollisions();
         void die();
+        void takeDamage(GLint damage);
+        void updateStore();
 };
