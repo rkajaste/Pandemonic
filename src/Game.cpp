@@ -8,7 +8,7 @@ MapRenderer *mapRenderer;
 Camera *camera;
 
 Game::Game(GLuint width, GLuint height)
-	: state(GAME_START), keys(), width(width), height(height)
+	: state(MAIN_MENU), keys(), width(width), height(height)
 {
     this->player = NULL;
 }
@@ -78,6 +78,14 @@ void Game::loadTextures()
         uiPath + "hud/status_bar.png",
         "ui_status_bar"
     );
+    ResourceManager::LoadTexture(
+        uiPath + "main_menu/menu_frame.png",
+        "ui_menu_frame"
+    );
+    ResourceManager::LoadTexture(
+        uiPath + "main_menu/inactive.png",
+        "ui_inactive"
+    );
 }
 
 void Game::initRenderers()
@@ -89,38 +97,54 @@ void Game::initRenderers()
 
 void Game::init()
 {
+    Store::setGameState(this->state);
     this->loadShaders();
     this->loadTextures();
-    MapManager::loadMap("forest_west");
     this->initRenderers();
-
-    this->player = new Player(
-        MapManager::getPlayerSpawnPoint("loadgame"),
-        spriteRenderer
-    );
-
     this->userInterface = new UserInterface(uiRenderer);
-    camera = new Camera();
+
+    if (this->state == GAME_START) {
+        MapManager::loadMap("forest_west");
+
+        this->player = new Player(
+            MapManager::getPlayerSpawnPoint("loadgame"),
+            spriteRenderer
+        );
+
+        camera = new Camera();
+    }
+
 }
 
 void Game::update(GLfloat dt)
 {
-    this->player->update(dt);
-    camera->setPosition(this->player->coords);
+    this->userInterface->update();
+    if (this->state == GAME_START) {
+        this->player->update(dt);
+        camera->setPosition(this->player->coords);
+    }
 }
 
 void Game::processInput(GLfloat dt)
 {
-    this->player->handleInput(this->keys);
+    if (this->state == GAME_START) {
+        this->player->handleInput(this->keys);
+    }
 }
 
 void Game::render()
 {
-    mapRenderer->drawMap();
-    this->player->draw(Config::isDebugMode());
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     this->userInterface->draw();
+    if (this->state == GAME_START) {
+        mapRenderer->drawMap();
+        this->player->draw(Config::isDebugMode());
 
-    if(Config::isDebugMode()){
-        mapRenderer->debugMap();
+        if(Config::isDebugMode()){
+            mapRenderer->debugMap();
+        }
     }
+    glDisable(GL_BLEND);
 }

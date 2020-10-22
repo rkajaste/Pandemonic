@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 
+#include "types.hpp"
+
 namespace Util{
     template <typename T>
     inline bool existsInVector(T element, std::vector<T> vec) {

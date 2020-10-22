@@ -5,8 +5,11 @@
 #include <glm/glm.hpp>
 
 #include "UserInterfaceRenderer.hpp"
+#include "TextRenderer.hpp"
 #include "Util.hpp"
 #include "Store.hpp"
+#include "Config.hpp"
+#include "types.hpp"
 
 struct InterfaceComponent {
     std::string textureName;
@@ -20,9 +23,16 @@ class UserInterface {
         ~UserInterface();
         
         UserInterfaceRenderer* renderer;
+        TextRenderer* textRenderer;
         void draw();
-        void drawStatusBars();
+        void update();
 
     private:
         std::vector<InterfaceComponent> interfaceComponents;
+
+        GameState currentGameState;
+        void clearUI();
+        void drawStatusBars();
+        void setupMainMenu();
+        void setupInGameUI();
 };

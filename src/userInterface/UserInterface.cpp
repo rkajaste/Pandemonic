@@ -1,26 +1,79 @@
 #include "UserInterface.hpp"
 
 UserInterface::UserInterface(UserInterfaceRenderer* renderer) {
-
-    InterfaceComponent statusBar;
-    statusBar.textureName = "status_bar";
-    statusBar.coords = glm::vec2(50.0f, 20.0f);
-    statusBar.size = glm::vec2(232.0f, 89.0f);
-
     this->renderer = renderer;
-    this->interfaceComponents.push_back(statusBar);
+    this->textRenderer = new TextRenderer();
+    this->currentGameState = Store::getGameState();
+    setupMainMenu();
 }
 
-UserInterface::~UserInterface() {
+UserInterface::~UserInterface()
+{
     delete this->renderer;
+    delete this->textRenderer;
 }
+
+void UserInterface::update()
+{
+    GameState gameState = Store::getGameState();
+
+    if (gameState != currentGameState) {
+        currentGameState = gameState;
+        clearUI();
+        if (gameState == MAIN_MENU) {
+            setupMainMenu();
+        } else if (gameState == GAME_START) {
+            setupInGameUI();
+        }  
+    }
+}
+
 
 void UserInterface::draw()
 {
     for(const auto& component: this->interfaceComponents) {
         renderer->drawComponent(component.textureName, component.coords, component.size);
     }
-    drawStatusBars();
+    if (currentGameState == GAME_START) {
+        drawStatusBars();
+    }
+    this->textRenderer->drawText("Hello world", glm::vec2(100.0f, 100.0f), Util::formatRGB(100.0f, 100.0f, 100.0f));
+}
+
+void UserInterface::setupInGameUI()
+{
+    InterfaceComponent statusBar;
+    statusBar.textureName = "status_bar";
+    statusBar.coords = glm::vec2(50.0f, 20.0f);
+    statusBar.size = glm::vec2(232.0f, 89.0f);
+    this->interfaceComponents.push_back(statusBar);
+}
+
+void UserInterface::setupMainMenu()
+{
+    InterfaceComponent menuFrame;
+    menuFrame.textureName = "menu_frame";
+    menuFrame.size = glm::vec2(240.0f, 277.0f);
+    menuFrame.coords = glm::vec2(
+        Config::getScreenWidth() / 2 - menuFrame.size.x / 2,
+        Config::getScreenHeight() / 2 - menuFrame.size.y / 2
+    );
+
+    this->interfaceComponents.push_back(menuFrame);
+
+    InterfaceComponent menuButton;
+    menuButton.textureName = "inactive";
+    menuButton.size = glm::vec2(198.0f, 177.0f);
+    menuButton.coords = glm::vec2(
+        Config::getScreenWidth() / 2 - menuButton.size.x / 2,
+        Config::getScreenHeight() / 2 - menuButton.size.y / 2
+    );
+
+    this->interfaceComponents.push_back(menuButton);
+}
+
+void UserInterface::clearUI() {
+    this->interfaceComponents.clear();
 }
 
 void UserInterface::drawStatusBars()

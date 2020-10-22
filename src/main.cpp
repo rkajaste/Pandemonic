@@ -41,9 +41,6 @@ int main()
 
     // OpenGL configuration
     glViewport(0, 0, Config::getScreenWidth(), Config::getScreenHeight());
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     game = new Game(Config::getScreenWidth(), Config::getScreenHeight());
     // Initialize game
     game->init();
@@ -53,8 +50,6 @@ int main()
     GLfloat lastFrame = 0.0f;
     const GLfloat maxFPS = 144.0;
     const GLfloat maxPeriod = 1.0 / maxFPS;
-    // Start Game within Menu State
-    game->state = GAME_START;
 
     while (!glfwWindowShouldClose(window))
     {

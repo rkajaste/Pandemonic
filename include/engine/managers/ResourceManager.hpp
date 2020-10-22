@@ -41,6 +41,7 @@ public:
         int transitionFrameAmount = 0,
         GLfloat animationSpeed = 20.0f
     );
+    static Texture2D LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char* data);
     // Retrieves a stored texture
     static Texture2D GetTexture(std::string name);
     // Properly de-allocates all loaded resources

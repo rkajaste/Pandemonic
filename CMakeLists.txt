@@ -13,6 +13,7 @@ option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
 add_subdirectory(submodules/glfw)
 add_subdirectory(submodules/tmxparser)
+add_subdirectory(submodules/freetype)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -42,6 +43,7 @@ include_directories(
 	submodules/tmxparser/include/
 	submodules/glm/
 	submodules/stb/
+	submodules/freetype/include/
 )
 # Need to build tinyxml2 manually under tmxparser/third-party, because I do not know how to automate it
 # Run 'ldconfig' after building everything
@@ -49,6 +51,7 @@ set(ALL_LIBS
 	glfw
 	tmxparser
 	tinyxml2
+	freetype
 	ZLIB::ZLIB
 	stdc++fs
 	${GLAD_LIBRARIES}

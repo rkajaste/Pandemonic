@@ -8,12 +8,7 @@
 #include "Physics.hpp"
 #include "Animator.hpp"
 #include "CooldownManager.hpp"
-
-enum SpriteState {
-    IDLE, MOVING, JUMPING, FALLING, GROUNDED,
-    SWITCHING_STANCE, ATTACK_STANCE,
-    ATTACKING, AERIAL_ATTACKING
-};
+#include "types.hpp"
 
 class Sprite {
     public:

@@ -17,8 +17,8 @@
 #include "ResourceManager.hpp"
 #include "Camera.hpp"
 #include "Util.hpp"
+#include "types.hpp"
 
-enum GameState {GAME_START, MAIN_MENU};
 class Game
 {
     public:

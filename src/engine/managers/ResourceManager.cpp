@@ -44,6 +44,17 @@ Texture2D ResourceManager::LoadTexture(
     return Textures[name];
 }
 
+Texture2D ResourceManager::LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char* data)
+{
+        // Create Texture object
+    Texture2D texture;
+    texture.Internal_Format = GL_RED;
+    texture.Image_Format = GL_RED;
+    texture.Generate(width, height, data);
+    Textures[name] = texture;
+    return Textures[name];
+}
+
 Texture2D ResourceManager::GetTexture(std::string name)
 {
     return Textures[name];

@@ -23,3 +23,10 @@ struct TilesetInfo {
     std::vector<TilesetAnimation> animations;
 };
 
+enum GameState {GAME_START, MAIN_MENU};
+
+enum SpriteState {
+    IDLE, MOVING, JUMPING, FALLING, GROUNDED,
+    SWITCHING_STANCE, ATTACK_STANCE,
+    ATTACKING, AERIAL_ATTACKING
+};
