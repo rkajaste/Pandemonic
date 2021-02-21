@@ -1,0 +1,9 @@
+{
+    "test_dialog": [
+        {
+            "avatar": "player",
+            "name": "Test Name",
+            "text": "Hello, this is a test dialogue"
+        }
+    ]
+}

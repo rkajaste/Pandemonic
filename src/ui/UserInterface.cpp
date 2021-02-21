@@ -1,9 +1,10 @@
-#include "UserInterface.hpp"
+#include "ui/UserInterface.hpp"
 
 UserInterface::UserInterface(UserInterfaceRenderer* renderer) {
     this->renderer = renderer;
     this->textRenderer = new TextRenderer();
     this->currentGameState = Store::getGameState();
+
     setupMainMenu();
 }
 
@@ -11,11 +12,16 @@ UserInterface::~UserInterface()
 {
     delete this->renderer;
     delete this->textRenderer;
+    delete this->dialogBox;
 }
 
 void UserInterface::update()
 {
     GameState gameState = Store::getGameState();
+    
+    if (Store::isDialogOpen() && this->dialogBox == NULL) {
+        this->dialogBox = new DialogBox(Store::getDialogIdentifier());
+    }
 
     if (gameState != currentGameState) {
         currentGameState = gameState;
@@ -37,7 +43,9 @@ void UserInterface::draw()
     if (currentGameState == GAME_START) {
         drawStatusBars();
     }
-    this->textRenderer->drawText("Hello world", glm::vec2(100.0f, 100.0f), Util::formatRGB(100.0f, 100.0f, 100.0f));
+    if (Store::isDialogOpen() && dialogBox != NULL) {
+        dialogBox->draw(renderer);
+    }
 }
 
 void UserInterface::setupInGameUI()

@@ -1,4 +1,4 @@
-#include "TextRenderer.hpp"
+#include "engine/renderers/TextRenderer.hpp"
 
 TextRenderer::TextRenderer() {
     this->processGlyphs();
@@ -53,30 +53,30 @@ void TextRenderer::processGlyphs()
 void TextRenderer::drawText(std::string text, glm::vec2 position, glm::vec4 color)
 {
     this->shader.Use();
-    glm::mat4 model = glm::mat4(1.0f);
-    this->shader.SetMatrix4("view", glm::mat4(1.0f));
-    this->shader.SetVector4f("textColor", color);
-    glBindVertexArray(this->quadVAO);
     glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(this->quadVAO);
     // iterate through all characters
     std::string::const_iterator c;
     for (c = text.begin(); c != text.end(); c++)
     {
+        glm::mat4 model = glm::mat4(1.0f);
+        this->shader.SetMatrix4("view", glm::mat4(1.0f));
+        this->shader.SetVector4f("textColor", color);
         Character ch = characters[*c];
 
         Texture2D texture = ResourceManager::GetTexture(ch.textureName);
-        
         texture.Bind();
 
-        position.x += ch.bearing.x;
-        position.y -= ch.size.y - ch.bearing.y;
+        GLfloat positionX = position.x + ch.bearing.x;
+        GLfloat positionY = position.y - ch.bearing.y;
 
-        model = glm::translate(model, glm::vec3(position, 0.0f));
+        model = glm::translate(model, glm::vec3(positionX, positionY, 0.0f));
         model = glm::scale(model, glm::vec3(ch.size, 1.0f));
         this->shader.SetMatrix4("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
         position.x += ch.advance; 
     }
+
     glBindVertexArray(0);
 }

@@ -8,8 +8,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-#include "Renderer.hpp"
-#include "ResourceManager.hpp"
+#include "engine/renderers/Renderer.hpp"
+#include "engine/managers/ResourceManager.hpp"
 
 struct Character {
     std::string textureName;  // ID handle of the glyph texture

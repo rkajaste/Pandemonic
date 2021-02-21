@@ -12,11 +12,11 @@
 #include "SpriteRenderer.hpp"
 #include "MapRenderer.hpp"
 #include "Player.hpp"
-#include "UserInterface.hpp"
-#include "MapManager.hpp"
-#include "ResourceManager.hpp"
-#include "Camera.hpp"
-#include "Util.hpp"
+#include "ui/UserInterface.hpp"
+#include "engine/managers/MapManager.hpp"
+#include "engine/managers/ResourceManager.hpp"
+#include "engine/camera/Camera.hpp"
+#include "engine/common/Util.hpp"
 #include "types.hpp"
 
 class Game

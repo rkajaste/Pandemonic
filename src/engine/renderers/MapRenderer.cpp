@@ -49,7 +49,7 @@ void MapRenderer::drawTile(int index)
         GLfloat tileSize = 64.0f;
 
         // Initialize model matrix
-        glm::mat4 position = glm::mat4(1.0f);
+        glm::mat4 model = glm::mat4(1.0f);
 
         // Bind tileset texture
         if (tilesetInfo.animations.size() > 0) {
@@ -72,13 +72,13 @@ void MapRenderer::drawTile(int index)
         positionCoords.x *= tileSize;
         positionCoords.y *= tileSize;
 
-        position = glm::translate(position, glm::vec3(positionCoords, 0.0f));
-        position = glm::scale(position, glm::vec3(size, 1.0f));
+        model = glm::translate(model, glm::vec3(positionCoords, 0.0f));
+        model = glm::scale(model, glm::vec3(size, 1.0f));
 
         this->shader.SetVector2f("offset", texCoords);
         this->shader.SetVector2f("tileSize", glm::vec2(tileSize));
         this->shader.SetVector2f("tilesetDimensions", tilesetDimensions);
-        this->shader.SetMatrix4("position", position);
+        this->shader.SetMatrix4("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
         if (tilesetInfo.animations.size() > 0) {

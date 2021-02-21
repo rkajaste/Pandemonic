@@ -23,6 +23,12 @@ struct TilesetInfo {
     std::vector<TilesetAnimation> animations;
 };
 
+struct Dialog {
+    std::string avatar;
+    std::string name;
+    std::string text;
+};
+
 enum GameState {GAME_START, MAIN_MENU};
 
 enum SpriteState {

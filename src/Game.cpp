@@ -8,7 +8,7 @@ MapRenderer *mapRenderer;
 Camera *camera;
 
 Game::Game(GLuint width, GLuint height)
-	: state(MAIN_MENU), keys(), width(width), height(height)
+	: state(Store::getGameState()), keys(), width(width), height(height)
 {
     this->player = NULL;
 }
@@ -86,6 +86,10 @@ void Game::loadTextures()
         uiPath + "main_menu/inactive.png",
         "ui_inactive"
     );
+    ResourceManager::LoadTexture(
+        uiPath + "dialog/avatars/player.png",
+        "ui_dialog_avatar_player"
+    );
 }
 
 void Game::initRenderers()
@@ -97,6 +101,7 @@ void Game::initRenderers()
 
 void Game::init()
 {
+    Store::preload();   
     Store::setGameState(this->state);
     this->loadShaders();
     this->loadTextures();

@@ -4,12 +4,13 @@
 #include <string>
 #include <glm/glm.hpp>
 
-#include "UserInterfaceRenderer.hpp"
-#include "TextRenderer.hpp"
-#include "Util.hpp"
-#include "Store.hpp"
+#include "engine/renderers/UserInterfaceRenderer.hpp"
+#include "engine/renderers/TextRenderer.hpp"
+#include "engine/common/Util.hpp"
+#include "store/Store.hpp"
 #include "Config.hpp"
-#include "types.hpp"
+#include "engine/common/types.hpp"
+#include "ui/popups/DialogBox.hpp"
 
 struct InterfaceComponent {
     std::string textureName;
@@ -29,6 +30,7 @@ class UserInterface {
 
     private:
         std::vector<InterfaceComponent> interfaceComponents;
+        DialogBox* dialogBox;
 
         GameState currentGameState;
         void clearUI();

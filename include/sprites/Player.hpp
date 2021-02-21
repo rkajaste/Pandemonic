@@ -5,7 +5,7 @@
 #include "Sprite.hpp"
 #include "Util.hpp"
 #include "Physics.hpp"
-#include "Store.hpp"
+#include "store/Store.hpp"
 
 
 class Player: public Sprite {
