@@ -146,6 +146,14 @@ void Player::handleInput(GLboolean keys[2048]) {
             }
         }
     }
+
+    if (keys[GLFW_KEY_E]) {
+        if (Store::isDialogOpen()) {
+            Store::closeDialog();
+        } else {
+            Store::openDialog(std::string("test_dialog"));
+        }
+    }
 }
 
 void Player::handleIdling()

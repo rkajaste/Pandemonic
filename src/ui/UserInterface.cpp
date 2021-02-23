@@ -3,9 +3,8 @@
 UserInterface::UserInterface(UserInterfaceRenderer* renderer) {
     this->renderer = renderer;
     this->textRenderer = new TextRenderer();
-    this->currentGameState = Store::getGameState();
-
-    setupMainMenu();
+    this->currentGameState = GameState::MAIN_MENU;
+    this->dialogBox = NULL;
 }
 
 UserInterface::~UserInterface()
@@ -44,7 +43,7 @@ void UserInterface::draw()
         drawStatusBars();
     }
     if (Store::isDialogOpen() && dialogBox != NULL) {
-        dialogBox->draw(renderer);
+        dialogBox->draw();
     }
 }
 

@@ -31,8 +31,8 @@ class UserInterface {
     private:
         std::vector<InterfaceComponent> interfaceComponents;
         DialogBox* dialogBox;
-
         GameState currentGameState;
+
         void clearUI();
         void drawStatusBars();
         void setupMainMenu();

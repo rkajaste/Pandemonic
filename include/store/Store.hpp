@@ -32,6 +32,7 @@ class Store {
         static std::string getDialogIdentifier();
         static bool isDialogOpen();
         static void openDialog(std::string identifier);
+        static void closeDialog();
 
         static void preload();
     private:

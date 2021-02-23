@@ -63,13 +63,18 @@ int main()
             game->processInput(deltaTime);
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
+            glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
+            glClearDepth(1.0f);
+            glEnable(GL_CULL_FACE);
+            glEnable(GL_BLEND);
+            glEnable(GL_DEPTH_TEST); 
+            glDepthFunc(GL_LEQUAL);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             // Update Game state
             game->update(deltaTime);
             game->render();
 
-
+            glDisable(GL_BLEND);
             glfwSwapBuffers(window);
             glfwPollEvents();
         }

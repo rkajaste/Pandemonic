@@ -41,6 +41,12 @@ void Store::openDialog(std::string identifier)
     dialogData.isOpen = true;
 }
 
+void Store::closeDialog()
+{
+    dialogData.identifier = "";
+    dialogData.isOpen = false;
+}
+
 std::vector<Dialog> Store::getDialogByIdentifier(std::string identifier)
 {
     Json::Value dialogJson = dialogs[identifier];

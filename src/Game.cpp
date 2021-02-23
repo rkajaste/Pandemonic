@@ -90,6 +90,10 @@ void Game::loadTextures()
         uiPath + "dialog/avatars/player.png",
         "ui_dialog_avatar_player"
     );
+    ResourceManager::LoadTexture(
+        uiPath + "dialog/box.png",
+        "ui_dialog_box"
+    );
 }
 
 void Game::initRenderers()
@@ -101,7 +105,7 @@ void Game::initRenderers()
 
 void Game::init()
 {
-    Store::preload();   
+    Store::preload();
     Store::setGameState(this->state);
     this->loadShaders();
     this->loadTextures();
@@ -139,9 +143,6 @@ void Game::processInput(GLfloat dt)
 
 void Game::render()
 {
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     this->userInterface->draw();
     if (this->state == GAME_START) {
         mapRenderer->drawMap();
@@ -151,5 +152,4 @@ void Game::render()
             mapRenderer->debugMap();
         }
     }
-    glDisable(GL_BLEND);
 }
