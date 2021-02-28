@@ -1,6 +1,6 @@
 #include <string>
 
-#include "store/Store.hpp"
+#include "store/DialogStore.hpp"
 #include "engine/renderers/TextRenderer.hpp"
 #include "engine/renderers/UserInterfaceRenderer.hpp"
 #include "engine/renderers/DialogBoxRenderer.hpp"

@@ -11,7 +11,7 @@ void UserInterfaceRenderer::drawComponent(std::string textureName, glm::vec2 pos
     // Prepare transformations
     this->shader.Use();
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position, 0.0f));
+    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::USER_INTERFACE]));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 
     Texture2D texture = ResourceManager::GetTexture("ui_" + textureName);
@@ -46,7 +46,7 @@ void UserInterfaceRenderer::drawBar(glm::vec2 position, glm::vec2 size, glm::vec
     }
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position, 0.0f));
+    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::USER_INTERFACE]));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 
     this->statusBarShader.SetMatrix4("model", model);

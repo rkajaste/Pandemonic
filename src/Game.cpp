@@ -103,17 +103,23 @@ void Game::initRenderers()
     uiRenderer = new UserInterfaceRenderer();
 }
 
-void Game::init()
+void Game::preload()
 {
-    Store::preload();
-    Store::setGameState(this->state);
+    DialogStore::preload();
     this->loadShaders();
     this->loadTextures();
+}
+
+void Game::init()
+{
+    this->preload();
+    Store::setGameState(this->state);
+   
     this->initRenderers();
     this->userInterface = new UserInterface(uiRenderer);
 
     if (this->state == GAME_START) {
-        MapManager::loadMap("forest_west");
+        MapManager::loadMap("home_village");
 
         this->player = new Player(
             MapManager::getPlayerSpawnPoint("loadgame"),

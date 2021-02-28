@@ -18,8 +18,11 @@ void UserInterface::update()
 {
     GameState gameState = Store::getGameState();
     
-    if (Store::isDialogOpen() && this->dialogBox == NULL) {
-        this->dialogBox = new DialogBox(Store::getDialogIdentifier());
+    if (DialogStore::isDialogOpen() && this->dialogBox == NULL) {
+        this->dialogBox = new DialogBox(DialogStore::getDialogIdentifier());
+    } else if (!DialogStore::isDialogOpen()) {
+        delete this->dialogBox;
+        this->dialogBox = NULL;
     }
 
     if (gameState != currentGameState) {
@@ -42,7 +45,7 @@ void UserInterface::draw()
     if (currentGameState == GAME_START) {
         drawStatusBars();
     }
-    if (Store::isDialogOpen() && dialogBox != NULL) {
+    if (DialogStore::isDialogOpen() && dialogBox != NULL) {
         dialogBox->draw();
     }
 }
@@ -85,11 +88,11 @@ void UserInterface::clearUI() {
 
 void UserInterface::drawStatusBars()
 {
-    PlayerStatus playerStatus = Store::getPlayerStatus();
+    PlayerStats playerStats = PlayerStore::getPlayerStats();
 
     renderer->drawBar(glm::vec2(108.0f, 53.0f), glm::vec2(149.0f, 16.0f), Util::formatRGB(237.0f, 55.0f, 55.0f, 0.5f));
-    renderer->drawBar(glm::vec2(108.0f, 53.0f), glm::vec2(149.0f, 16.0f), Util::formatRGB(237.0f, 55.0f, 55.0f, 0.9f), playerStatus.maxHP, playerStatus.currentHP);
+    renderer->drawBar(glm::vec2(108.0f, 53.0f), glm::vec2(149.0f, 16.0f), Util::formatRGB(237.0f, 55.0f, 55.0f, 0.9f), playerStats.maxHP, playerStats.currentHP);
 
     renderer->drawBar(glm::vec2(108.0f, 73.0f), glm::vec2(110.0f, 12.0f), Util::formatRGB(55.0f, 131.0f, 237.0f, 0.5f));
-    renderer->drawBar(glm::vec2(108.0f, 73.0f), glm::vec2(110.0f, 12.0f), Util::formatRGB(55.0f, 131.0f, 237.0f, 0.9f), playerStatus.maxMP, playerStatus.currentMP);
+    renderer->drawBar(glm::vec2(108.0f, 73.0f), glm::vec2(110.0f, 12.0f), Util::formatRGB(55.0f, 131.0f, 237.0f, 0.9f), playerStats.maxMP, playerStats.currentMP);
 }

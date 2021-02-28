@@ -26,6 +26,13 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
                 { "timer", 0.0f },
                 { "cooldown", 200.0f }
             }
+        },
+        {
+            "dialog",
+            {
+                { "timer", 0.0f },
+                { "cooldown", 90.0f }
+            }
         }
     };
     this->cooldownManager = new CooldownManager(cooldowns);
@@ -34,13 +41,13 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
 
 void Player::updateStore()
 {
-    PlayerStatus status;
+    PlayerStats status;
     status.currentHP = this->health;
     status.currentMP = this->mana;
     status.maxHP = this->maxHealth;
     status.maxMP = this->maxMana;
 
-    Store::setPlayerStatus(status);
+    PlayerStore::setPlayerStats(status);
 }
 
 void Player::update(GLfloat dt) {
@@ -78,24 +85,35 @@ void Player::update(GLfloat dt) {
 }
 
 void Player::checkMapObjectsCollisions() {
-    for (const auto& interactionObj: MapManager::getInteractionObjects()) {
-        glm::vec2 objSize(interactionObj->GetWidth(), interactionObj->GetHeight());
-        glm::vec2 objCoords(interactionObj->GetX(), interactionObj->GetY());
+    for (const auto& mapObject: MapManager::getInteractionObjects()) {
+        glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
+        glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
 
         if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
             // do something
         }
     }
-    for (const auto& levelTransitionObject: MapManager::getLevelTransitionObjects()) {
-        glm::vec2 objSize(levelTransitionObject->GetWidth(), levelTransitionObject->GetHeight());
-        glm::vec2 objCoords(levelTransitionObject->GetX(), levelTransitionObject->GetY());
+
+    for (const auto& mapObject: MapManager::getLevelTransitionObjects()) {
+        glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
+        glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
 
         if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
-            const std::string levelTransition = levelTransitionObject->GetProperties().GetStringProperty("level_transition");
-            const std::string playerSpawn = levelTransitionObject->GetProperties().GetStringProperty("player_spawn");
+            const std::string levelTransition = mapObject->GetProperties().GetStringProperty("level_transition");
+            const std::string playerSpawn = mapObject->GetProperties().GetStringProperty("player_spawn");
             MapManager::loadMap(levelTransition);
             this->coords = MapManager::getPlayerSpawnPoint(playerSpawn);
             this->respawnCoords = this->coords;
+        }
+    }
+
+    for (const auto& mapObject: MapManager::getNpcObjects()) {
+        glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
+        glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
+
+        if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
+            std::string dialogueIdentifier = mapObject->GetProperties().GetStringProperty("dialogue");
+            DialogStore::setDialogIdentifer(dialogueIdentifier);
         }
     }
 }
@@ -147,11 +165,17 @@ void Player::handleInput(GLboolean keys[2048]) {
         }
     }
 
-    if (keys[GLFW_KEY_E]) {
-        if (Store::isDialogOpen()) {
-            Store::closeDialog();
-        } else {
-            Store::openDialog(std::string("test_dialog"));
+    if (keys[GLFW_KEY_E] && DialogStore::getDialogIdentifier() != "") {
+        if (!this->cooldownManager->hasCooldown("dialog")) {
+            if (DialogStore::isDialogOpen()) {
+                DialogStore::advanceDialog();
+                if (DialogStore::isDialogFinished()) {
+                    DialogStore::closeDialog();
+                }
+            } else {
+                DialogStore::openDialog();
+            }
+            this->cooldownManager->setCooldown("dialog");
         }
     }
 }

@@ -5,7 +5,8 @@
 #include "Sprite.hpp"
 #include "Util.hpp"
 #include "Physics.hpp"
-#include "store/Store.hpp"
+#include "store/PlayerStore.hpp"
+#include "store/DialogStore.hpp"
 
 
 class Player: public Sprite {
@@ -18,6 +19,7 @@ class Player: public Sprite {
     private:
         GLint mana;
         GLint maxMana;
+        
 
         void handleIdling();
         void handleMoving(GLfloat dt);

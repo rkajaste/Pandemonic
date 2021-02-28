@@ -22,14 +22,15 @@ void Camera::setPosition(glm::vec2 playerCoords)
 void Camera::contain(glm::vec2 playerCoords)
 {
     const GLfloat playerAndTileHeight = 128.0f + 64.0f;
-
-    if(playerCoords.x < Config::getScreenWidth() / 2) {
+    DialogStore::setDialogPositionBottom();
+    if (playerCoords.x < Config::getScreenWidth() / 2) {
         this->position.x = 0.0f;
     }
-    if(playerCoords.x > MapManager::getWorldWidth() - Config::getScreenWidth() / 2) {
+    if (playerCoords.x > MapManager::getWorldWidth() - Config::getScreenWidth() / 2) {
         this->position.x = -MapManager::getWorldWidth() + Config::getScreenWidth();
     }
-    if(playerCoords.y + this->offset.y >= MapManager::getWorldHeight() - playerAndTileHeight) {
+    if (playerCoords.y + this->offset.y >= MapManager::getWorldHeight() - playerAndTileHeight) {
         this->position.y = -MapManager::getWorldHeight() + Config::getScreenHeight();
+        DialogStore::setDialogPositionTop();
     }
 }

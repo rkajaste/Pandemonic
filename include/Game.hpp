@@ -17,6 +17,8 @@
 #include "engine/managers/ResourceManager.hpp"
 #include "engine/camera/Camera.hpp"
 #include "engine/common/Util.hpp"
+#include "store/Store.hpp"
+#include "store/DialogStore.hpp"
 #include "types.hpp"
 
 class Game
@@ -37,6 +39,7 @@ class Game
         void update(GLfloat dt);
         void render();
     private:
+        void preload();
         void loadShaders();
         void loadTextures();
         void initRenderers();

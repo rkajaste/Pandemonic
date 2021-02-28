@@ -4,6 +4,21 @@
             "avatar": "player",
             "name": "Test Name",
             "text": "Hello, this is a test dialogue"
+        },
+        {
+            "avatar": "player",
+            "name": "Test Name",
+            "text": "This is line 2"
+        },
+        {
+            "avatar": "player",
+            "name": "Test Name",
+            "text": "This is line 3"
+        },
+        {
+            "avatar": "player",
+            "name": "Test Name",
+            "text": "Phew, glad this is over"
         }
     ]
 }

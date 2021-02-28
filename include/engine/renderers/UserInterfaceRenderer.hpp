@@ -11,6 +11,7 @@
 #include "Animator.hpp"
 #include "Renderer.hpp"
 #include "Config.hpp"
+#include "engine/common/Constants.hpp"
 
 class UserInterfaceRenderer: public Renderer
 {

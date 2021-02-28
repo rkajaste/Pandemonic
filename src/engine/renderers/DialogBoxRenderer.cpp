@@ -11,7 +11,7 @@ void DialogBoxRenderer::drawDialogBox(glm::vec2 position, glm::vec2 size)
     this->shader.Use();
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::USER_INTERFACE]));
+    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::POPUP]));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 
     this->shader.SetMatrix4("model", model);
@@ -36,7 +36,7 @@ void DialogBoxRenderer::drawDialogBoxAvatar(
     this->shader.Use();
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::USER_INTERFACE]));
+    model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::POPUP]));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 
     this->shader.SetMatrix4("model", model);
