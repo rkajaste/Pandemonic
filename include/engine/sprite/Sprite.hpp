@@ -9,6 +9,7 @@
 #include "Animator.hpp"
 #include "CooldownManager.hpp"
 #include "types.hpp"
+#include "store/MapStore.hpp"
 
 class Sprite {
     public:

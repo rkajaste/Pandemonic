@@ -5,8 +5,9 @@
 #include <glm/glm.hpp>
 
 struct TileLocationInfo {
-    glm::vec2 coords;
     int gid;
+    glm::vec2 coords;
+    std::string layer;
 };
 
 struct TilesetAnimation {

@@ -7,6 +7,7 @@ const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
 std::vector<std::string> MapManager::maps;
 std::vector<TileLocationInfo> MapManager::tileLocationInfoArray;
 std::vector<TilesetInfo> MapManager::tilesetInfoArray;
+std::vector<std::string> MapManager::visibleLayers;
 GLfloat MapManager::worldHeight;
 GLfloat MapManager::worldWidth;
 std::string MapManager::currentMap;
@@ -29,6 +30,7 @@ void MapManager::clearMapInfo()
     interactionObjects.clear();
     levelTransitionObjects.clear();
     deathObjects.clear();
+    visibleLayers.clear();
 }
 
 void MapManager::loadMap(std::string mapToLoad)
@@ -123,6 +125,10 @@ void MapManager::loadMap(std::string mapToLoad)
     {
         const Tmx::TileLayer *tileLayer = map->GetTileLayer(i);
 
+        if (tileLayer->IsVisible()) {
+            visibleLayers.push_back(tileLayer->GetName());
+        }
+
         for (int y = 0; y < tileLayer->GetHeight(); ++y)
         {
             for (int x = 0; x < tileLayer->GetWidth(); ++x)
@@ -132,6 +138,7 @@ void MapManager::loadMap(std::string mapToLoad)
                     TileLocationInfo tileLocationInfo;
                     tileLocationInfo.coords = glm::vec2(x, y);
                     tileLocationInfo.gid = tileLayer->GetTileGid(x, y);
+                    tileLocationInfo.layer = tileLayer->GetName();
                     tileLocationInfoArray.push_back(tileLocationInfo);
                 }
             }
@@ -143,11 +150,10 @@ void MapManager::loadMap(std::string mapToLoad)
         const std::string objectLayer = objectGroup->GetName();
         for (int j = 0; j < objectGroup->GetNumObjects(); ++j)
         {
-
             const Tmx::Object *object = objectGroup->GetObject(j);
 
             if (objectLayer == "terrain") {
-                if (object->GetName() == "blockers") {
+                if (object->GetName() == "blocker") {
                     terrainObjects.push_back(object);
                 }
             } else if (objectLayer == "spawn_points") {
@@ -203,6 +209,25 @@ GLfloat MapManager::getWorldWidth()
 std::string MapManager::getCurrentMap()
 {
     return currentMap;
+}
+
+std::vector<std::string> MapManager::getVisibleLayers()
+{
+    return visibleLayers;
+}
+
+void MapManager::setLayerVisibility(std::string layer, bool isVisible)
+{
+    if (isVisible) {
+        if (!Util::existsInVector(layer, visibleLayers)) {
+            visibleLayers.push_back(layer);
+        }
+    } else {
+        if (Util::existsInVector(layer, visibleLayers)) {
+            int index = Util::findIndexOfVectorElement(layer, visibleLayers);
+            visibleLayers.erase(visibleLayers.begin() + index);
+        }
+    }
 }
 
 glm::vec2 MapManager::getPlayerSpawnPoint(std::string name)

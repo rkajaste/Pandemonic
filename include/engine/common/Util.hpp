@@ -12,6 +12,20 @@ namespace Util{
         return std::find(vec.begin(), vec.end(), element) != vec.end();
     }
 
+    template <typename T>
+    inline int findIndexOfVectorElement(T element, std::vector<T> vec) {
+        auto it = find(vec.begin(), vec.end(), element);
+        // If element was found
+        if (it != vec.end()) 
+        {
+        
+            int index = it - vec.begin();
+            return index;
+        }
+
+        return -1;
+    }
+
     inline std::string getStringAfterLastDelimiter(std::string str, std::string delimiter) {
         std::string s = str;
 

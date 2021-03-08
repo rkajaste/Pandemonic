@@ -21,6 +21,9 @@ class MapManager {
         static std::vector<std::string> getMaps();
         static std::vector<TilesetInfo> getTilesetInfoArray();
         static std::vector<TileLocationInfo> getTileLocationInfoArray();
+        static std::vector<std::string> getVisibleLayers();
+        static void setLayerVisibility(std::string, bool isVisible);
+
         static GLfloat getWorldHeight();
         static GLfloat getWorldWidth();
         static std::string getCurrentMap();
@@ -39,6 +42,8 @@ class MapManager {
         static std::vector<std::string> maps;
         static std::vector<TilesetInfo> tilesetInfoArray;
         static std::vector<TileLocationInfo> tileLocationInfoArray;
+        static std::vector<std::string> visibleLayers;
+
         static GLfloat worldHeight;
         static GLfloat worldWidth;
         static std::string currentMap;

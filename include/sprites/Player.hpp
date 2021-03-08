@@ -7,7 +7,7 @@
 #include "Physics.hpp"
 #include "store/PlayerStore.hpp"
 #include "store/DialogStore.hpp"
-
+#include "store/MapStore.hpp"
 
 class Player: public Sprite {
     public:
@@ -19,8 +19,8 @@ class Player: public Sprite {
     private:
         GLint mana;
         GLint maxMana;
+        std::string collidedEntrance;
         
-
         void handleIdling();
         void handleMoving(GLfloat dt);
         void handleJumping();

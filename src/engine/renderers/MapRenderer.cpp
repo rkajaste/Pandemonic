@@ -94,9 +94,14 @@ void MapRenderer::drawMap()
 {
     this->shader.Use();
     glBindVertexArray(this->quadVAO);
+
     // Iterate over every tile and draw them
-    for(unsigned int i = 0; i < MapManager::getTileLocationInfoArray().size(); ++i) {
-        this->drawTile(i);
+    std::vector<TileLocationInfo> tileLocationInfo = MapManager::getTileLocationInfoArray();
+    for(unsigned int i = 0; i < tileLocationInfo.size(); ++i) {
+        bool isLayerVisible = Util::existsInVector(tileLocationInfo.at(i).layer, MapManager::getVisibleLayers());
+        if (isLayerVisible) {
+            this->drawTile(i);
+        }
     }
     glBindVertexArray(0);
 }

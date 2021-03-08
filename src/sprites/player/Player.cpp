@@ -33,7 +33,14 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
                 { "timer", 0.0f },
                 { "cooldown", 90.0f }
             }
-        }
+        },
+        {
+            "entrance_interaction",
+            {
+                { "timer", 0.0f },
+                { "cooldown", 30.0f}
+            }
+        },
     };
     this->cooldownManager = new CooldownManager(cooldowns);
     this->updateStore();
@@ -85,12 +92,18 @@ void Player::update(GLfloat dt) {
 }
 
 void Player::checkMapObjectsCollisions() {
+    DialogStore::setDialogIdentifer("");
+    this->collidedEntrance = "";
+
     for (const auto& mapObject: MapManager::getInteractionObjects()) {
         glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
         glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
 
         if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
             // do something
+            if (mapObject->GetName() == "entrance") {
+                this->collidedEntrance = mapObject->GetProperties().GetStringProperty("entrance_to");
+            }
         }
     }
 
@@ -165,19 +178,39 @@ void Player::handleInput(GLboolean keys[2048]) {
         }
     }
 
-    if (keys[GLFW_KEY_E] && DialogStore::getDialogIdentifier() != "") {
-        if (!this->cooldownManager->hasCooldown("dialog")) {
-            if (DialogStore::isDialogOpen()) {
-                DialogStore::advanceDialog();
-                if (DialogStore::isDialogFinished()) {
-                    DialogStore::closeDialog();
+    if (keys[GLFW_KEY_E]) {
+        if (DialogStore::getDialogIdentifier() != "") {
+            if (!this->cooldownManager->hasCooldown("dialog")) {
+                if (DialogStore::isDialogOpen()) {
+                    DialogStore::advanceDialog();
+                    if (DialogStore::isDialogFinished()) {
+                        DialogStore::closeDialog();
+                    }
+                } else {
+                    DialogStore::openDialog();
                 }
-            } else {
-                DialogStore::openDialog();
+                this->cooldownManager->setCooldown("dialog");
             }
-            this->cooldownManager->setCooldown("dialog");
         }
-    }
+        if (this->collidedEntrance != "" && !this->cooldownManager->hasCooldown("entrance_interaction")) {
+            bool playerHasEntered = Util::existsInVector(MapStore::getCollisionContext(), MapManager::getVisibleLayers());
+
+            if (!playerHasEntered) {
+                MapStore::setCollisionContext(this->collidedEntrance);
+            }
+            std::string interiorLayer = MapStore::getCollisionContext();
+            std::string exteriorLayer = interiorLayer.substr(0, interiorLayer.find("_interior"));
+
+            MapManager::setLayerVisibility(interiorLayer, !playerHasEntered);
+            MapManager::setLayerVisibility(exteriorLayer, playerHasEntered);
+
+            if (playerHasEntered) {
+                MapStore::setCollisionContext("");
+            }
+
+            this->cooldownManager->setCooldown("entrance_interaction");
+        }
+    } 
 }
 
 void Player::handleIdling()

@@ -38,30 +38,34 @@ void Sprite::handleCollision(const Tmx::Object* obj) {
     float objRight = objCoords.x + objSize.x;
 
     if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize)) {
-        if (obj->GetName() == "blockers") {
-            std::string blockersProp = obj->GetProperties().GetStringProperty("blockers");
-            if (
-                blockersProp.find("t") != std::string::npos &&
-                this->last_coords.y <= objTop
-            ) {
-                this->coords.y = objTop;
-                this->addState(GROUNDED);
-                this->removeState(FALLING);
-            } 
-            if (
-                blockersProp.find("b") != std::string::npos &&
-                this->last_coords.y - this->hitboxSize.y >= objBottom
-            ) {
-                this->coords.y = objBottom + this->hitboxSize.y;
-                this->gravityForce = 0.0f;
-            } 
-            if (blockersProp.find("l") != std::string::npos &&
-                this->last_coords.x + this->hitboxSize.x <= objLeft) {
-                this->coords.x = objCoords.x - this->hitboxSize.x;
-            }
-            if (blockersProp.find("r") != std::string::npos &&
-                this->last_coords.x >= objRight) {
-                this->coords.x = objCoords.x + objSize.x;
+        if (obj->GetName() == "blocker") {
+            std::string blockerType = obj->GetType();
+            std::string context = obj->GetProperties().GetStringProperty("collision_context");
+
+            if (context == MapStore::getCollisionContext() || context == "") {
+                if (
+                    blockerType.find("t") != std::string::npos &&
+                    this->last_coords.y <= objTop
+                ) {
+                    this->coords.y = objTop;
+                    this->addState(GROUNDED);
+                    this->removeState(FALLING);
+                } 
+                if (
+                    blockerType.find("b") != std::string::npos &&
+                    this->last_coords.y >= objBottom
+                ) {
+                    this->coords.y = objBottom + objSize.y * 2;
+                    this->gravityForce = 0.0f;
+                } 
+                if (blockerType.find("l") != std::string::npos &&
+                    this->last_coords.x + this->hitboxSize.x <= objLeft) {
+                    this->coords.x = objCoords.x - this->hitboxSize.x;
+                }
+                if (blockerType.find("r") != std::string::npos &&
+                    this->last_coords.x >= objRight) {
+                    this->coords.x = objCoords.x + objSize.x;
+                }
             }
         }
 
