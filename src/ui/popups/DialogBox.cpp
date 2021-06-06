@@ -19,20 +19,41 @@ DialogBox::DialogBox(std::string identifier)
     this->namePosition = glm::vec2(avatarPosition.x + avatarSize.x + 80.0f, avatarPosition.y);
 
     this->dialogTextPosition = glm::vec2(namePosition.x, namePosition.y + 80.0f);
+
+    Cooldowns cooldowns = {
+        {
+            "debounce_text", 
+            {
+                { "timer", 5.0f },
+                { "cooldown", 5.0f }
+            }
+        }
+    };
+    this->cooldownManager = new CooldownManager(cooldowns);
 }
 
 DialogBox::~DialogBox()
 {
+    delete this->cooldownManager;
     delete this->textRenderer;
     delete this->renderer;
+}
+
+void DialogBox::update(GLfloat dt)
+{
+    this->cooldownManager->advanceCooldowns(dt);
+    if (!this->cooldownManager->hasCooldown("debounce_text")) {
+        DialogStore::incrementDebounceIndex();
+        this->cooldownManager->setCooldown("debounce_text");
+    }
 }
 
 void DialogBox::draw()
 {
     Dialog currentLine = dialogLines.at(DialogStore::getCurrentLine());
 
-    renderer->drawDialogBox(dialogPosition, dialogSize);
-    renderer->drawDialogBoxAvatar(
+    this->renderer->drawDialogBox(dialogPosition, dialogSize);
+    this->renderer->drawDialogBoxAvatar(
         avatarPosition,
         avatarSize,
         "ui_dialog_avatar_" + currentLine.avatar
@@ -43,9 +64,9 @@ void DialogBox::draw()
 
 void DialogBox::debounceDialogText(std::string text)
 {
-    // add debounce later
-    textRenderer->drawText(
-        text,
+    std::string substring = text.substr(0, DialogStore::getDebounceIndex());
+    this->textRenderer->drawText(
+        substring,
         dialogTextPosition,
         Util::formatRGB(100.0f, 100.0f, 100.0f)
     );
@@ -53,7 +74,7 @@ void DialogBox::debounceDialogText(std::string text)
 
 void DialogBox::drawName(std::string name)
 {
-    textRenderer->drawText(
+    this->textRenderer->drawText(
         name,
         namePosition,
         Util::formatRGB(100.0f, 100.0f, 100.0f)

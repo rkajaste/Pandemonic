@@ -27,8 +27,8 @@ class UserInterface {
         
         UserInterfaceRenderer* renderer;
         TextRenderer* textRenderer;
+        void update(GLfloat dt);
         void draw();
-        void update();
 
     private:
         std::vector<InterfaceComponent> interfaceComponents;

@@ -2,7 +2,13 @@
 
 Json::Value DialogStore::dialogs;
 std::string DialogStore::dialogPosition = "bottom";
-DialogData DialogStore::dialogData = { false, "", false, 0 };
+DialogData DialogStore::dialogData = {
+    false, // isOpen
+    "", // identifier
+    false, // isFinished
+    0 // currentLine
+};
+int DialogStore::debounceIndex = 0;
 
 void DialogStore::preload()
 {
@@ -19,6 +25,24 @@ std::string DialogStore::getDialogIdentifier()
 int DialogStore::getCurrentLine()
 {
     return dialogData.currentLine;
+}
+
+int DialogStore::getDebounceIndex()
+{
+
+    return debounceIndex;
+}
+
+bool DialogStore::hasDebounceFinished()
+{
+    int dialogueLineLength = getDialogByIdentifier(dialogData.identifier)[getCurrentLine()].text.length();
+    return debounceIndex >= dialogueLineLength;
+}
+
+void DialogStore::skipDebounce()
+{
+    int dialogueLineLength = getDialogByIdentifier(dialogData.identifier)[getCurrentLine()].text.length();
+    debounceIndex = dialogueLineLength;
 }
 
 bool DialogStore::isDialogFinished()
@@ -41,9 +65,17 @@ void DialogStore::openDialog()
     dialogData.isOpen = true;
 }
 
+void DialogStore::incrementDebounceIndex()
+{
+    if (!hasDebounceFinished()) {
+        debounceIndex++;
+    }
+}
+
 void DialogStore::advanceDialog()
 {
-    if (dialogs[dialogData.identifier].size() > dialogData.currentLine + 1) {
+    if (dialogData.currentLine < dialogs[dialogData.identifier].size() - 1) {
+        debounceIndex = 0;
         dialogData.currentLine++;
     } else {
         dialogData.isFinished = true;
@@ -56,6 +88,7 @@ void DialogStore::closeDialog()
     dialogData.isOpen = false;
     dialogData.isFinished = false;
     dialogData.currentLine = 0;
+    debounceIndex = 0;
 }
 
 std::vector<Dialog> DialogStore::getDialogByIdentifier(std::string identifier)
@@ -67,7 +100,7 @@ std::vector<Dialog> DialogStore::getDialogByIdentifier(std::string identifier)
         itr != dialogJson.end();
         itr++
     ) {
-        const Json::Value &dialogObject= *itr;
+        const Json::Value &dialogObject = *itr;
         Dialog dialogueLine = {
             dialogObject[std::string("avatar")].asString(),
             dialogObject[std::string("name")].asString(),

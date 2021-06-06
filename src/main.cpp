@@ -35,8 +35,6 @@ int main()
     gladLoadGL();
     fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
 
-    //enable vsync
-
     glfwSetKeyCallback(window, key_callback);
 
     // OpenGL configuration
@@ -46,21 +44,30 @@ int main()
     game->init();
 
     // DeltaTime variables
-    GLfloat deltaTime = 0.0f;
-    GLfloat lastFrame = 0.0f;
-    const GLfloat maxFPS = 144.0;
-    const GLfloat maxPeriod = 1.0 / maxFPS;
+    GLfloat lastFrameTime = 0.0f;
+    GLfloat accumulator = 0.0f;
+    GLfloat dt = 0.01f;
 
+    const double maxFPS = 60.0f;
+    const double maxPeriod = 1.0 / maxFPS;
     while (!glfwWindowShouldClose(window))
     {
         // Calculate delta time
-        GLfloat currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
+        GLfloat newFrameTime = glfwGetTime();
+        GLfloat frameTime = newFrameTime - lastFrameTime;
+        if( frameTime >= maxPeriod ) {
+            if (frameTime > 0.25f) {
+                frameTime = 0.25f;
+            }
+            lastFrameTime = newFrameTime;
+            accumulator += frameTime;
 
-        if(deltaTime >= maxPeriod) {
-            lastFrame = currentFrame;
-            // Manage user input
-            game->processInput(deltaTime);
+            while (accumulator >= dt) {
+                // Manage user input
+                game->processInput(dt);
+                game->update(dt);
+                accumulator -= dt;
+            }
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
@@ -70,15 +77,13 @@ int main()
             glEnable(GL_DEPTH_TEST); 
             glDepthFunc(GL_LEQUAL);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            // Update Game state
-            game->update(deltaTime);
+
             game->render();
 
             glDisable(GL_BLEND);
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-
     }
 
     // Delete all resources as loaded using the resource manager

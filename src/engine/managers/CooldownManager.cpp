@@ -1,12 +1,12 @@
 #include "CooldownManager.hpp"
 
-void CooldownManager::advanceCooldowns()
+void CooldownManager::advanceCooldowns(GLfloat dt)
 {
     for (Cooldowns::iterator element = cooldowns.begin(); element != cooldowns.end(); ++element)
     {
         GLfloat timer = cooldowns[element->first]["timer"];
         GLfloat cooldown = cooldowns[element->first]["cooldown"];
-        cooldowns[element->first]["timer"] += 1.0f;
+        cooldowns[element->first]["timer"] += 100.0f * dt;
         if (timer >= cooldown) {
             cooldowns[element->first]["timer"] = cooldown;
         }

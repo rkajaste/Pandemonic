@@ -133,7 +133,7 @@ void Game::init()
 
 void Game::update(GLfloat dt)
 {
-    this->userInterface->update();
+    this->userInterface->update(dt);
     if (this->state == GAME_START) {
         this->player->update(dt);
         camera->setPosition(this->player->coords);

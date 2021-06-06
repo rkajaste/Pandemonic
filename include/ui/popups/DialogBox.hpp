@@ -6,15 +6,18 @@
 #include "engine/renderers/DialogBoxRenderer.hpp"
 #include "engine/common/Util.hpp"
 #include "engine/common/types.hpp"
+#include "engine/managers/CooldownManager.hpp"
 
 class DialogBox {
     public:
         DialogBox(std::string identifier);
         ~DialogBox();
 
+        void update(GLfloat dt);
         void draw();
     
     private:
+        CooldownManager* cooldownManager = NULL;
         TextRenderer* textRenderer;
         DialogBoxRenderer* renderer;
         std::vector<Dialog> dialogLines;

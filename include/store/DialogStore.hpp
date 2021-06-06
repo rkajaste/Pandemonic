@@ -20,6 +20,9 @@ class DialogStore {
         static std::vector<Dialog> getDialogByIdentifier(std::string identifier);
         static std::string getDialogIdentifier();
         static int getCurrentLine();
+        static int getDebounceIndex();
+        static bool hasDebounceFinished();
+        static void skipDebounce();
         static void setDialogIdentifer(std::string identifier);
         static bool isDialogOpen();
         static bool isDialogFinished();
@@ -29,6 +32,7 @@ class DialogStore {
         static void setDialogPositionTop();
         static void setDialogPositionBottom();
         static bool isDialogPositionedTop();
+        static void incrementDebounceIndex();
 
         static void preload();
     private:
@@ -37,5 +41,6 @@ class DialogStore {
         static std::string dialogPosition;
         static DialogData dialogData;
         static Json::Value dialogs;
+        static int debounceIndex;
         static void preloadDialogues();
 };

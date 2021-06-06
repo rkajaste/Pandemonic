@@ -14,7 +14,7 @@ UserInterface::~UserInterface()
     delete this->dialogBox;
 }
 
-void UserInterface::update()
+void UserInterface::update(GLfloat dt)
 {
     GameState gameState = Store::getGameState();
     
@@ -23,6 +23,10 @@ void UserInterface::update()
     } else if (!DialogStore::isDialogOpen()) {
         delete this->dialogBox;
         this->dialogBox = NULL;
+    }
+
+    if (this->dialogBox != NULL) {
+        this->dialogBox->update(dt);
     }
 
     if (gameState != currentGameState) {

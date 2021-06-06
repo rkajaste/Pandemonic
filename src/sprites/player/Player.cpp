@@ -28,10 +28,17 @@ Player::Player(glm::vec2 coords, SpriteRenderer* renderer) : Sprite{coords, rend
             }
         },
         {
+            "switch_stance", 
+            {
+                { "timer", 0.0f },
+                { "cooldown", 100.0f}
+            }
+        },
+        {
             "dialog",
             {
                 { "timer", 0.0f },
-                { "cooldown", 90.0f }
+                { "cooldown", 60.0f }
             }
         },
         {
@@ -63,7 +70,7 @@ void Player::update(GLfloat dt) {
     if (this->hasState(GROUNDED)) {
         this->cooldownManager->clearCooldown("aerial_slash");
     } else {
-        if (this->hasState(FALLING)){
+        if (this->hasState(FALLING)) {
             if (this->gravityForce > 0) {
                 this->textureName = "player_fall";
                 if (this->hasState(ATTACK_STANCE)) {
@@ -152,19 +159,23 @@ void Player::handleInput(GLboolean keys[2048]) {
         this->addState(JUMPING);
     }
     
-    if (keys[GLFW_KEY_X] && !this->hasState(SWITCHING_STANCE) && !this->hasState(ATTACKING)) {
+    if (
+        keys[GLFW_KEY_X] && 
+        !this->hasState(SWITCHING_STANCE) &&
+        !this->hasState(ATTACKING) &&
+        !this->cooldownManager->hasCooldown("switch_stance")
+    ) {
+        this->cooldownManager->setCooldown("switch_stance");
         if (this->hasState(ATTACK_STANCE)) {
-            this->removeState(IDLE);
             this->addState(SWITCHING_STANCE);
-            this->removeState(ATTACK_STANCE);
+            this->addState(SWITCHING_TO_IDLE_STANCE);
         } else {
-            this->removeState(IDLE);
             this->addState(SWITCHING_STANCE);
-            this->addState(ATTACK_STANCE);
+            this->addState(SWITCHING_TO_ATTACK_STANCE);
         }
     }
 
-    if (keys[GLFW_KEY_SPACE] && this->hasState(ATTACK_STANCE)) {
+    if (keys[GLFW_KEY_SPACE] && this->hasState(ATTACK_STANCE) && !this->hasState(SWITCHING_STANCE)) {
         if (!this->hasState(JUMPING) && !this->hasState(FALLING)) {
             if (!this->cooldownManager->hasCooldown("attack")) {
                 this->removeState(IDLE);
@@ -182,7 +193,12 @@ void Player::handleInput(GLboolean keys[2048]) {
         if (DialogStore::getDialogIdentifier() != "") {
             if (!this->cooldownManager->hasCooldown("dialog")) {
                 if (DialogStore::isDialogOpen()) {
-                    DialogStore::advanceDialog();
+                    if (DialogStore::hasDebounceFinished()) {
+                      DialogStore::advanceDialog();
+                    } else {
+                      DialogStore::skipDebounce();
+                    }
+
                     if (DialogStore::isDialogFinished()) {
                         DialogStore::closeDialog();
                     }
@@ -246,28 +262,25 @@ void Player::handleJumping()
 
 
 void Player::handleStanceSwitching()
-{
-    if (this->hasState(SWITCHING_STANCE)) {
-        if (this->hasState(ATTACK_STANCE)) {
-            this->textureName = "player_unsheathe";
+{   
+    this->removeState(IDLE);
+    if (this->hasState(SWITCHING_TO_ATTACK_STANCE)) {
+        this->textureName = "player_unsheathe";
 
-            if (
-                this->animator->hasAnimationFinished(this->textureName)
-            ) {
-                this->removeState(SWITCHING_STANCE);
-                this->addState(ATTACK_STANCE);
-                this->addState(IDLE);
-            }
-        } else {
-            this->textureName = "player_sheathe";
+        if (this->animator->hasAnimationFinished(this->textureName)) {
+            this->removeState(SWITCHING_STANCE);
+            this->removeState(SWITCHING_TO_ATTACK_STANCE);
+            this->addState(ATTACK_STANCE);
+            this->addState(IDLE);
+        }
+    } else if (this->hasState(SWITCHING_TO_IDLE_STANCE)) {
+        this->textureName = "player_sheathe";
 
-            if (
-                this->animator->hasAnimationFinished(this->textureName)
-            ) {
-                this->removeState(SWITCHING_STANCE);
-                this->removeState(ATTACK_STANCE);
-                this->addState(IDLE);
-            }
+        if (this->animator->hasAnimationFinished(this->textureName)) {
+            this->removeState(SWITCHING_STANCE);
+            this->removeState(SWITCHING_TO_IDLE_STANCE);
+            this->removeState(ATTACK_STANCE);
+            this->addState(IDLE);
         }
     }
 }

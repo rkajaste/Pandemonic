@@ -9,7 +9,7 @@ class CooldownManager {
     public:
         CooldownManager(Cooldowns cooldowns): cooldowns(cooldowns){};
 
-        void advanceCooldowns();
+        void advanceCooldowns(GLfloat dt);
         void setCooldown(std::string action);
         void clearCooldown(std::string action);
         GLboolean hasCooldown(std::string action);

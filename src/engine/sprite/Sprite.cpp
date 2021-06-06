@@ -17,7 +17,7 @@ Sprite::~Sprite()
     delete this->animator;
 }
 
-void Sprite::update(GLfloat /*dt*/)
+void Sprite::update(GLfloat dt)
 {
     this->addState(FALLING);
     this->checkCollision();
@@ -25,7 +25,7 @@ void Sprite::update(GLfloat /*dt*/)
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
     this->last_coords = this->coords;
     if (this->cooldownManager != NULL) {
-        this->cooldownManager->advanceCooldowns();
+        this->cooldownManager->advanceCooldowns(dt);
     }
 }
 
@@ -78,7 +78,6 @@ void Sprite::handleCollision(const Tmx::Object* obj) {
                 }
             }
         }
-
     }
 }
 
