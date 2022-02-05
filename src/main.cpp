@@ -12,10 +12,8 @@
 #include "Game.hpp"
 #include "ResourceManager.hpp"
 
-
-
 // GLFW function declerations
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
 Game *game;
 
@@ -28,7 +26,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(Config::getScreenWidth(), Config::getScreenHeight(), "Pandemonic", Config::isFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(Config::getScreenWidth(), Config::getScreenHeight(), "Pandemonic", Config::isFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(0);
@@ -55,14 +53,17 @@ int main()
         // Calculate delta time
         GLfloat newFrameTime = glfwGetTime();
         GLfloat frameTime = newFrameTime - lastFrameTime;
-        if( frameTime >= maxPeriod ) {
-            if (frameTime > 0.25f) {
+        if (frameTime >= maxPeriod)
+        {
+            if (frameTime > 0.25f)
+            {
                 frameTime = 0.25f;
             }
             lastFrameTime = newFrameTime;
             accumulator += frameTime;
 
-            while (accumulator >= dt) {
+            while (accumulator >= dt)
+            {
                 // Manage user input
                 game->processInput(dt);
                 game->update(dt);
@@ -70,11 +71,11 @@ int main()
             }
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearDepth(1.0f);
             glEnable(GL_CULL_FACE);
             glEnable(GL_BLEND);
-            glEnable(GL_DEPTH_TEST); 
+            glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -93,7 +94,7 @@ int main()
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int /*scancode*/, int action, int /*mode*/)
+void key_callback(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mode*/)
 {
     // When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -107,27 +108,33 @@ void key_callback(GLFWwindow* window, int key, int /*scancode*/, int action, int
     }
 
     // window resize inital logic
-    if (game->keys[GLFW_KEY_1]) {
+    if (game->keys[GLFW_KEY_1])
+    {
         Config::setScreenSize(0);
         glfwSetWindowSize(window, Config::getScreenWidth(), Config::getScreenHeight());
     }
-    if (game->keys[GLFW_KEY_2]) {
+    if (game->keys[GLFW_KEY_2])
+    {
         Config::setScreenSize(1);
         glfwSetWindowSize(window, Config::getScreenWidth(), Config::getScreenHeight());
     }
-    if (game->keys[GLFW_KEY_3]) {
+    if (game->keys[GLFW_KEY_3])
+    {
         Config::setScreenSize(2);
         glfwSetWindowSize(window, Config::getScreenWidth(), Config::getScreenHeight());
     }
-    if (game->keys[GLFW_KEY_4]) {
+    if (game->keys[GLFW_KEY_4])
+    {
         Config::setScreenSize(3);
         glfwSetWindowSize(window, Config::getScreenWidth(), Config::getScreenHeight());
     }
-    if (game->keys[GLFW_KEY_F]) {
+    if (game->keys[GLFW_KEY_F])
+    {
         Config::setFullscreen(true);
         glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, Config::getScreenWidth(), Config::getScreenHeight(), 60);
     }
-    if (game->keys[GLFW_KEY_W]) {
+    if (game->keys[GLFW_KEY_W])
+    {
         Config::setFullscreen(false);
         glfwSetWindowMonitor(window, nullptr, 0, 0, Config::getScreenWidth(), Config::getScreenHeight(), 60);
     }

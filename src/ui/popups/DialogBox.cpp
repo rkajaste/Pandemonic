@@ -7,9 +7,12 @@ DialogBox::DialogBox(std::string identifier)
     this->dialogLines = DialogStore::getDialogByIdentifier(identifier);
 
     this->dialogSize = glm::vec2(Config::getScreenWidth(), Config::getScreenHeight() / 4);
-    if (DialogStore::isDialogPositionedTop()) {
+    if (DialogStore::isDialogPositionedTop())
+    {
         this->dialogPosition = glm::vec2(0.0f, 0.0f);
-    } else {
+    }
+    else
+    {
         this->dialogPosition = glm::vec2(0.0f, Config::getScreenHeight() - dialogSize.y);
     }
 
@@ -21,14 +24,9 @@ DialogBox::DialogBox(std::string identifier)
     this->dialogTextPosition = glm::vec2(namePosition.x, namePosition.y + 80.0f);
 
     Cooldowns cooldowns = {
-        {
-            "debounce_text", 
-            {
-                { "timer", 5.0f },
-                { "cooldown", 5.0f }
-            }
-        }
-    };
+        {"debounce_text",
+         {{"timer", 5.0f},
+          {"cooldown", 5.0f}}}};
     this->cooldownManager = new CooldownManager(cooldowns);
 }
 
@@ -42,7 +40,8 @@ DialogBox::~DialogBox()
 void DialogBox::update(GLfloat dt)
 {
     this->cooldownManager->advanceCooldowns(dt);
-    if (!this->cooldownManager->hasCooldown("debounce_text")) {
+    if (!this->cooldownManager->hasCooldown("debounce_text"))
+    {
         DialogStore::incrementDebounceIndex();
         this->cooldownManager->setCooldown("debounce_text");
     }
@@ -56,8 +55,7 @@ void DialogBox::draw()
     this->renderer->drawDialogBoxAvatar(
         avatarPosition,
         avatarSize,
-        "ui_dialog_avatar_" + currentLine.avatar
-    );
+        "ui_dialog_avatar_" + currentLine.avatar);
     drawName(currentLine.name);
     debounceDialogText(currentLine.text);
 }
@@ -68,8 +66,7 @@ void DialogBox::debounceDialogText(std::string text)
     this->textRenderer->drawText(
         substring,
         dialogTextPosition,
-        Util::formatRGB(100.0f, 100.0f, 100.0f)
-    );
+        Util::formatRGB(100.0f, 100.0f, 100.0f));
 }
 
 void DialogBox::drawName(std::string name)
@@ -77,6 +74,5 @@ void DialogBox::drawName(std::string name)
     this->textRenderer->drawText(
         name,
         namePosition,
-        Util::formatRGB(100.0f, 100.0f, 100.0f)
-    );
+        Util::formatRGB(100.0f, 100.0f, 100.0f));
 }

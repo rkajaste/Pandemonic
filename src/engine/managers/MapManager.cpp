@@ -1,6 +1,9 @@
 #include "MapManager.hpp"
 
-namespace fs = std::experimental::filesystem;
+// undefine some Windows library functions to avoid name overlap at compile time
+#undef GetObject
+
+namespace fs = std::filesystem;
 const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
 const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
 
@@ -40,9 +43,11 @@ void MapManager::loadMap(std::string mapToLoad)
     Tmx::Map *map;
     map = new Tmx::Map();
 
-    for (const auto & entry : fs::directory_iterator(mapsPath)) {
-        if (entry.path().filename() != "world.world") {
-            maps.push_back(entry.path().filename());
+    for (const auto &entry : fs::directory_iterator(mapsPath))
+    {
+        if (entry.path().filename().string() != "world.world")
+        {
+            maps.push_back(entry.path().filename().string());
         }
     }
 
@@ -58,9 +63,10 @@ void MapManager::loadMap(std::string mapToLoad)
     worldHeight = map->GetHeight() * map->GetTileHeight();
     worldWidth = map->GetWidth() * map->GetTileWidth();
 
-    const std::vector<Tmx::Tileset*> tilesets = map->GetTilesets();
+    const std::vector<Tmx::Tileset *> tilesets = map->GetTilesets();
 
-    for (unsigned int i = 0; i < tilesets.size(); ++i) {
+    for (unsigned int i = 0; i < tilesets.size(); ++i)
+    {
         Tmx::Tileset *tileset = tilesets.at(i);
         std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
         std::vector<TilesetAnimation> tilesetAnimations;
@@ -72,8 +78,7 @@ void MapManager::loadMap(std::string mapToLoad)
             for (
                 std::vector<Tmx::Tile *>::const_iterator currentTile = tiles.begin();
                 currentTile != tiles.end();
-                currentTile++
-            ) 
+                currentTile++)
             {
                 if ((*currentTile)->IsAnimated())
                 {
@@ -86,8 +91,7 @@ void MapManager::loadMap(std::string mapToLoad)
                     for (
                         std::vector<Tmx::AnimationFrame>::const_iterator it = frames.begin();
                         it != frames.end();
-                        it++
-                    )
+                        it++)
                     {
                         tileIds.push_back(it->GetTileID());
                     }
@@ -106,18 +110,19 @@ void MapManager::loadMap(std::string mapToLoad)
         tilesetInfo.animations = tilesetAnimations;
         tilesetInfoArray.push_back(tilesetInfo);
 
-        if (tilesetAnimations.empty()) {
+        if (tilesetAnimations.empty())
+        {
             ResourceManager::LoadTexture(
                 imagePath,
-                tileset->GetName()
-            );
-        } else {
+                tileset->GetName());
+        }
+        else
+        {
             ResourceManager::LoadTexture(
                 imagePath,
                 tileset->GetName(),
                 0,
-                tilesetAnimations.at(0).animationSpeed
-            );
+                tilesetAnimations.at(0).animationSpeed);
         }
     }
 
@@ -125,7 +130,8 @@ void MapManager::loadMap(std::string mapToLoad)
     {
         const Tmx::TileLayer *tileLayer = map->GetTileLayer(i);
 
-        if (tileLayer->IsVisible()) {
+        if (tileLayer->IsVisible())
+        {
             visibleLayers.push_back(tileLayer->GetName());
         }
 
@@ -152,28 +158,46 @@ void MapManager::loadMap(std::string mapToLoad)
         {
             const Tmx::Object *object = objectGroup->GetObject(j);
 
-            if (objectLayer == "terrain") {
-                if (object->GetName() == "blocker") {
+            if (objectLayer == "terrain")
+            {
+                if (object->GetName() == "blocker")
+                {
                     terrainObjects.push_back(object);
                 }
-            } else if (objectLayer == "spawn_points") {
-                if (object->GetName() == "player") {
+            }
+            else if (objectLayer == "spawn_points")
+            {
+                if (object->GetName() == "player")
+                {
                     playerObjects.push_back(object);
                 }
-            } else if (objectLayer == "level_transitions") {
-                if (object->GetName() == "level") {
+            }
+            else if (objectLayer == "level_transitions")
+            {
+                if (object->GetName() == "level")
+                {
                     levelTransitionObjects.push_back(object);
                 }
-            } else if (objectLayer == "triggers") {
-                if (object->GetName() == "npc") {
+            }
+            else if (objectLayer == "triggers")
+            {
+                if (object->GetName() == "npc")
+                {
                     npcObjects.push_back(object);
-                } else if (object->GetName() == "savepoint") {
+                }
+                else if (object->GetName() == "savepoint")
+                {
                     savePointObjects.push_back(object);
-                } else {
+                }
+                else
+                {
                     interactionObjects.push_back(object);
                 }
-            } else if (objectLayer == "death") {
-                if (object->GetName() == "death") {
+            }
+            else if (objectLayer == "death")
+            {
+                if (object->GetName() == "death")
+                {
                     deathObjects.push_back(object);
                 }
             }
@@ -218,12 +242,17 @@ std::vector<std::string> MapManager::getVisibleLayers()
 
 void MapManager::setLayerVisibility(std::string layer, bool isVisible)
 {
-    if (isVisible) {
-        if (!Util::existsInVector(layer, visibleLayers)) {
+    if (isVisible)
+    {
+        if (!Util::existsInVector(layer, visibleLayers))
+        {
             visibleLayers.push_back(layer);
         }
-    } else {
-        if (Util::existsInVector(layer, visibleLayers)) {
+    }
+    else
+    {
+        if (Util::existsInVector(layer, visibleLayers))
+        {
             int index = Util::findIndexOfVectorElement(layer, visibleLayers);
             visibleLayers.erase(visibleLayers.begin() + index);
         }
@@ -233,9 +262,11 @@ void MapManager::setLayerVisibility(std::string layer, bool isVisible)
 glm::vec2 MapManager::getPlayerSpawnPoint(std::string name)
 {
     glm::vec2 position;
-    for(const auto& playerObject: playerObjects) {
+    for (const auto &playerObject : playerObjects)
+    {
         const std::string location = playerObject->GetProperties().GetStringProperty("location");
-        if (location == name) {
+        if (location == name)
+        {
             position = glm::vec2(playerObject->GetX(), playerObject->GetY() + playerObject->GetHeight());
         }
     };

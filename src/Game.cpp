@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-using recursive_directory_iterator = std::experimental::filesystem::recursive_directory_iterator;
+using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 
 UserInterfaceRenderer *uiRenderer;
 SpriteRenderer *spriteRenderer;
@@ -8,7 +8,7 @@ MapRenderer *mapRenderer;
 Camera *camera;
 
 Game::Game(GLuint width, GLuint height)
-	: state(Store::getGameState()), keys(), width(width), height(height)
+    : state(Store::getGameState()), keys(), width(width), height(height)
 {
     this->player = NULL;
 }
@@ -32,22 +32,22 @@ void Game::loadShaders()
 
     const std::string shadersPath = std::string(PROJECT_SOURCE_DIR) + "/shaders/";
 
-    for (const auto & entry : recursive_directory_iterator(shadersPath)) {
-        if (entry.path().filename().extension() == ".vs") {
-            std::string shaderName = entry.path().stem();
-            std::string path = std::string(entry.path().parent_path()) + "/" + shaderName;
+    for (const auto &entry : recursive_directory_iterator(shadersPath))
+    {
+        if (entry.path().filename().extension().string() == ".vs")
+        {
+            std::string shaderName = entry.path().stem().string();
+            std::string path = entry.path().parent_path().string() + "/" + shaderName;
             ResourceManager::LoadShader(
                 path + ".vs",
                 path + ".fs",
                 "",
-                shaderName
-            );
+                shaderName);
             ResourceManager::GetShader(shaderName).Use();
             ResourceManager::GetShader(shaderName).SetInteger("image", 0);
             ResourceManager::GetShader(shaderName).SetMatrix4("projection", projection);
         }
     }
-
 }
 
 void Game::loadTextures()
@@ -58,42 +58,38 @@ void Game::loadTextures()
     Json::Value animationOptions;
     std::ifstream stream(animationConfigPath, std::ifstream::binary);
     stream >> animationOptions;
-    for (const auto & entry : recursive_directory_iterator(spritesPath)) {
-        if (entry.path().filename().extension() == ".png") {
-            std::string spriteName = Util::getStringAfterLastDelimiter(entry.path().parent_path(), std::string("/"));
-            std::string animationName = entry.path().stem();
+    for (const auto &entry : recursive_directory_iterator(spritesPath))
+    {
+        if (entry.path().filename().extension().string() == ".png")
+        {
+            std::string spriteName = Util::getStringAfterLastDelimiter(entry.path().parent_path().string(), std::string("/"));
+            std::string animationName = entry.path().stem().string();
             const int transitionFrames = animationOptions[spriteName][animationName]["transitionFrames"].asInt();
             const GLfloat animationSpeed = animationOptions[spriteName][animationName]["animationSpeed"].asFloat();
-            
+
             ResourceManager::LoadTexture(
-                entry.path(),
+                entry.path().string(),
                 spriteName + "_" + animationName,
                 transitionFrames,
-                animationSpeed
-            );
+                animationSpeed);
         }
     }
 
     ResourceManager::LoadTexture(
         uiPath + "hud/status_bar.png",
-        "ui_status_bar"
-    );
+        "ui_status_bar");
     ResourceManager::LoadTexture(
         uiPath + "main_menu/menu_frame.png",
-        "ui_menu_frame"
-    );
+        "ui_menu_frame");
     ResourceManager::LoadTexture(
         uiPath + "main_menu/inactive.png",
-        "ui_inactive"
-    );
+        "ui_inactive");
     ResourceManager::LoadTexture(
         uiPath + "dialog/avatars/player.png",
-        "ui_dialog_avatar_player"
-    );
+        "ui_dialog_avatar_player");
     ResourceManager::LoadTexture(
         uiPath + "dialog/box.png",
-        "ui_dialog_box"
-    );
+        "ui_dialog_box");
 }
 
 void Game::initRenderers()
@@ -114,27 +110,27 @@ void Game::init()
 {
     this->preload();
     Store::setGameState(this->state);
-   
+
     this->initRenderers();
     this->userInterface = new UserInterface(uiRenderer);
 
-    if (this->state == GAME_START) {
+    if (this->state == GAME_START)
+    {
         MapManager::loadMap("home_village");
 
         this->player = new Player(
             MapManager::getPlayerSpawnPoint("loadgame"),
-            spriteRenderer
-        );
+            spriteRenderer);
 
         camera = new Camera();
     }
-
 }
 
 void Game::update(GLfloat dt)
 {
     this->userInterface->update(dt);
-    if (this->state == GAME_START) {
+    if (this->state == GAME_START)
+    {
         this->player->update(dt);
         camera->setPosition(this->player->coords);
     }
@@ -142,7 +138,8 @@ void Game::update(GLfloat dt)
 
 void Game::processInput(GLfloat dt)
 {
-    if (this->state == GAME_START) {
+    if (this->state == GAME_START)
+    {
         this->player->handleInput(this->keys);
     }
 }
@@ -150,11 +147,13 @@ void Game::processInput(GLfloat dt)
 void Game::render()
 {
     this->userInterface->draw();
-    if (this->state == GAME_START) {
+    if (this->state == GAME_START)
+    {
         mapRenderer->drawMap();
         this->player->draw(Config::isDebugMode());
 
-        if(Config::isDebugMode()){
+        if (Config::isDebugMode())
+        {
             mapRenderer->debugMap();
         }
     }

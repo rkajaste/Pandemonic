@@ -3,25 +3,34 @@ cmake_minimum_required (VERSION 3.0)
 project (Pandemonic)
 
 set(OpenGL_GL_PREFERENCE "GLVND")
+set(tinyxml2_DIR "C:/msys64/mingw64/lib")
+
 find_package(OpenGL REQUIRED)
-find_package(ZLIB)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSONCPP jsoncpp)
+find_package(ZLIB REQUIRED)
+if (ZLIB_FOUND)
+    include_directories(${ZLIB_INCLUDE_DIRS})
+endif()
+
 # Compile external dependencies
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
+option(FT_WITH_HARFBUZZ "Improve auto-hinting of OpenType fonts." OFF)
 add_subdirectory(submodules/glfw)
 add_subdirectory(submodules/tmxparser)
-add_subdirectory(submodules/freetype)
+add_subdirectory(submodules/freetype2)
+set(CMAKE_CXX_STANDARD 17)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-    set(CMAKE_CXX_COMPILER  "/bin/g++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -mms-bitfields")
+    set(CMAKE_CXX_COMPILER  "C:/msys64/mingw64/bin/g++")
     set(CMAKE_CXX_FLAGS "-std=c++1z")
     if(NOT WIN32)
+        set(CMAKE_CXX_COMPILER  "/bin/g++")
         set(GLAD_LIBRARIES dl)
     endif()
 endif()
@@ -38,22 +47,21 @@ include_directories(
     include/userInterface/
     include/sprites/
     include/stores/
+    external/jsoncpp/
     submodules/glad/include/
     submodules/glfw/include/
     submodules/tmxparser/include/
     submodules/glm/
     submodules/stb/
-    submodules/freetype/include/
+    submodules/freetype2/include/
 )
-# Need to build tinyxml2 manually under tmxparser/third-party, because I do not know how to automate it
-# Run 'ldconfig' after building everything
+
 set(ALL_LIBS
     glfw
     tmxparser
-    tinyxml2
     freetype
-    ZLIB::ZLIB
     stdc++fs
+    ${ZLIB_LIBRARIES}
     ${GLAD_LIBRARIES}
     ${JSONCPP_LIBRARIES}
 )

@@ -1,5 +1,6 @@
-#include <string>
+#pragma once
 
+#include <string>
 #include "store/DialogStore.hpp"
 #include "engine/renderers/TextRenderer.hpp"
 #include "engine/renderers/UserInterfaceRenderer.hpp"
@@ -8,30 +9,34 @@
 #include "engine/common/types.hpp"
 #include "engine/managers/CooldownManager.hpp"
 
-class DialogBox {
-    public:
-        DialogBox(std::string identifier);
-        ~DialogBox();
+// undefine some Windows library functions to avoid name overlap at compile time
+#undef DialogBox
 
-        void update(GLfloat dt);
-        void draw();
-    
-    private:
-        CooldownManager* cooldownManager = NULL;
-        TextRenderer* textRenderer;
-        DialogBoxRenderer* renderer;
-        std::vector<Dialog> dialogLines;
+class DialogBox
+{
+public:
+    DialogBox(std::string identifier);
+    ~DialogBox();
 
-        glm::vec2 dialogSize;
-        glm::vec2 dialogPosition;
+    void update(GLfloat dt);
+    void draw();
 
-        glm::vec2 avatarSize;
-        glm::vec2 avatarPosition;
+private:
+    CooldownManager *cooldownManager = NULL;
+    TextRenderer *textRenderer;
+    DialogBoxRenderer *renderer;
+    std::vector<Dialog> dialogLines;
 
-        glm::vec2 namePosition;
+    glm::vec2 dialogSize;
+    glm::vec2 dialogPosition;
 
-        glm::vec2 dialogTextPosition;
+    glm::vec2 avatarSize;
+    glm::vec2 avatarPosition;
 
-        void debounceDialogText(std::string text);
-        void drawName(std::string name);
+    glm::vec2 namePosition;
+
+    glm::vec2 dialogTextPosition;
+
+    void debounceDialogText(std::string text);
+    void drawName(std::string name);
 };

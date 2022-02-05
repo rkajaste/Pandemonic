@@ -18,3 +18,6 @@
     path = submodules/tmxparser
     url = https://github.com/sainteos/tmxparser.git
     branch = master
+[submodule "submodules/freetype2"]
+	path = submodules/freetype2
+	url = https://github.com/aseprite/freetype2.git
