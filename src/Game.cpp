@@ -30,7 +30,7 @@ void Game::loadShaders()
         static_cast<GLfloat>(this->height), 0.0f,
         0.0f, 1.0f);
 
-    const std::string shadersPath = std::string(PROJECT_SOURCE_DIR) + "/shaders/";
+    const std::string shadersPath = Config::getRootDirectory() + "/shaders/";
 
     for (const auto &entry : recursive_directory_iterator(shadersPath))
     {
@@ -52,9 +52,9 @@ void Game::loadShaders()
 
 void Game::loadTextures()
 {
-    const std::string spritesPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/";
-    const std::string uiPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/ui/";
-    const std::string animationConfigPath = std::string(PROJECT_SOURCE_DIR) + "/assets/graphics/sprites/animations.json";
+    const std::string spritesPath = Config::getRootDirectory() + "/assets/graphics/sprites/";
+    const std::string uiPath = Config::getRootDirectory() + "/assets/graphics/ui/";
+    const std::string animationConfigPath = Config::getRootDirectory() + "/assets/graphics/sprites/animations.json";
     Json::Value animationOptions;
     std::ifstream stream(animationConfigPath, std::ifstream::binary);
     stream >> animationOptions;

@@ -5,14 +5,16 @@
 
 typedef std::map<std::string, std::map<std::string, GLfloat>> Cooldowns; // {action: {timer: float, cooldown: float}}
 
-class CooldownManager {
-    public:
-        CooldownManager(Cooldowns cooldowns): cooldowns(cooldowns){};
+class CooldownManager
+{
+public:
+    CooldownManager(Cooldowns cooldowns) : cooldowns(cooldowns){};
 
-        void advanceCooldowns(GLfloat dt);
-        void setCooldown(std::string action);
-        void clearCooldown(std::string action);
-        GLboolean hasCooldown(std::string action);
-    private:
-        Cooldowns cooldowns;
+    void advanceCooldowns(GLfloat dt);
+    void setCooldown(std::string action);
+    void clearCooldown(std::string action);
+    GLboolean hasCooldown(std::string action);
+
+private:
+    Cooldowns cooldowns;
 };

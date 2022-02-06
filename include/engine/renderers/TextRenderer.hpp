@@ -10,6 +10,7 @@
 
 #include "engine/renderers/Renderer.hpp"
 #include "engine/managers/ResourceManager.hpp"
+#include "Config.hpp"
 
 struct Character
 {

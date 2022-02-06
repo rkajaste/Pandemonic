@@ -4,15 +4,15 @@ Json::Value DialogStore::dialogs;
 std::string DialogStore::dialogPosition = "bottom";
 DialogData DialogStore::dialogData = {
     false, // isOpen
-    "", // identifier
+    "",    // identifier
     false, // isFinished
-    0 // currentLine
+    0      // currentLine
 };
 int DialogStore::debounceIndex = 0;
 
 void DialogStore::preload()
 {
-    const std::string dialogsPath = std::string(PROJECT_SOURCE_DIR) + "/data/dialogs.json";
+    const std::string dialogsPath = Config::getRootDirectory() + "/data/dialogs.json";
     std::ifstream stream(dialogsPath, std::ifstream::binary);
     stream >> dialogs;
 }
@@ -67,17 +67,21 @@ void DialogStore::openDialog()
 
 void DialogStore::incrementDebounceIndex()
 {
-    if (!hasDebounceFinished()) {
+    if (!hasDebounceFinished())
+    {
         debounceIndex++;
     }
 }
 
 void DialogStore::advanceDialog()
 {
-    if (dialogData.currentLine < dialogs[dialogData.identifier].size() - 1) {
+    if (dialogData.currentLine < dialogs[dialogData.identifier].size() - 1)
+    {
         debounceIndex = 0;
         dialogData.currentLine++;
-    } else {
+    }
+    else
+    {
         dialogData.isFinished = true;
     }
 }
@@ -95,17 +99,16 @@ std::vector<Dialog> DialogStore::getDialogByIdentifier(std::string identifier)
 {
     Json::Value dialogJson = dialogs[identifier];
     std::vector<Dialog> dialog;
-    for(
+    for (
         Json::Value::const_iterator itr = dialogJson.begin();
         itr != dialogJson.end();
-        itr++
-    ) {
+        itr++)
+    {
         const Json::Value &dialogObject = *itr;
         Dialog dialogueLine = {
             dialogObject[std::string("avatar")].asString(),
             dialogObject[std::string("name")].asString(),
-            dialogObject[std::string("text")].asString()
-        };
+            dialogObject[std::string("text")].asString()};
         dialog.push_back(dialogueLine);
     }
 

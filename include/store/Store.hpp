@@ -8,12 +8,14 @@
 #include <fstream>
 #include "engine/common/types.hpp"
 
-class Store {
-    public:
-        static GameState getGameState();
-        static void setGameState(GameState);
-    private:
-        Store(){};
+class Store
+{
+public:
+    static GameState getGameState();
+    static void setGameState(GameState);
 
-        static GameState gameState;
+private:
+    Store(){};
+
+    static GameState gameState;
 };

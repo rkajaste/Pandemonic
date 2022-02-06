@@ -11,6 +11,7 @@
 #include "Util.hpp"
 #include "ResourceManager.hpp"
 #include "MapRenderer.hpp"
+#include "Config.hpp"
 
 typedef std::vector<const Tmx::Object *> MapObjects;
 

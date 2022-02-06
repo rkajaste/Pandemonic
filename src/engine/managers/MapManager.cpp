@@ -4,8 +4,8 @@
 #undef GetObject
 
 namespace fs = std::filesystem;
-const std::string mapsPath = std::string(PROJECT_SOURCE_DIR) + "/assets/tilemaps/";
-const std::string assetsPath = std::string(PROJECT_SOURCE_DIR) + "/assets";
+const std::string mapsPath;
+const std::string assetsPath;
 
 std::vector<std::string> MapManager::maps;
 std::vector<TileLocationInfo> MapManager::tileLocationInfoArray;
@@ -38,6 +38,8 @@ void MapManager::clearMapInfo()
 
 void MapManager::loadMap(std::string mapToLoad)
 {
+    const std::string mapsPath = Config::getRootDirectory() + "/assets/tilemaps/";
+    const std::string assetsPath = Config::getRootDirectory() + "/assets";
     clearMapInfo();
 
     Tmx::Map *map;

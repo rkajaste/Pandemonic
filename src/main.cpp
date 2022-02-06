@@ -19,6 +19,8 @@ Game *game;
 
 int main()
 {
+    Config::setRootDirectory();
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);

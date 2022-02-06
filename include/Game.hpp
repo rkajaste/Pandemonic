@@ -1,12 +1,11 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <iostream>
 #include <filesystem>
 #include <regex>
 #include <json/json.h>
 #include <fstream>
+#include <glad/glad.h>
 
 #include "UserInterfaceRenderer.hpp"
 #include "SpriteRenderer.hpp"
@@ -20,6 +19,7 @@
 #include "store/Store.hpp"
 #include "store/DialogStore.hpp"
 #include "types.hpp"
+#include "Config.hpp"
 
 class Game
 {

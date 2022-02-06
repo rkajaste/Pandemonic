@@ -13,15 +13,15 @@
 #include "Config.hpp"
 #include "engine/common/Constants.hpp"
 
-class UserInterfaceRenderer: public Renderer
+class UserInterfaceRenderer : public Renderer
 {
-    public:
-        UserInterfaceRenderer();
+public:
+    UserInterfaceRenderer();
 
-        void drawComponent(std::string textureName, glm::vec2 position, glm::vec2 size);
-        void drawBar(glm::vec2 position, glm::vec2 size, glm::vec4 color, GLint maxValue = 0, GLint currentValue = 0);
+    void drawComponent(std::string textureName, glm::vec2 position, glm::vec2 size);
+    void drawBar(glm::vec2 position, glm::vec2 size, glm::vec4 color, GLint maxValue = 0, GLint currentValue = 0);
 
-    private:
-        GLfloat calculateBarWidth(GLfloat maxWidth, GLint maxValue, GLint currentValue);
-        Shader statusBarShader;
+private:
+    GLfloat calculateBarWidth(GLfloat maxWidth, GLint maxValue, GLint currentValue);
+    Shader statusBarShader;
 };

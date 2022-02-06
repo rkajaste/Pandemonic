@@ -1,6 +1,7 @@
 #include "engine/renderers/TextRenderer.hpp"
 
-TextRenderer::TextRenderer() {
+TextRenderer::TextRenderer()
+{
     this->processGlyphs();
     this->shader = ResourceManager::GetShader("glyph");
 }
@@ -9,7 +10,7 @@ void TextRenderer::processGlyphs()
 {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
-    std::string arcadepiPath = std::string(PROJECT_SOURCE_DIR) + "/assets/fonts/arcadepi.ttf";
+    std::string arcadepiPath = Config::getRootDirectory() + "/assets/fonts/arcadepi.ttf";
 
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
@@ -29,7 +30,7 @@ void TextRenderer::processGlyphs()
 
     for (unsigned char c = 0; c < 128; c++)
     {
-        // load character glyph 
+        // load character glyph
         if (FT_Load_Char(face, c, FT_LOAD_RENDER))
         {
             std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
@@ -75,7 +76,7 @@ void TextRenderer::drawText(std::string text, glm::vec2 position, glm::vec4 colo
         this->shader.SetMatrix4("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        position.x += ch.advance; 
+        position.x += ch.advance;
     }
 
     glBindVertexArray(0);
