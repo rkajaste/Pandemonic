@@ -34,41 +34,6 @@ else()
     endif()
 endif()
 
-if( WIN32 )
-    SET(LIB_DIR "C:/msys64/mingw64/bin")
-    SET(DLL_DEPENDENCIES
-        "${LIB_DIR}/libpng16-16.dll"
-        "${LIB_DIR}/libbz2-1.dll"
-        "${LIB_DIR}/libjsoncpp-24.dll"
-        "${tinyxml2_DIR}/libtinyxml2.dll"
-    )
-
-    foreach(_file ${DLL_DEPENDENCIES})
-        list(APPEND DLL_LIBRARIES  "${_file}" )
-    endforeach(_file ${DLL_DEPENDENCIES})
-
-
-    #Process Release libraries.
-    foreach( _file ${DLL_LIBRARIES} )
-
-        # Convert path to CMake path to avoid escaping issues.
-        file(TO_CMAKE_PATH ${_file} _file_cmake_path)
-
-        #check file existance
-        if(NOT EXISTS ${_file_cmake_path})
-            message(FATAL_ERROR "Missing dll file: ${_file_cmake_path}")
-        endif(NOT EXISTS ${_file_cmake_path})
-
-        # Add the DLL to the installation process.
-        install(
-            FILES ${_file_cmake_path}
-            DESTINATION ${CMAKE_BINARY_DIR}/${PROJECT_NAME}
-            CONFIGURATIONS Release RelWithDebInfo MinSizeRel Release_CMT Release_Net
-        )
-
-   endforeach( _file ${DLL_LIBRARIES} )
-endif( WIN32 )
-
 include_directories(
     include/
     include/engine/common/
@@ -123,7 +88,11 @@ add_executable(${PROJECT_NAME}
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
+add_custom_target(copy_dlls
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-dlls.cmake
+)
 add_dependencies(${PROJECT_NAME} copy_assets)
+add_dependencies(${PROJECT_NAME} copy_dlls)
 
 target_link_libraries(${PROJECT_NAME} ${ALL_LIBS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
