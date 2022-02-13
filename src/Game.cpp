@@ -140,7 +140,7 @@ void Game::processInput(GLfloat dt)
 {
     if (this->state == GAME_START)
     {
-        this->player->handleInput(this->keys);
+        this->player->handleInput(Config::setupKeys(this->keys));
     }
 }
 

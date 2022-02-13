@@ -1,5 +1,7 @@
 #pragma once
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <windows.h>
 #include <pathcch.h>
@@ -8,7 +10,10 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <map>
+#include <SimpleIni.h>
 #include "Config.hpp"
+#include "engine/common/types.hpp"
 
 /*******************************************************************
 ** Static configuration helper class for changing different
@@ -34,6 +39,8 @@ public:
     static GLboolean isFullscreen();
     static void setRootDirectory();
     static void setFullscreen(GLboolean isFullscreen);
+    static std::map<UserInput, GLboolean> setupKeys(GLboolean keys[2048]);
+    static void simpleiniHelper();
 
 private:
     Config(){};

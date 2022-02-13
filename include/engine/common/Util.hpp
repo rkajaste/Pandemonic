@@ -21,7 +21,6 @@ namespace Util
         // If element was found
         if (it != vec.end())
         {
-
             int index = it - vec.begin();
             return index;
         }

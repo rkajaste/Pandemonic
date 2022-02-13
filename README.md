@@ -24,6 +24,13 @@ python amalgamate.py
 ```
 2. Copy paste to `external/jsoncpp`
 
+### Simpleini
+
+https://github.com/brofield/simpleini
+
+2. Copy paste to `external/simpleini`
+
+
 ## Windows pre-requisites
 
 MSYS2 - https://www.msys2.org/

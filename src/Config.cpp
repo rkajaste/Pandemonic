@@ -70,3 +70,47 @@ void Config::setFullscreen(GLboolean isFullscreen)
 {
     FULLSCREEN = isFullscreen;
 }
+
+std::map<UserInput, GLboolean> Config::setupKeys(GLboolean keys[2048])
+{
+    GLFWgamepadstate state;
+
+    if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+    {
+        return {
+            {MOVE_LEFT, keys[GLFW_KEY_LEFT] || state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]},
+            {MOVE_RIGHT, keys[GLFW_KEY_RIGHT] || state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]},
+            {JUMP, keys[GLFW_KEY_UP] || state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP]},
+            {ATTACK, keys[GLFW_KEY_SPACE] || state.buttons[GLFW_GAMEPAD_BUTTON_X] || state.buttons[GLFW_GAMEPAD_BUTTON_SQUARE]},
+            {INTERACT, keys[GLFW_KEY_E] || state.buttons[GLFW_GAMEPAD_BUTTON_A] || state.buttons[GLFW_GAMEPAD_BUTTON_CROSS]},
+            {SWITCH_STANCE, keys[GLFW_KEY_X] || state.buttons[GLFW_GAMEPAD_BUTTON_Y] || state.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE]}};
+    }
+
+    return {
+        {MOVE_LEFT, keys[GLFW_KEY_LEFT]},
+        {MOVE_RIGHT, keys[GLFW_KEY_RIGHT]},
+        {JUMP, keys[GLFW_KEY_UP]},
+        {ATTACK, keys[GLFW_KEY_SPACE]},
+        {INTERACT, keys[GLFW_KEY_E]},
+        {SWITCH_STANCE, keys[GLFW_KEY_X]}};
+}
+
+void Config::simpleiniHelper()
+{
+    // simple demonstration
+
+    CSimpleIniA ini;
+    ini.SetUnicode();
+
+    SI_Error rc = ini.LoadFile("example.ini");
+    if (rc < 0)
+    { /* handle error */
+    };
+
+    const char *pv;
+    pv = ini.GetValue("section", "key", "default");
+
+    ini.SetValue("section", "key", "newvalue");
+
+    pv = ini.GetValue("section", "key", "default");
+}

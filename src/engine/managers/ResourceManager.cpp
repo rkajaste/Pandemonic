@@ -14,11 +14,10 @@
 #include <stb_image.h>
 
 // Instantiate static variables
-std::map<std::string, Texture2D>    ResourceManager::Textures;
-std::map<std::string, Shader>       ResourceManager::Shaders;
-std::map<std::string, int>          ResourceManager::transitionFrames;
-std::map<std::string, GLfloat>      ResourceManager::animationSpeeds;
-
+std::map<std::string, Texture2D> ResourceManager::Textures;
+std::map<std::string, Shader> ResourceManager::Shaders;
+std::map<std::string, int> ResourceManager::transitionFrames;
+std::map<std::string, GLfloat> ResourceManager::animationSpeeds;
 
 Shader ResourceManager::LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name)
 {
@@ -35,18 +34,17 @@ Texture2D ResourceManager::LoadTexture(
     const std::string file,
     std::string name,
     int transitionFrameAmount,
-    GLfloat animationSpeed
-)
+    GLfloat animationSpeed)
 {
     Textures[name] = loadTextureFromFile(file, true);
     transitionFrames[name] = transitionFrameAmount;
-    animationSpeeds[name] = animationSpeed == 0 ? 20.0f : animationSpeed;
+    animationSpeeds[name] = animationSpeed == 0 ? 8.0f : animationSpeed;
     return Textures[name];
 }
 
-Texture2D ResourceManager::LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char* data)
+Texture2D ResourceManager::LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char *data)
 {
-        // Create Texture object
+    // Create Texture object
     Texture2D texture;
     texture.Internal_Format = GL_RED;
     texture.Image_Format = GL_RED;
@@ -106,7 +104,7 @@ Shader ResourceManager::loadShaderFromFile(const std::string vShaderFile, const 
         std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
     }
 
-    if(vertexCode.empty())
+    if (vertexCode.empty())
         std::cout << "ERROR::SHADER: vertexCode is empty" << std::endl;
 
     if (fragmentCode.empty())
@@ -135,7 +133,7 @@ Texture2D ResourceManager::loadTextureFromFile(const std::string file, GLboolean
     }
     // Load image
     int width, height, nrChannels;
-    unsigned char* data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
     // Now generate texture
     texture.Generate(width, height, data);
     // And finally free image data

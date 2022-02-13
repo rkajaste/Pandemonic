@@ -35,14 +35,26 @@ int DialogStore::getDebounceIndex()
 
 bool DialogStore::hasDebounceFinished()
 {
-    int dialogueLineLength = getDialogByIdentifier(dialogData.identifier)[getCurrentLine()].text.length();
-    return debounceIndex >= dialogueLineLength;
+    std::vector<Dialog> dialog = getDialogByIdentifier(dialogData.identifier);
+
+    if (static_cast<int>(dialog.size()) > 0)
+    {
+        int dialogueLineLength = dialog[getCurrentLine()].text.length();
+        return debounceIndex >= dialogueLineLength;
+    }
+
+    return true;
 }
 
 void DialogStore::skipDebounce()
 {
-    int dialogueLineLength = getDialogByIdentifier(dialogData.identifier)[getCurrentLine()].text.length();
-    debounceIndex = dialogueLineLength;
+    std::vector<Dialog> dialog = getDialogByIdentifier(dialogData.identifier);
+
+    if (static_cast<int>(dialog.size()) > 0)
+    {
+        int dialogueLineLength = dialog[getCurrentLine()].text.length();
+        debounceIndex = dialogueLineLength;
+    }
 }
 
 bool DialogStore::isDialogFinished()
@@ -75,7 +87,7 @@ void DialogStore::incrementDebounceIndex()
 
 void DialogStore::advanceDialog()
 {
-    if (dialogData.currentLine < dialogs[dialogData.identifier].size() - 1)
+    if (dialogData.currentLine < static_cast<int>(dialogs[dialogData.identifier].size()) - 1)
     {
         debounceIndex = 0;
         dialogData.currentLine++;

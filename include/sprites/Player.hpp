@@ -17,7 +17,7 @@ public:
     Player(glm::vec2 coords, SpriteRenderer *renderer);
     glm::vec2 respawnCoords;
     void update(GLfloat);
-    void handleInput(GLboolean keys[2048]);
+    void handleInput(std::map<UserInput, GLboolean> keys);
 
 private:
     GLint mana;

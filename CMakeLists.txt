@@ -46,6 +46,7 @@ include_directories(
     include/sprites/
     include/stores/
     external/jsoncpp/
+    external/simpleini/
     submodules/glad/include/
     submodules/glfw/include/
     submodules/tmxparser/include/
