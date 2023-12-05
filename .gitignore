@@ -2,3 +2,6 @@ build
 .vscode
 external/*/
 submodules/freetype
+.cache
+tags
+*.swp

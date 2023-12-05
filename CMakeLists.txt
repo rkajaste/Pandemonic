@@ -4,6 +4,7 @@ project (Pandemonic)
 
 set(OpenGL_GL_PREFERENCE "GLVND")
 set(tinyxml2_DIR "C:/msys64/mingw64/bin")
+set(IMGUI_DIR "submodules/imgui")
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -34,25 +35,24 @@ else()
     endif()
 endif()
 
-include_directories(
-    include/
-    include/engine/common/
-    include/engine/renderers/
-    include/engine/camera/
-    include/engine/sprite/
-    include/engine/managers/
-    include/engine/stores/
-    include/userInterface/
-    include/sprites/
-    include/stores/
-    external/jsoncpp/
-    external/simpleini/
-    submodules/glad/include/
+file(GLOB IMGUI_SOURCES
+    ${IMGUI_DIR}/*.cpp
+    ${IMGUI_DIR}/*.h
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.h
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.h
+)
+
+add_library(
+    imgui STATIC
+    ${IMGUI_SOURCES}
+)
+target_include_directories(
+    imgui PRIVATE
     submodules/glfw/include/
-    submodules/tmxparser/include/
-    submodules/glm/
-    submodules/stb/
-    submodules/freetype2/include/
+    ${IMGUI_DIR}/
+    ${IMGUI_DIR}/backends/
 )
 
 set(ALL_LIBS
@@ -60,6 +60,7 @@ set(ALL_LIBS
     tmxparser
     freetype
     stdc++fs
+    imgui
     ${ZLIB_LIBRARIES}
     ${GLAD_LIBRARIES}
     ${JSONCPP_LIBRARIES}
@@ -84,7 +85,34 @@ add_executable(${PROJECT_NAME}
                 ${PROJECT_HEADERS}
                 ${PROJECT_SHADERS}
                 ${PROJECT_CONFIGS}
-                ${VENDORS_SOURCES})
+                ${VENDORS_SOURCES}
+                ${IMGUI_SOURCES}
+              )
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    include/
+    include/engine/common/
+    include/engine/renderers/
+    include/engine/camera/
+    include/engine/sprite/
+    include/engine/managers/
+    include/engine/stores/
+    include/userInterface/
+    include/sprites/
+    include/stores/
+    external/jsoncpp/
+    external/simpleini/
+    submodules/glad/include/
+    submodules/glfw/include/
+    submodules/tmxparser/include/
+    submodules/glm/
+    submodules/stb/
+    submodules/freetype2/include/
+    ${IMGUI_DIR}/
+    ${IMGUI_DIR}/backends/
+)
 
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
