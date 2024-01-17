@@ -12,7 +12,6 @@
 #include <string>
 #include <map>
 #include <SimpleIni.h>
-#include "Config.hpp"
 #include "engine/common/types.hpp"
 
 /*******************************************************************
@@ -22,26 +21,26 @@
 class Config
 {
 public:
-    static std::string ROOT_DIRECTORY;
-    static GLfloat SCREEN_WIDTH;
-    static GLfloat SCREEN_HEIGHT;
-    static GLboolean FULLSCREEN;
-    static std::array<std::pair<GLfloat, GLfloat>, 4> screenResolutions;
-    static const GLboolean DEBUG = true;
-
+    static GLboolean isImmediateMode;
     static std::string getRootDirectory();
     static std::pair<GLfloat, GLfloat> getScreenResolution();
-    static std::array<std::pair<GLfloat, GLfloat>, 4> getScreenResolutions();
+    static std::array<std::pair<GLfloat, GLfloat>, 4> getScreenResolutions(); 
     static GLfloat getScreenWidth();
     static GLfloat getScreenHeight();
     static void setScreenSize(int preset);
     static GLboolean isDebugMode();
     static GLboolean isFullscreen();
     static void setRootDirectory();
-    static void setFullscreen(GLboolean isFullscreen);
+    static void setFullscreen(GLboolean);
     static std::map<UserInput, GLboolean> setupKeys(GLboolean keys[2048]);
     static void simpleiniHelper();
 
 private:
     Config(){};
+    static std::string ROOT_DIRECTORY;
+    static GLfloat SCREEN_WIDTH;
+    static GLfloat SCREEN_HEIGHT;
+    static GLboolean FULLSCREEN;
+    static std::array<std::pair<GLfloat, GLfloat>, 4> screenResolutions;
+    static const GLboolean DEBUG = true;
 };

@@ -99,6 +99,8 @@ target_include_directories(
     include/engine/sprite/
     include/engine/managers/
     include/engine/stores/
+    include/engine/imgui/
+    include/engine/frame_buffer/
     include/userInterface/
     include/sprites/
     include/stores/

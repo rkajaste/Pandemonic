@@ -9,6 +9,7 @@ std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = {
 GLfloat Config::SCREEN_WIDTH = screenResolutions[1].first;
 GLfloat Config::SCREEN_HEIGHT = screenResolutions[1].second;
 GLboolean Config::FULLSCREEN = false;
+GLboolean Config::isImmediateMode = true;
 std::string Config::ROOT_DIRECTORY = "";
 
 std::pair<GLfloat, GLfloat>
@@ -99,18 +100,18 @@ void Config::simpleiniHelper()
 {
     // simple demonstration
 
-    CSimpleIniA ini;
-    ini.SetUnicode();
+   // CSimpleIniA ini;
+   // ini.SetUnicode();
 
-    SI_Error rc = ini.LoadFile("example.ini");
-    if (rc < 0)
-    { /* handle error */
-    };
+   // SI_Error rc = ini.LoadFile("example.ini");
+   // if (rc < 0)
+   // { /* handle error */
+   // };
 
-    const char *pv;
-    pv = ini.GetValue("section", "key", "default");
+   // const char *pv;
+   // pv = ini.GetValue("section", "key", "default");
 
-    ini.SetValue("section", "key", "newvalue");
+   // ini.SetValue("section", "key", "newvalue");
 
-    pv = ini.GetValue("section", "key", "default");
+   // pv = ini.GetValue("section", "key", "default");
 }

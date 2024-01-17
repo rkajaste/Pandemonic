@@ -1,11 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <glad/glad.h>
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -16,54 +11,14 @@
 #include "Config.hpp"
 #include "Game.hpp"
 #include "ResourceManager.hpp"
+#include "engine/imgui/ImGuiHelper.hpp"
+#include "engine/frame_buffer/FrameBuffer.hpp"
 
 // GLFW function declarations
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
 Game *game;
-
-GLuint FBO;
-GLuint RBO;
-GLuint texture_id;
-
-void create_framebuffer(GLuint width, GLuint height)
-{
-    glGenFramebuffers(1, &FBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
-    glGenTextures(1, &texture_id);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
-
-    glGenRenderbuffers(1, &RBO);
-    glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n";
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-}
-
-void rescale_framebuffer(GLuint width, GLuint height)
-{
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
-
-    glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
-}
-
+FrameBuffer *frameBuffer;
 int main()
 {
     Config::setRootDirectory();
@@ -83,25 +38,15 @@ int main()
     glfwSwapInterval(0);
     gladLoadGL();
     fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
-
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // IF using Docking Branch
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
-    ImGui_ImplOpenGL3_Init("#version 330");
+    
+    if (Config::isImmediateMode) ImGuiHelper::init(window);
 
     glfwSetKeyCallback(window, key_callback);
 
     // OpenGL configuration
     glViewport(0, 0, bufferWidth, bufferHeight);
-    create_framebuffer(bufferWidth, bufferHeight);
+    frameBuffer = new FrameBuffer();
+    frameBuffer->create(bufferWidth, bufferHeight);
 
     game = new Game(Config::getScreenWidth(), Config::getScreenHeight());
     // Initialize game
@@ -115,7 +60,6 @@ int main()
     const double maxFPS = 60.0f;
     const double maxPeriod = 1.0 / maxFPS;
 
-    bool enableImGui = true;
     while (!glfwWindowShouldClose(window))
     {
         // Calculate delta time
@@ -149,70 +93,17 @@ int main()
             glDepthFunc(GL_LEQUAL);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            if (enableImGui)
+            if (Config::isImmediateMode)
             {
-                // Start the Dear ImGui frame
-                ImGui_ImplOpenGL3_NewFrame();
-                ImGui_ImplGlfw_NewFrame();
-                ImGui::NewFrame();
 
-                // Create a window called "My First Tool", with a menu bar.
-                ImGui::Begin("My First Tool", NULL, ImGuiWindowFlags_MenuBar);
-                if (ImGui::BeginMenuBar())
-                {
-                    if (ImGui::BeginMenu("File"))
-                    {
-                        if (ImGui::MenuItem("Open..", "Ctrl+O"))
-                        { /* Do stuff */
-                        }
-                        if (ImGui::MenuItem("Save", "Ctrl+S"))
-                        { /* Do stuff */
-                        }
-                        if (ImGui::MenuItem("Close", "Ctrl+W"))
-                        {
-                            enableImGui = false;
-                        }
-                        ImGui::EndMenu();
-                    }
-                    ImGui::EndMenuBar();
-                }
-                ImGui::End();
+                ImGuiHelper::drawGUI(frameBuffer);
 
-                ImGui::Begin("Scene");
-                {
-                    const float window_width = ImGui::GetContentRegionAvail().x;
-                    const float window_height = ImGui::GetContentRegionAvail().y;
-
-                    rescale_framebuffer(window_width, window_height);
-                    glViewport(0, 0, window_width, window_height);
-
-                    ImVec2 pos = ImGui::GetCursorScreenPos();
-
-                    ImGui::GetWindowDrawList()->AddImage(
-                        (ImTextureID)texture_id,
-                        pos,
-                        ImVec2(pos.x + window_width, pos.y + window_height),
-                        ImVec2(0, 1),
-                        ImVec2(1, 0));
-                }
-                ImGui::End();
-                ImGui::Render();
-
-                glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+                frameBuffer->bind();
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 glClearDepth(1.0f);
                 game->render();
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-                if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-                {
-                    GLFWwindow *backup_current_context = glfwGetCurrentContext();
-                    ImGui::UpdatePlatformWindows();
-                    ImGui::RenderPlatformWindowsDefault();
-                    glfwMakeContextCurrent(backup_current_context);
-                }
+                frameBuffer->unbind();
+                ImGuiHelper::render();
             }
             else
             {
@@ -224,14 +115,11 @@ int main()
     }
     // Delete all resources as loaded using the resource manager
     ResourceManager::Clear();
+    
+    if (Config::isImmediateMode) ImGuiHelper::destroy();
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glDeleteFramebuffers(1, &FBO);
-    glDeleteTextures(1, &texture_id);
-    glDeleteRenderbuffers(1, &RBO);
+    delete frameBuffer;
+    delete game;
 
     glfwDestroyWindow(window);
     glfwTerminate();
