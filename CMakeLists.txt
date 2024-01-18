@@ -67,7 +67,7 @@ set(ALL_LIBS
 )
 
 file(GLOB VENDORS_SOURCES submodules/glad/src/glad.c)
-file(GLOB PROJECT_HEADERS include/*.hpp include/**/*.hpp)
+file(GLOB PROJECT_HEADERS include/*.h include/**/*.h)
 file(GLOB PROJECT_SOURCES src/*.cpp src/**/*.cpp src/**/**/*.cpp)
 file(GLOB PROJECT_SHADERS shaders/**/*.vs shaders/**/*.fs)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
@@ -100,9 +100,9 @@ target_include_directories(
     include/engine/managers/
     include/engine/stores/
     include/engine/imgui/
-    include/engine/frame_buffer/
-    include/userInterface/
-    include/sprites/
+    include/engine/framebuffer/
+    include/ui/
+    include/entities/
     include/stores/
     external/jsoncpp/
     external/simpleini/

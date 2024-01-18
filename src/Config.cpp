@@ -1,4 +1,4 @@
-#include "Config.hpp"
+#include "config.h"
 
 std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = {
     std::pair<GLfloat, GLfloat>(2560.0f, 1440.0f),
@@ -6,11 +6,12 @@ std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = {
     std::pair<GLfloat, GLfloat>(1024.0f, 768.0f),
     std::pair<GLfloat, GLfloat>(800.0f, 600.0f)};
 
+std::string Config::ROOT_DIRECTORY = "";
 GLfloat Config::SCREEN_WIDTH = screenResolutions[1].first;
 GLfloat Config::SCREEN_HEIGHT = screenResolutions[1].second;
-GLboolean Config::FULLSCREEN = false;
-GLboolean Config::isImmediateMode = true;
-std::string Config::ROOT_DIRECTORY = "";
+bool Config::isFullscreen = false;
+bool Config::isImmediateMode = true;
+bool Config::isDebugMode = true;
 
 std::pair<GLfloat, GLfloat>
 Config::getScreenResolution()
@@ -57,21 +58,6 @@ void Config::setScreenSize(int preset)
     SCREEN_HEIGHT = screenResolutions[preset].second;
 }
 
-GLboolean Config::isDebugMode()
-{
-    return DEBUG;
-}
-
-GLboolean Config::isFullscreen()
-{
-    return FULLSCREEN;
-}
-
-void Config::setFullscreen(GLboolean isFullscreen)
-{
-    FULLSCREEN = isFullscreen;
-}
-
 std::map<UserInput, GLboolean> Config::setupKeys(GLboolean keys[2048])
 {
     GLFWgamepadstate state;
@@ -100,18 +86,18 @@ void Config::simpleiniHelper()
 {
     // simple demonstration
 
-   // CSimpleIniA ini;
-   // ini.SetUnicode();
+    // CSimpleIniA ini;
+    // ini.SetUnicode();
 
-   // SI_Error rc = ini.LoadFile("example.ini");
-   // if (rc < 0)
-   // { /* handle error */
-   // };
+    // SI_Error rc = ini.LoadFile("example.ini");
+    // if (rc < 0)
+    // { /* handle error */
+    // };
 
-   // const char *pv;
-   // pv = ini.GetValue("section", "key", "default");
+    // const char *pv;
+    // pv = ini.GetValue("section", "key", "default");
 
-   // ini.SetValue("section", "key", "newvalue");
+    // ini.SetValue("section", "key", "newvalue");
 
-   // pv = ini.GetValue("section", "key", "default");
+    // pv = ini.GetValue("section", "key", "default");
 }

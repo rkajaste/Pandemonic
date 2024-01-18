@@ -1,4 +1,4 @@
-#include "Animator.hpp"
+#include "animator.h"
 
 Animator::Animator(glm::vec2 spriteSize)
 {
@@ -7,22 +7,26 @@ Animator::Animator(glm::vec2 spriteSize)
 
 void Animator::animate()
 {
-    if (this->currentTime - this->prevTime >= ResourceManager::animationSpeeds[this->currentTextureName]) {
+    if (this->currentTime - this->prevTime >= ResourceManager::animationSpeeds[this->currentTextureName])
+    {
         this->currentTime = 0;
         this->prevTime = this->currentTime;
-        if (this->currentFrame >= this->maxFrames - 1) {
+        if (this->currentFrame >= this->maxFrames - 1)
+        {
             this->currentFrame = ResourceManager::transitionFrames[this->currentTextureName];
-        } else {
+        }
+        else
+        {
             ++this->currentFrame;
         }
     }
     ++this->currentTime;
 }
 
-
 glm::vec2 Animator::getTextureCoords(std::string textureName)
 {
-    if (this->currentTextureName != textureName) {
+    if (this->currentTextureName != textureName)
+    {
         this->currentTextureName = textureName;
         this->currentFrame = 0;
         Texture2D texture = ResourceManager::GetTexture(textureName);
@@ -50,7 +54,8 @@ int Animator::getCurrentFrame()
 
 bool Animator::hasAnimationFinished(std::string animation)
 {
-    if (this->currentTextureName == animation) {
+    if (this->currentTextureName == animation)
+    {
         return this->currentFrame >= this->maxFrames - 1;
     }
     return false;

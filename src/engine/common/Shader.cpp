@@ -6,7 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#include "Shader.hpp"
+#include "shader.h"
 #include <iostream>
 
 Shader &Shader::Use()
@@ -15,7 +15,7 @@ Shader &Shader::Use()
     return *this;
 }
 
-void Shader::Compile(const GLchar* vertexSource, const GLchar* fragmentSource, const GLchar* geometrySource)
+void Shader::Compile(const GLchar *vertexSource, const GLchar *fragmentSource, const GLchar *geometrySource)
 {
     GLuint sVertex, sFragment, gShader;
     // Vertex Shader
@@ -113,7 +113,6 @@ void Shader::SetMatrix4(const GLchar *name, const glm::mat4 &matrix, GLboolean u
     glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-
 void Shader::checkCompileErrors(GLuint object, std::string type)
 {
     GLint success;
@@ -125,8 +124,8 @@ void Shader::checkCompileErrors(GLuint object, std::string type)
         {
             glGetShaderInfoLog(object, 1024, NULL, infoLog);
             std::cout << "| ERROR::SHADER: Compile-time error: Type: " << type << "\n"
-                << infoLog << "\n -- --------------------------------------------------- -- "
-                << std::endl;
+                      << infoLog << "\n -- --------------------------------------------------- -- "
+                      << std::endl;
         }
     }
     else
@@ -136,8 +135,8 @@ void Shader::checkCompileErrors(GLuint object, std::string type)
         {
             glGetProgramInfoLog(object, 1024, NULL, infoLog);
             std::cout << "| ERROR::Shader: Link-time error: Type: " << type << "\n"
-                << infoLog << "\n -- --------------------------------------------------- -- "
-                << std::endl;
+                      << infoLog << "\n -- --------------------------------------------------- -- "
+                      << std::endl;
         }
     }
 }

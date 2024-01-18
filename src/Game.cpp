@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "game.h"
 
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 
@@ -8,7 +8,7 @@ MapRenderer *mapRenderer;
 Camera *camera;
 
 Game::Game(GLuint width, GLuint height)
-    : state(Store::getGameState()), keys(), width(width), height(height)
+    : state(GameStore::getGameState()), keys(), width(width), height(height)
 {
     this->player = NULL;
 }
@@ -109,7 +109,7 @@ void Game::preload()
 void Game::init()
 {
     this->preload();
-    Store::setGameState(this->state);
+    GameStore::setGameState(this->state);
 
     this->initRenderers();
     this->userInterface = new UserInterface(uiRenderer);
@@ -150,9 +150,9 @@ void Game::render()
     if (this->state == GAME_START)
     {
         mapRenderer->drawMap();
-        this->player->draw(Config::isDebugMode());
+        this->player->draw(Config::isDebugMode);
 
-        if (Config::isDebugMode())
+        if (Config::isDebugMode)
         {
             mapRenderer->debugMap();
         }

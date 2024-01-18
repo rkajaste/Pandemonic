@@ -8,17 +8,17 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "Config.hpp"
-#include "Game.hpp"
-#include "ResourceManager.hpp"
-#include "engine/imgui/ImGuiHelper.hpp"
-#include "engine/frame_buffer/FrameBuffer.hpp"
+#include "config.h"
+#include "game.h"
+#include "resource_manager.h"
+#include "engine/imgui/imgui_helper.h"
+#include "engine/framebuffer/framebuffer.h"
 
 // GLFW function declarations
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
 Game *game;
-FrameBuffer *frameBuffer;
+Framebuffer *frameBuffer;
 int main()
 {
     Config::setRootDirectory();
@@ -30,7 +30,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow *window = glfwCreateWindow(Config::getScreenWidth(), Config::getScreenHeight(), "Pandemonic", Config::isFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(Config::getScreenWidth(), Config::getScreenHeight(), "Pandemonic", Config::isFullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
     int bufferWidth, bufferHeight;
     glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
@@ -38,14 +38,15 @@ int main()
     glfwSwapInterval(0);
     gladLoadGL();
     fprintf(stderr, "OpenGL Version %s\n", glGetString(GL_VERSION));
-    
-    if (Config::isImmediateMode) ImGuiHelper::init(window);
+
+    if (Config::isImmediateMode)
+        ImGuiHelper::init(window);
 
     glfwSetKeyCallback(window, key_callback);
 
     // OpenGL configuration
     glViewport(0, 0, bufferWidth, bufferHeight);
-    frameBuffer = new FrameBuffer();
+    frameBuffer = new Framebuffer();
     frameBuffer->create(bufferWidth, bufferHeight);
 
     game = new Game(Config::getScreenWidth(), Config::getScreenHeight());
@@ -115,8 +116,9 @@ int main()
     }
     // Delete all resources as loaded using the resource manager
     ResourceManager::Clear();
-    
-    if (Config::isImmediateMode) ImGuiHelper::destroy();
+
+    if (Config::isImmediateMode)
+        ImGuiHelper::destroy();
 
     delete frameBuffer;
     delete game;
