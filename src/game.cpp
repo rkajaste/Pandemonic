@@ -149,7 +149,7 @@ void Game::update(GLfloat dt)
     }
 }
 
-void Game::processInput(GLfloat dt)
+void Game::processInput()
 {
     if (this->state == GAME_START)
     {
