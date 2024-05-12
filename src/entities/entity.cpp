@@ -1,5 +1,8 @@
 #include "entity.h"
-#include <iostream>
+#include "Tmx.h"
+#include "store/map_store.h"
+#include "map_manager.h"
+#include "physics.h"
 
 Entity::Entity(glm::vec2 coords, SpriteRenderer *renderer)
 {

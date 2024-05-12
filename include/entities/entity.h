@@ -2,20 +2,17 @@
 
 #include <glm/glm.hpp>
 #include <glad/glad.h>
-#include "resource_manager.h"
-#include "map_manager.h"
 #include "sprite_renderer.h"
-#include "physics.h"
 #include "animator.h"
 #include "cooldown_manager.h"
 #include "types.h"
-#include "store/map_store.h"
+#include "Tmx.h"
 
 class Entity
 {
 public:
     Entity(glm::vec2 coords, SpriteRenderer *renderer);
-    ~Entity();
+    virtual ~Entity();
 
     glm::vec2 coords;
     glm::vec2 last_coords;

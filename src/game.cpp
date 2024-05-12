@@ -1,4 +1,17 @@
 #include "game.h"
+#include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include "user_interface_renderer.h"
+#include "sprite_renderer.h"
+#include "map_renderer.h"
+#include "engine/managers/map_manager.h"
+#include "engine/managers/resource_manager.h"
+#include "engine/common/util.h"
+#include "store/game_store.h"
+#include "store/dialog_store.h"
+#include "config.h"
 
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 

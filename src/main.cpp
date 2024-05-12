@@ -6,8 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stb_image.h>
 #include <cstdio>
-#include <cstdlib>
-
 #include "config.h"
 #include "game.h"
 #include "resource_manager.h"
@@ -80,7 +78,7 @@ int main()
             while (accumulator >= dt)
             {
                 // Manage user input
-                game->processInput(dt);
+                game->processInput();
                 game->update(dt);
                 accumulator -= dt;
             }

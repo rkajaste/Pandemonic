@@ -1,4 +1,9 @@
 #include "player.h"
+#include "util.h"
+#include "physics.h"
+#include "store/player_store.h"
+#include "store/dialog_store.h"
+#include "store/map_store.h"
 
 Player::Player(glm::vec2 coords, SpriteRenderer *renderer) : Entity{coords, renderer}
 {

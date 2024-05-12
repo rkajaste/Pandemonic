@@ -2,14 +2,8 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <vector>
 #include <map>
 #include "entity.h"
-#include "util.h"
-#include "physics.h"
-#include "store/player_store.h"
-#include "store/dialog_store.h"
-#include "store/map_store.h"
 
 class Player : public Entity
 {
