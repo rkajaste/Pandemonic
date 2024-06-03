@@ -47,7 +47,10 @@ pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja mingw-w64-x86_64-zlib mi
 https://www.msys2.org/docs/cmake/
 
 ```
-cd build
-cmake -G "MinGW Makefiles" ..
-cmake --build .
+cmake --build .\build
+```
+### Run
+
+```
+.\build\Pandemonic\Pandemonic.exe
 ```
