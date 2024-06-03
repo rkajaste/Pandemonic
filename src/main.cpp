@@ -11,7 +11,6 @@
 #include "resource_manager.h"
 #include "engine/imgui/imgui_helper.h"
 #include "engine/framebuffer/framebuffer.h"
-
 // GLFW function declarations
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
@@ -20,7 +19,6 @@ Framebuffer *frameBuffer;
 int main()
 {
     Config::setRootDirectory();
-
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);

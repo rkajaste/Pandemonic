@@ -8,16 +8,21 @@ GLfloat Physics::calculateGravity(GLfloat gravityForce, GLfloat dt)
 
 GLboolean Physics::collides(glm::vec2 selfCoords, glm::vec2 selfSize, glm::vec2 otherCoords, glm::vec2 otherSize)
 {
-    GLfloat selfCoordsY = MapManager::getWorldHeight() - selfCoords.y;
-    GLfloat otherCoordsY = MapManager::getWorldHeight() - otherCoords.y;
-    GLfloat selfTop = selfCoordsY;
-    GLfloat selfBottom = selfCoordsY - selfSize.y;
-    GLfloat otherTop = otherCoordsY;
-    GLfloat otherBottom = otherCoordsY - otherSize.y;
+    float selfCoordsY = MapManager::getWorldHeight() - selfCoords.y;
+    float otherCoordsY = MapManager::getWorldHeight() - otherCoords.y;
+    float selfTop = selfCoordsY;
+    float selfBottom = selfCoordsY - selfSize.y;
+    float selfLeft = selfCoords.x;
+    float selfRight = selfCoords.x + selfSize.x;
+    float otherTop = otherCoordsY;
+    float otherBottom = otherCoordsY - otherSize.y;
+    float otherLeft = otherCoords.x;
+    float otherRight = otherCoords.x + otherSize.x;
 
     return (
-        selfCoords.x + selfSize.x >= otherCoords.x &&
-        selfCoords.x <= otherCoords.x + otherSize.x &&
+        selfRight >= otherLeft &&
+        selfLeft <= otherRight &&
         selfTop >= otherBottom &&
-        selfBottom <= otherTop);
+        selfBottom <= otherTop
+    );
 }

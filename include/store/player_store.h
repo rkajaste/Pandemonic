@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <vector>
 #include "types.h"
 
 struct PlayerStats
@@ -20,6 +21,7 @@ public:
     static int currentHP;
     static int maxMP;
     static int currentMP;
+    static std::vector<EntityState> activeStates;
     static PlayerStats getPlayerStats();
 
 private:

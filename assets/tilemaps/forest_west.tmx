@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="7" nextobjectid="19">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="10" nextobjectid="19">
  <tileset firstgid="1" name="dirt_terrain" tilewidth="64" tileheight="64" tilecount="21" columns="7">
   <image source="../graphics/tilesets/terrain/dirt_terrain.png" trans="ffffff" width="448" height="192"/>
  </tileset>
@@ -25,21 +25,31 @@
    </animation>
   </tile>
  </tileset>
+ <layer id="9" name="Tile Layer 3" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0LkJACAAA0A3UHT/XbURRKxsfLiD9ElCAAAATiktcUg+W2dbWuRG89/z76/sWPUc+/6y4xV2AABdBdfUA3M=
+  </data>
+ </layer>
+ <layer id="7" name="Tile Layer 2" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0DEOgCAMQFEkev8ry+BqBCNQw3tJJzr0kxIAAADEc5TZKia6XDmz3f33fr3/pePpNh1jrdLxdnc0HTp6aL0tasdXTruLATU=
+  </data>
+ </layer>
  <layer id="1" name="Tile Layer 1" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0zEKgDAQBMCUAVP7/6dquhAMYuGdyAxsfyy3pQAAAFnamTpkyz3n9+a+df5t9hHLPohm4/HsPI9/vzf/5pP0PvdFrv7+zRxrvgNN
+   eJzt0kEKgDAMBMAeFT37/6dqrqUBK6gtzMDes0tKAQAAAIDv7FeWKtuvFz2zJhlVa/fIbD2ye0fuUW8f/z5jj96be3q0fvNuYs8jSfb3b+UE7ToEYw==
   </data>
  </layer>
  <objectgroup color="#00aa00" id="2" name="terrain">
   <object id="1" name="blocker" type="tr" x="2.69697" y="1855.88" width="1020" height="64"/>
-  <object id="8" name="blocker" type="tb" x="1733" y="1724.67" width="316" height="64"/>
-  <object id="11" name="blocker" type="tblr" x="2559.33" y="895.333" width="316" height="64"/>
+  <object id="8" name="blocker" type="t" x="1728" y="1728" width="320" height="64"/>
+  <object id="11" name="blocker" type="tlr" x="2560" y="896" width="320" height="60"/>
   <object id="12" name="blocker" type="tl" x="1408.67" y="1856" width="1790" height="64"/>
-  <object id="14" name="blocker" type="tblr" x="2048.67" y="1025.33" width="384" height="64"/>
-  <object id="15" name="blocker" type="tblr" x="2562.67" y="1153.33" width="318.667" height="64"/>
-  <object id="16" name="blocker" type="tblr" x="2045.33" y="1280" width="384" height="64"/>
-  <object id="17" name="blocker" type="tblr" x="2048" y="1601.33" width="384" height="64"/>
-  <object id="18" name="blocker" type="tblr" x="2493.33" y="1472" width="321.333" height="64"/>
+  <object id="14" name="blocker" type="tlr" x="2048.67" y="1025.33" width="448" height="60"/>
+  <object id="15" name="blocker" type="tlr" x="2560" y="1152" width="640" height="60"/>
+  <object id="16" name="blocker" type="tlr" x="2047" y="1282" width="448" height="60"/>
+  <object id="17" name="blocker" type="tl" x="2048" y="1600" width="384" height="120"/>
+  <object id="18" name="blocker" type="tl" x="2432" y="1472" width="382" height="128"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="6" name="death" tintcolor="#aa0000">
   <object id="13" name="death" type="water" x="0" y="1920" width="3200" height="380.667">

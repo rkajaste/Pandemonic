@@ -4,8 +4,8 @@
             "fileName": "home_village.tmx",
             "height": 960,
             "width": 3200,
-            "x": -128,
-            "y": 64
+            "x": 0,
+            "y": 0
         },
         {
             "fileName": "forest_west.tmx",

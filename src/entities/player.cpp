@@ -11,10 +11,10 @@ Player::Player(glm::vec2 coords, SpriteRenderer *renderer) : Entity{coords, rend
     this->spriteSize = glm::vec2(255.0f, 170.0f);
     this->animator = new Animator(this->spriteSize);
     this->respawnCoords = coords;
-    PlayerStore::currentHP = 50;
-    PlayerStore::maxHP = 100;
-    PlayerStore::currentMP = 30;
-    PlayerStore::maxMP = 30;
+    this->health = 50;
+    this->maxHealth = 100;
+    this->mana = 30;
+    this->maxMana = 30;
     this->speed = 600.0f;
     this->jumpForce = 1100.0f;
 
@@ -41,6 +41,12 @@ Player::Player(glm::vec2 coords, SpriteRenderer *renderer) : Entity{coords, rend
 
 void Player::updateStore()
 {
+  PlayerStore::position = this->coords;
+  PlayerStore::maxHP = this->maxHealth;
+  PlayerStore::maxMP = this->maxMana;
+  PlayerStore::currentHP = this->health;
+  PlayerStore::currentMP = this->mana;
+  PlayerStore::activeStates = this->states;
 }
 
 void Player::update(GLfloat dt)
@@ -87,6 +93,7 @@ void Player::update(GLfloat dt)
     {
         this->die();
     }
+    this->updateStore();
 }
 
 void Player::checkMapObjectsCollisions()
@@ -355,12 +362,10 @@ void Player::handleAttacking()
 void Player::takeDamage(GLint damage)
 {
     this->health -= damage;
-    this->updateStore();
 }
 
 void Player::die()
 {
     this->coords = this->respawnCoords;
     this->health = this->maxHealth;
-    this->updateStore();
 }

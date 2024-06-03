@@ -26,8 +26,10 @@ protected:
     SpriteRenderer *renderer;
     Animator *animator;
     CooldownManager *cooldownManager = NULL;
-    GLint health;
-    GLint maxHealth;
+    int health;
+    int maxHealth;
+    int mana;
+    int maxMana;
 
     int direction = 1;
     GLfloat speed = 1000.0f;

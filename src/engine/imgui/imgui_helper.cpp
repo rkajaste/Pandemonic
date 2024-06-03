@@ -1,5 +1,15 @@
 #include "engine/imgui/imgui_helper.h"
 #include "imgui.h"
+#include "store/player_store.h"
+#include "types.h"
+
+
+#define X(state, name) name,
+char const *entityStateNames[] =
+{
+  ENTITY_STATES
+};
+#undef X
 
 void ImGuiHelper::init(GLFWwindow *window)
 {
@@ -69,6 +79,42 @@ void ImGuiHelper::drawSceneWindow(Framebuffer *fb)
 
 void ImGuiHelper::drawPlayerWindow()
 {
+    ImGui::Begin("Player");
+    {
+      ImGui::BeginTable("player_table", 2);
+          ImGui::TableNextRow();
+              ImGui::TableNextColumn();
+              ImGui::Text("X:");
+              ImGui::TableNextColumn();
+              ImGui::Text("%f", PlayerStore::position.x);
+          ImGui::TableNextRow();
+              ImGui::TableNextColumn();
+              ImGui::Text("Y:");
+              ImGui::TableNextColumn();
+              ImGui::Text("%f", PlayerStore::position.y);
+          ImGui::TableNextRow();
+              ImGui::TableNextColumn();
+              ImGui::Text("Current health:");
+              ImGui::TableNextColumn();
+              ImGui::Text("%d", PlayerStore::currentHP);
+          ImGui::TableNextRow();
+              ImGui::TableNextColumn();
+              ImGui::Text("Current mana:");
+              ImGui::TableNextColumn();
+              ImGui::Text("%d", PlayerStore::currentMP);
+          ImGui::TableNextRow();
+              ImGui::TableNextColumn();
+              ImGui::Text("Active states:");
+              ImGui::TableNextColumn();
+              for (auto & state : PlayerStore::activeStates) {
+                  ImGui::Text(
+                      "%s",
+                      entityStateNames[state]
+                  );
+              }
+      ImGui::EndTable();
+    }
+    ImGui::End();
 }
 
 void ImGuiHelper::drawUserInputWindow()

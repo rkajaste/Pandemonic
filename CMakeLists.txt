@@ -102,6 +102,7 @@ target_include_directories(
     include/engine/imgui/
     include/engine/framebuffer/
     include/ui/
+    include/util/
     include/entities/
     include/stores/
     external/jsoncpp/

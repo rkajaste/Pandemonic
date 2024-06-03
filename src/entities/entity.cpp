@@ -3,6 +3,7 @@
 #include "store/map_store.h"
 #include "map_manager.h"
 #include "physics.h"
+#include "types.h"
 
 Entity::Entity(glm::vec2 coords, SpriteRenderer *renderer)
 {
@@ -27,6 +28,7 @@ void Entity::update(GLfloat dt)
     this->spriteCoords.x = this->coords.x - this->spriteSize.x / 2 + this->hitboxSize.x / 2;
     this->spriteCoords.y = this->coords.y + this->hitboxSize.y - this->spriteSize.y;
     this->last_coords = this->coords;
+
     if (this->cooldownManager != NULL)
     {
         this->cooldownManager->advanceCooldowns(dt);
@@ -37,10 +39,14 @@ void Entity::handleCollision(const Tmx::Object *obj)
 {
     glm::vec2 objSize(obj->GetWidth(), obj->GetHeight());
     glm::vec2 objCoords(obj->GetX(), obj->GetY());
-    float objTop = objCoords.y - objSize.y * 2;
-    float objBottom = objCoords.y - objSize.y;
+    float objTop = objCoords.y;
+    float objBottom = objCoords.y + objSize.y;
     float objLeft = objCoords.x;
     float objRight = objCoords.x + objSize.x;
+    float lastEntityTop = this->last_coords.y;
+    float lastEntityBottom = this->last_coords.y + this->hitboxSize.y;
+    float lastEntityLeft = this->last_coords.x;
+    float lastEntityRight = this->last_coords.x + this->hitboxSize.x;
 
     if (Physics::collides(this->coords, this->hitboxSize, objCoords, objSize))
     {
@@ -53,26 +59,27 @@ void Entity::handleCollision(const Tmx::Object *obj)
             {
                 if (
                     blockerType.find("t") != std::string::npos &&
-                    this->last_coords.y <= objTop)
+                    lastEntityBottom <= objTop
+                )
                 {
-                    this->coords.y = objTop;
+                    this->coords.y = objTop - this->hitboxSize.y; // place player on the platform
                     this->addState(GROUNDED);
                     this->removeState(FALLING);
                 }
                 if (
                     blockerType.find("b") != std::string::npos &&
-                    this->last_coords.y >= objBottom)
+                    lastEntityTop >= objBottom)
                 {
-                    this->coords.y = objBottom + objSize.y * 2;
+                    this->coords.y = objBottom;
                     this->gravityForce = 0.0f;
                 }
                 if (blockerType.find("l") != std::string::npos &&
-                    this->last_coords.x + this->hitboxSize.x <= objLeft)
+                    lastEntityRight <= objLeft)
                 {
                     this->coords.x = objCoords.x - this->hitboxSize.x;
                 }
                 if (blockerType.find("r") != std::string::npos &&
-                    this->last_coords.x >= objRight)
+                    lastEntityLeft >= objRight)
                 {
                     this->coords.x = objCoords.x + objSize.x;
                 }
@@ -153,7 +160,9 @@ void Entity::clearStates()
 
 void Entity::addState(EntityState state)
 {
-    this->states.push_back(state);
+    if (!this->hasState(state)) {
+        this->states.push_back(state);
+    }
 }
 
 void Entity::removeState(EntityState state)
