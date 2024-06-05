@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "engine/renderers/renderer.h"
-#include "engine/managers/resource_manager.h"
+#include "engine/store/resource_store.h"
 #include "config.h"
 
 struct Character

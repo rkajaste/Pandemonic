@@ -7,13 +7,13 @@ Animator::Animator(glm::vec2 spriteSize)
 
 void Animator::animate()
 {
-    if (this->currentTime - this->prevTime >= ResourceManager::animationSpeeds[this->currentTextureName])
+    if (this->currentTime - this->prevTime >= ResourceStore::animationSpeeds[this->currentTextureName])
     {
         this->currentTime = 0;
         this->prevTime = this->currentTime;
         if (this->currentFrame >= this->maxFrames - 1)
         {
-            this->currentFrame = ResourceManager::transitionFrames[this->currentTextureName];
+            this->currentFrame = ResourceStore::transitionFrames[this->currentTextureName];
         }
         else
         {
@@ -29,7 +29,7 @@ glm::vec2 Animator::getTextureCoords(std::string textureName)
     {
         this->currentTextureName = textureName;
         this->currentFrame = 0;
-        Texture2D texture = ResourceManager::GetTexture(textureName);
+        Texture2D texture = ResourceStore::GetTexture(textureName);
         this->frameCount.x = glm::round(texture.Width / this->spriteSize.x);
         this->frameCount.y = glm::round(texture.Height / this->spriteSize.y);
         this->vertical = this->frameCount.y > this->frameCount.x;
@@ -44,7 +44,7 @@ glm::vec2 Animator::getTextureCoords(std::string textureName)
 
 Texture2D Animator::getTexture()
 {
-    return ResourceManager::GetTexture(this->currentTextureName);
+    return ResourceStore::GetTexture(this->currentTextureName);
 }
 
 int Animator::getCurrentFrame()

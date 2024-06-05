@@ -2,7 +2,7 @@
 
 DialogBoxRenderer::DialogBoxRenderer() : Renderer{}
 {
-    this->shader = ResourceManager::GetShader("ui");
+    this->shader = ResourceStore::GetShader("ui");
 }
 
 void DialogBoxRenderer::drawDialogBox(glm::vec2 position, glm::vec2 size)
@@ -17,7 +17,7 @@ void DialogBoxRenderer::drawDialogBox(glm::vec2 position, glm::vec2 size)
     this->shader.SetMatrix4("model", model);
     this->shader.SetMatrix4("view", glm::mat4(1.0f));
 
-    Texture2D texture = ResourceManager::GetTexture("ui_dialog_box");
+    Texture2D texture = ResourceStore::GetTexture("ui_dialog_box");
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
 
@@ -41,7 +41,7 @@ void DialogBoxRenderer::drawDialogBoxAvatar(
     this->shader.SetMatrix4("model", model);
     this->shader.SetMatrix4("view", glm::mat4(1.0f));
 
-    Texture2D texture = ResourceManager::GetTexture(textureName);
+    Texture2D texture = ResourceStore::GetTexture(textureName);
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
 

@@ -2,8 +2,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "store/dialog_store.h"
-#include "resource_manager.h"
-#include "map_manager.h"
+#include "engine/store/resource_store.h"
+#include "engine/store/map_store.h"
 #include "config.h"
 
 class Camera

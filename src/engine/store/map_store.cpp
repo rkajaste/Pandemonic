@@ -1,4 +1,4 @@
-#include "map_manager.h"
+#include "engine/store/map_store.h"
 
 // undefine some Windows library functions to avoid name overlap at compile time
 #undef GetObject
@@ -7,22 +7,34 @@ namespace fs = std::filesystem;
 const std::string mapsPath;
 const std::string assetsPath;
 
-std::vector<std::string> MapManager::maps;
-std::vector<TileLocationInfo> MapManager::tileLocationInfoArray;
-std::vector<TilesetInfo> MapManager::tilesetInfoArray;
-std::vector<std::string> MapManager::visibleLayers;
-GLfloat MapManager::worldHeight;
-GLfloat MapManager::worldWidth;
-std::string MapManager::currentMap;
-MapObjects MapManager::playerObjects;
-MapObjects MapManager::npcObjects;
-MapObjects MapManager::savePointObjects;
-MapObjects MapManager::terrainObjects;
-MapObjects MapManager::interactionObjects;
-MapObjects MapManager::levelTransitionObjects;
-MapObjects MapManager::deathObjects;
+std::string MapStore::collisionContext = "";
+std::vector<std::string> MapStore::maps;
+std::vector<TileLocationInfo> MapStore::tileLocationInfoArray;
+std::vector<TilesetInfo> MapStore::tilesetInfoArray;
+std::vector<std::string> MapStore::visibleLayers;
+GLfloat MapStore::worldHeight;
+GLfloat MapStore::worldWidth;
+std::string MapStore::currentMap;
+MapObjects MapStore::playerObjects;
+MapObjects MapStore::npcObjects;
+MapObjects MapStore::savePointObjects;
+MapObjects MapStore::terrainObjects;
+MapObjects MapStore::interactionObjects;
+MapObjects MapStore::levelTransitionObjects;
+MapObjects MapStore::deathObjects;
 
-void MapManager::clearMapInfo()
+
+void MapStore::setCollisionContext(std::string newContext)
+{
+    collisionContext = newContext;
+}
+
+std::string MapStore::getCollisionContext()
+{
+    return collisionContext;
+}
+
+void MapStore::clearMapInfo()
 {
     tileLocationInfoArray.clear();
     tilesetInfoArray.clear();
@@ -36,7 +48,7 @@ void MapManager::clearMapInfo()
     visibleLayers.clear();
 }
 
-void MapManager::loadMap(std::string mapToLoad)
+void MapStore::loadMap(std::string mapToLoad)
 {
     const std::string mapsPath = Config::getRootDirectory() + "/assets/tilemaps/";
     const std::string assetsPath = Config::getRootDirectory() + "/assets";
@@ -114,13 +126,13 @@ void MapManager::loadMap(std::string mapToLoad)
 
         if (tilesetAnimations.empty())
         {
-            ResourceManager::LoadTexture(
+            ResourceStore::LoadTexture(
                 imagePath,
                 tileset->GetName());
         }
         else
         {
-            ResourceManager::LoadTexture(
+            ResourceStore::LoadTexture(
                 imagePath,
                 tileset->GetName(),
                 0,
@@ -207,42 +219,42 @@ void MapManager::loadMap(std::string mapToLoad)
     }
 }
 
-std::vector<std::string> MapManager::getMaps()
+std::vector<std::string> MapStore::getMaps()
 {
     return maps;
 }
 
-std::vector<TileLocationInfo> MapManager::getTileLocationInfoArray()
+std::vector<TileLocationInfo> MapStore::getTileLocationInfoArray()
 {
     return tileLocationInfoArray;
 }
 
-std::vector<TilesetInfo> MapManager::getTilesetInfoArray()
+std::vector<TilesetInfo> MapStore::getTilesetInfoArray()
 {
     return tilesetInfoArray;
 }
 
-GLfloat MapManager::getWorldHeight()
+GLfloat MapStore::getWorldHeight()
 {
     return worldHeight;
 }
 
-GLfloat MapManager::getWorldWidth()
+GLfloat MapStore::getWorldWidth()
 {
     return worldWidth;
 }
 
-std::string MapManager::getCurrentMap()
+std::string MapStore::getCurrentMap()
 {
     return currentMap;
 }
 
-std::vector<std::string> MapManager::getVisibleLayers()
+std::vector<std::string> MapStore::getVisibleLayers()
 {
     return visibleLayers;
 }
 
-void MapManager::setLayerVisibility(std::string layer, bool isVisible)
+void MapStore::setLayerVisibility(std::string layer, bool isVisible)
 {
     if (isVisible)
     {
@@ -261,7 +273,7 @@ void MapManager::setLayerVisibility(std::string layer, bool isVisible)
     }
 }
 
-glm::vec2 MapManager::getPlayerSpawnPoint(std::string name)
+glm::vec2 MapStore::getPlayerSpawnPoint(std::string name)
 {
     glm::vec2 position;
     for (const auto &playerObject : playerObjects)
@@ -276,32 +288,32 @@ glm::vec2 MapManager::getPlayerSpawnPoint(std::string name)
     return position;
 }
 
-MapObjects MapManager::getNpcObjects()
+MapObjects MapStore::getNpcObjects()
 {
     return npcObjects;
 }
 
-MapObjects MapManager::getSavePointObjects()
+MapObjects MapStore::getSavePointObjects()
 {
     return savePointObjects;
 }
 
-MapObjects MapManager::getTerrainObjects()
+MapObjects MapStore::getTerrainObjects()
 {
     return terrainObjects;
 }
 
-MapObjects MapManager::getInteractionObjects()
+MapObjects MapStore::getInteractionObjects()
 {
     return interactionObjects;
 }
 
-MapObjects MapManager::getLevelTransitionObjects()
+MapObjects MapStore::getLevelTransitionObjects()
 {
     return levelTransitionObjects;
 }
 
-MapObjects MapManager::getDeathObjects()
+MapObjects MapStore::getDeathObjects()
 {
     return deathObjects;
 }

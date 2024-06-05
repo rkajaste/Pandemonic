@@ -1,9 +1,10 @@
 #include "engine/renderers/text_renderer.h"
+#include "engine/store/resource_store.h"
 
 TextRenderer::TextRenderer()
 {
     this->processGlyphs();
-    this->shader = ResourceManager::GetShader("glyph");
+    this->shader = ResourceStore::GetShader("glyph");
 }
 
 void TextRenderer::processGlyphs()
@@ -37,7 +38,7 @@ void TextRenderer::processGlyphs()
             continue;
         }
         std::string textureName = "glyph_" + std::to_string(static_cast<int>(c));
-        ResourceManager::LoadGlyphTexture(textureName, face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer);
+        ResourceStore::LoadGlyphTexture(textureName, face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer);
         // now store character for later use
         Character character = {
             textureName,
@@ -65,7 +66,7 @@ void TextRenderer::drawText(std::string text, glm::vec2 position, glm::vec4 colo
         this->shader.SetVector4f("textColor", color);
         Character ch = characters[*c];
 
-        Texture2D texture = ResourceManager::GetTexture(ch.textureName);
+        Texture2D texture = ResourceStore::GetTexture(ch.textureName);
         texture.Bind();
 
         GLfloat positionX = position.x + ch.bearing.x;

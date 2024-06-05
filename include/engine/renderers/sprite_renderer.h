@@ -6,7 +6,7 @@
 
 #include "texture.h"
 #include "shader.h"
-#include "resource_manager.h"
+#include "engine/store/resource_store.h"
 #include "animator.h"
 #include "renderer.h"
 

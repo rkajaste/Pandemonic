@@ -3,7 +3,7 @@
 #include "physics.h"
 #include "store/player_store.h"
 #include "store/dialog_store.h"
-#include "store/map_store.h"
+#include "engine/store/map_store.h"
 
 Player::Player(glm::vec2 coords, SpriteRenderer *renderer) : Entity{coords, renderer}
 {
@@ -100,7 +100,7 @@ void Player::checkMapObjectsCollisions()
 {
     this->collidedEntrance = "";
 
-    for (const auto &mapObject : MapManager::getInteractionObjects())
+    for (const auto &mapObject : MapStore::getInteractionObjects())
     {
         glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
         glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
@@ -115,7 +115,7 @@ void Player::checkMapObjectsCollisions()
         }
     }
 
-    for (const auto &mapObject : MapManager::getLevelTransitionObjects())
+    for (const auto &mapObject : MapStore::getLevelTransitionObjects())
     {
         glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
         glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
@@ -124,13 +124,13 @@ void Player::checkMapObjectsCollisions()
         {
             const std::string levelTransition = mapObject->GetProperties().GetStringProperty("level_transition");
             const std::string playerSpawn = mapObject->GetProperties().GetStringProperty("player_spawn");
-            MapManager::loadMap(levelTransition);
-            this->coords = MapManager::getPlayerSpawnPoint(playerSpawn);
+            MapStore::loadMap(levelTransition);
+            this->coords = MapStore::getPlayerSpawnPoint(playerSpawn);
             this->respawnCoords = this->coords;
         }
     }
 
-    for (const auto &mapObject : MapManager::getNpcObjects())
+    for (const auto &mapObject : MapStore::getNpcObjects())
     {
         glm::vec2 objSize(mapObject->GetWidth(), mapObject->GetHeight());
         glm::vec2 objCoords(mapObject->GetX(), mapObject->GetY());
@@ -243,7 +243,7 @@ void Player::handleInput(std::map<UserInput, GLboolean> keys)
         }
         if (this->collidedEntrance != "" && !this->cooldownManager->hasCooldown("entrance_interaction"))
         {
-            bool playerHasEntered = Util::existsInVector(MapStore::getCollisionContext(), MapManager::getVisibleLayers());
+            bool playerHasEntered = Util::existsInVector(MapStore::getCollisionContext(), MapStore::getVisibleLayers());
 
             if (!playerHasEntered)
             {
@@ -252,8 +252,8 @@ void Player::handleInput(std::map<UserInput, GLboolean> keys)
             std::string interiorLayer = MapStore::getCollisionContext();
             std::string exteriorLayer = interiorLayer.substr(0, interiorLayer.find("_interior"));
 
-            MapManager::setLayerVisibility(interiorLayer, !playerHasEntered);
-            MapManager::setLayerVisibility(exteriorLayer, playerHasEntered);
+            MapStore::setLayerVisibility(interiorLayer, !playerHasEntered);
+            MapStore::setLayerVisibility(exteriorLayer, playerHasEntered);
 
             if (playerHasEntered)
             {

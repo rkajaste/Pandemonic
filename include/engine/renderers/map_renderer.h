@@ -4,8 +4,8 @@
 #include <tuple>
 #include "texture.h"
 #include "shader.h"
-#include "resource_manager.h"
-#include "map_manager.h"
+#include "engine/store/resource_store.h"
+#include "engine/store/map_store.h"
 #include "types.h"
 #include "animator.h"
 #include "renderer.h"

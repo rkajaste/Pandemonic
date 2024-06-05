@@ -6,7 +6,7 @@
 #include <string>
 
 #include "texture.h"
-#include "resource_manager.h"
+#include "engine/store/resource_store.h"
 #include "renderer.h"
 #include "config.h"
 #include "engine/common/constants.h"

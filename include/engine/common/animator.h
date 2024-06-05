@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
-#include "resource_manager.h"
+#include "engine/store/resource_store.h"
 #include "texture.h"
 
 class Animator

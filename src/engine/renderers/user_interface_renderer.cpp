@@ -2,8 +2,8 @@
 
 UserInterfaceRenderer::UserInterfaceRenderer() : Renderer{}
 {
-    this->shader = ResourceManager::GetShader("ui");
-    this->statusBarShader = ResourceManager::GetShader("statusBar");
+    this->shader = ResourceStore::GetShader("ui");
+    this->statusBarShader = ResourceStore::GetShader("statusBar");
 }
 
 void UserInterfaceRenderer::drawComponent(std::string textureName, glm::vec2 position, glm::vec2 size)
@@ -15,7 +15,7 @@ void UserInterfaceRenderer::drawComponent(std::string textureName, glm::vec2 pos
     model = glm::translate(model, glm::vec3(position, Constants::LAYER_INDEXES[RenderingLayer::USER_INTERFACE]));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 
-    Texture2D texture = ResourceManager::GetTexture("ui_" + textureName);
+    Texture2D texture = ResourceStore::GetTexture("ui_" + textureName);
 
     this->shader.SetMatrix4("model", model);
     this->shader.SetMatrix4("view", glm::mat4(1.0f));

@@ -14,9 +14,9 @@ void Camera::setPosition(glm::vec2 playerCoords)
     this->contain(playerCoords);
     this->view = glm::mat4(1.0f);
     this->view = glm::translate(this->view, glm::vec3(this->position, -1.0f));
-    ResourceManager::GetShader("sprite").SetMatrix4("view", this->view, GL_TRUE);
-    ResourceManager::GetShader("tile").SetMatrix4("view", this->view, GL_TRUE);
-    ResourceManager::GetShader("hitbox").SetMatrix4("view", this->view, GL_TRUE);
+    ResourceStore::GetShader("sprite").SetMatrix4("view", this->view, GL_TRUE);
+    ResourceStore::GetShader("tile").SetMatrix4("view", this->view, GL_TRUE);
+    ResourceStore::GetShader("hitbox").SetMatrix4("view", this->view, GL_TRUE);
 }
 
 void Camera::contain(glm::vec2 playerCoords)
@@ -27,13 +27,13 @@ void Camera::contain(glm::vec2 playerCoords)
     {
         this->position.x = 0.0f;
     }
-    if (playerCoords.x > MapManager::getWorldWidth() - Config::getScreenWidth() / 2)
+    if (playerCoords.x > MapStore::getWorldWidth() - Config::getScreenWidth() / 2)
     {
-        this->position.x = -MapManager::getWorldWidth() + Config::getScreenWidth();
+        this->position.x = -MapStore::getWorldWidth() + Config::getScreenWidth();
     }
-    if (playerCoords.y + this->offset.y >= MapManager::getWorldHeight() - playerAndTileHeight)
+    if (playerCoords.y + this->offset.y >= MapStore::getWorldHeight() - playerAndTileHeight)
     {
-        this->position.y = -MapManager::getWorldHeight() + Config::getScreenHeight();
+        this->position.y = -MapStore::getWorldHeight() + Config::getScreenHeight();
         DialogStore::setDialogPositionTop();
     }
 }

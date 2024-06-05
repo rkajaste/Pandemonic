@@ -2,8 +2,8 @@
 
 SpriteRenderer::SpriteRenderer() : Renderer{}
 {
-    this->shader = ResourceManager::GetShader("sprite");
-    this->hitboxShader = ResourceManager::GetShader("hitbox");
+    this->shader = ResourceStore::GetShader("sprite");
+    this->hitboxShader = ResourceStore::GetShader("hitbox");
 }
 
 void SpriteRenderer::drawSprite(Animator *animator, std::string textureName, glm::vec2 position, glm::vec2 size, GLboolean flipX, GLfloat rotate, glm::vec3 color)

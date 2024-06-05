@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <glad/glad.h>
-#include "map_manager.h"
 
 namespace Physics
 {

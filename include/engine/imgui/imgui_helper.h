@@ -20,6 +20,6 @@ private:
     ImGuiHelper(){};
     static void drawSceneWindow(Framebuffer *);
     static void drawPlayerWindow();
-    static void drawUserInputWindow();
+    static void drawMapWindow();
     static void drawGeneralSettingsWindow(Framebuffer *);
 };

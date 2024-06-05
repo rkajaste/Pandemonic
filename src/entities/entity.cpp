@@ -1,7 +1,6 @@
 #include "entity.h"
 #include "Tmx.h"
-#include "store/map_store.h"
-#include "map_manager.h"
+#include "engine/store/map_store.h"
 #include "physics.h"
 #include "types.h"
 
@@ -102,11 +101,11 @@ void Entity::handleCollision(const Tmx::Object *obj)
 
 void Entity::checkCollision()
 {
-    for (const auto &obj : MapManager::getTerrainObjects())
+    for (const auto &obj : MapStore::getTerrainObjects())
     {
         this->handleCollision(obj);
     }
-    for (const auto &obj : MapManager::getDeathObjects())
+    for (const auto &obj : MapStore::getDeathObjects())
     {
         this->handleCollision(obj);
     }

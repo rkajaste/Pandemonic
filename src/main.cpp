@@ -8,7 +8,7 @@
 #include <cstdio>
 #include "config.h"
 #include "game.h"
-#include "resource_manager.h"
+#include "engine/store/resource_store.h"
 #include "engine/imgui/imgui_helper.h"
 #include "engine/framebuffer/framebuffer.h"
 // GLFW function declarations
@@ -111,7 +111,7 @@ int main()
         }
     }
     // Delete all resources as loaded using the resource manager
-    ResourceManager::Clear();
+    ResourceStore::Clear();
 
     if (Config::isImmediateMode)
         ImGuiHelper::destroy();

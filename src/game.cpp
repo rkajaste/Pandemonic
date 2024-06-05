@@ -6,8 +6,8 @@
 #include "user_interface_renderer.h"
 #include "sprite_renderer.h"
 #include "map_renderer.h"
-#include "engine/managers/map_manager.h"
-#include "engine/managers/resource_manager.h"
+#include "engine/store/map_store.h"
+#include "engine/store/resource_store.h"
 #include "engine/common/util.h"
 #include "store/game_store.h"
 #include "store/dialog_store.h"
@@ -51,14 +51,14 @@ void Game::loadShaders()
         {
             std::string shaderName = entry.path().stem().string();
             std::string path = entry.path().parent_path().string() + "/" + shaderName;
-            ResourceManager::LoadShader(
+            ResourceStore::LoadShader(
                 path + ".vs",
                 path + ".fs",
                 "",
                 shaderName);
-            ResourceManager::GetShader(shaderName).Use();
-            ResourceManager::GetShader(shaderName).SetInteger("image", 0);
-            ResourceManager::GetShader(shaderName).SetMatrix4("projection", projection);
+            ResourceStore::GetShader(shaderName).Use();
+            ResourceStore::GetShader(shaderName).SetInteger("image", 0);
+            ResourceStore::GetShader(shaderName).SetMatrix4("projection", projection);
         }
     }
 }
@@ -80,7 +80,7 @@ void Game::loadTextures()
             const int transitionFrames = animationOptions[spriteName][animationName]["transitionFrames"].asInt();
             const GLfloat animationSpeed = animationOptions[spriteName][animationName]["animationSpeed"].asFloat();
 
-            ResourceManager::LoadTexture(
+            ResourceStore::LoadTexture(
                 entry.path().string(),
                 spriteName + "_" + animationName,
                 transitionFrames,
@@ -88,19 +88,19 @@ void Game::loadTextures()
         }
     }
 
-    ResourceManager::LoadTexture(
+    ResourceStore::LoadTexture(
         uiPath + "hud/status_bar.png",
         "ui_status_bar");
-    ResourceManager::LoadTexture(
+    ResourceStore::LoadTexture(
         uiPath + "main_menu/menu_frame.png",
         "ui_menu_frame");
-    ResourceManager::LoadTexture(
+    ResourceStore::LoadTexture(
         uiPath + "main_menu/inactive.png",
         "ui_inactive");
-    ResourceManager::LoadTexture(
+    ResourceStore::LoadTexture(
         uiPath + "dialog/avatars/player.png",
         "ui_dialog_avatar_player");
-    ResourceManager::LoadTexture(
+    ResourceStore::LoadTexture(
         uiPath + "dialog/box.png",
         "ui_dialog_box");
 }
@@ -129,10 +129,10 @@ void Game::init()
 
     if (this->state == GAME_START)
     {
-        MapManager::loadMap("home_village");
+        MapStore::loadMap("home_village");
 
         this->player = new Player(
-            MapManager::getPlayerSpawnPoint("loadgame"),
+            MapStore::getPlayerSpawnPoint("loadgame"),
             spriteRenderer);
 
         camera = new Camera();

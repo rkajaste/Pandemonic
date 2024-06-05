@@ -6,7 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#include "resource_manager.h"
+#include "engine/store/resource_store.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -14,23 +14,23 @@
 #include <stb_image.h>
 
 // Instantiate static variables
-std::map<std::string, Texture2D> ResourceManager::Textures;
-std::map<std::string, Shader> ResourceManager::Shaders;
-std::map<std::string, int> ResourceManager::transitionFrames;
-std::map<std::string, GLfloat> ResourceManager::animationSpeeds;
+std::map<std::string, Texture2D> ResourceStore::Textures;
+std::map<std::string, Shader> ResourceStore::Shaders;
+std::map<std::string, int> ResourceStore::transitionFrames;
+std::map<std::string, GLfloat> ResourceStore::animationSpeeds;
 
-Shader ResourceManager::LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name)
+Shader ResourceStore::LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name)
 {
     Shaders[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
     return Shaders[name];
 }
 
-Shader ResourceManager::GetShader(std::string name)
+Shader ResourceStore::GetShader(std::string name)
 {
     return Shaders[name];
 }
 
-Texture2D ResourceManager::LoadTexture(
+Texture2D ResourceStore::LoadTexture(
     const std::string file,
     std::string name,
     int transitionFrameAmount,
@@ -42,7 +42,7 @@ Texture2D ResourceManager::LoadTexture(
     return Textures[name];
 }
 
-Texture2D ResourceManager::LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char *data)
+Texture2D ResourceStore::LoadGlyphTexture(std::string name, GLfloat width, GLfloat height, unsigned char *data)
 {
     // Create Texture object
     Texture2D texture;
@@ -53,12 +53,12 @@ Texture2D ResourceManager::LoadGlyphTexture(std::string name, GLfloat width, GLf
     return Textures[name];
 }
 
-Texture2D ResourceManager::GetTexture(std::string name)
+Texture2D ResourceStore::GetTexture(std::string name)
 {
     return Textures[name];
 }
 
-void ResourceManager::Clear()
+void ResourceStore::Clear()
 {
     // (Properly) delete all shaders
     for (auto iter : Shaders)
@@ -68,7 +68,7 @@ void ResourceManager::Clear()
         glDeleteTextures(1, &iter.second.ID);
 }
 
-Shader ResourceManager::loadShaderFromFile(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile)
+Shader ResourceStore::loadShaderFromFile(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile)
 {
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -122,7 +122,7 @@ Shader ResourceManager::loadShaderFromFile(const std::string vShaderFile, const 
     return shader;
 }
 
-Texture2D ResourceManager::loadTextureFromFile(const std::string file, GLboolean alpha = GL_TRUE)
+Texture2D ResourceStore::loadTextureFromFile(const std::string file, GLboolean alpha = GL_TRUE)
 {
     // Create Texture object
     Texture2D texture;

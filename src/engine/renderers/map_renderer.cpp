@@ -2,8 +2,8 @@
 
 MapRenderer::MapRenderer() : Renderer{}
 {
-    this->shader = ResourceManager::GetShader("tile");
-    this->hitboxShader = ResourceManager::GetShader("hitbox");
+    this->shader = ResourceStore::GetShader("tile");
+    this->hitboxShader = ResourceStore::GetShader("hitbox");
     animator = new Animator(glm::vec2(64.0f, 64.0f));
 }
 
@@ -14,7 +14,7 @@ MapRenderer::~MapRenderer()
 
 TilesetInfo MapRenderer::getTilesetInfoByGid(int gid)
 {
-    std::vector<TilesetInfo> tilesets = MapManager::getTilesetInfoArray();
+    std::vector<TilesetInfo> tilesets = MapStore::getTilesetInfoArray();
     for (int i = tilesets.size() - 1; i > -1; --i)
     {
         try
@@ -34,7 +34,7 @@ TilesetInfo MapRenderer::getTilesetInfoByGid(int gid)
 
 void MapRenderer::drawTile(int index)
 {
-    std::vector<TileLocationInfo> TileLocationInfoArray = MapManager::getTileLocationInfoArray();
+    std::vector<TileLocationInfo> TileLocationInfoArray = MapStore::getTileLocationInfoArray();
     glm::vec2 positionCoords = TileLocationInfoArray.at(index).coords;
     int tileGid = TileLocationInfoArray.at(index).gid;
 
@@ -63,7 +63,7 @@ void MapRenderer::drawTile(int index)
         }
         else
         {
-            texture = ResourceManager::GetTexture(textureName);
+            texture = ResourceStore::GetTexture(textureName);
             texCoords = glm::vec2(
                 (tileId % tilesetColumns) * tileSize,
                 (tileId / tilesetColumns) * tileSize);
@@ -104,10 +104,10 @@ void MapRenderer::drawMap()
     glBindVertexArray(this->quadVAO);
 
     // Iterate over every tile and draw them
-    std::vector<TileLocationInfo> tileLocationInfo = MapManager::getTileLocationInfoArray();
+    std::vector<TileLocationInfo> tileLocationInfo = MapStore::getTileLocationInfoArray();
     for (unsigned int i = 0; i < tileLocationInfo.size(); ++i)
     {
-        bool isLayerVisible = Util::existsInVector(tileLocationInfo.at(i).layer, MapManager::getVisibleLayers());
+        bool isLayerVisible = Util::existsInVector(tileLocationInfo.at(i).layer, MapStore::getVisibleLayers());
         if (isLayerVisible)
         {
             this->drawTile(i);
@@ -120,7 +120,7 @@ void MapRenderer::debugMap()
 {
     this->hitboxShader.Use();
     glBindVertexArray(this->quadVAO);
-    for (const auto &terrain : MapManager::getTerrainObjects())
+    for (const auto &terrain : MapStore::getTerrainObjects())
     {
         glm::mat4 hitboxModel = glm::mat4(1.0f);
         glm::vec2 size(terrain->GetWidth(), terrain->GetHeight());
@@ -130,7 +130,7 @@ void MapRenderer::debugMap()
         this->hitboxShader.SetVector2f("size", size);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
-    for (const auto &terrain : MapManager::getLevelTransitionObjects())
+    for (const auto &terrain : MapStore::getLevelTransitionObjects())
     {
         glm::mat4 hitboxModel = glm::mat4(1.0f);
         glm::vec2 size(terrain->GetWidth(), terrain->GetHeight());

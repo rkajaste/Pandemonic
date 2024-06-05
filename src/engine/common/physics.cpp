@@ -1,4 +1,5 @@
 #include "physics.h"
+#include "engine/store/map_store.h"
 
 GLfloat Physics::calculateGravity(GLfloat gravityForce, GLfloat dt)
 {
@@ -8,8 +9,8 @@ GLfloat Physics::calculateGravity(GLfloat gravityForce, GLfloat dt)
 
 GLboolean Physics::collides(glm::vec2 selfCoords, glm::vec2 selfSize, glm::vec2 otherCoords, glm::vec2 otherSize)
 {
-    float selfCoordsY = MapManager::getWorldHeight() - selfCoords.y;
-    float otherCoordsY = MapManager::getWorldHeight() - otherCoords.y;
+    float selfCoordsY = MapStore::getWorldHeight() - selfCoords.y;
+    float otherCoordsY = MapStore::getWorldHeight() - otherCoords.y;
     float selfTop = selfCoordsY;
     float selfBottom = selfCoordsY - selfSize.y;
     float selfLeft = selfCoords.x;
