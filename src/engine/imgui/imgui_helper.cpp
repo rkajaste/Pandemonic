@@ -125,57 +125,38 @@ void ImGuiHelper::drawMapWindow()
     ImGui::Begin("Map");
     {
         static const char* current_item = NULL;
-        unsigned short current_item_index = 0;
         ImGuiStyle& style = ImGui::GetStyle();
         float w = ImGui::CalcItemWidth();
         float spacing = style.ItemInnerSpacing.x;
         float button_sz = ImGui::GetFrameHeight();
+        
+        current_item = MapStore::getCurrentMap().c_str();
+
         ImGui::PushItemWidth(w - spacing * 2.0f - button_sz * 2.0f);
         if (ImGui::BeginCombo("##custom combo", current_item, ImGuiComboFlags_NoArrowButton))
         {
-            unsigned short i = 0;
             for (const std::string &map : MapStore::getMaps())
             {
                 bool is_selected = (current_item == map.c_str());
                 if (ImGui::Selectable(map.c_str(), is_selected))
                 {
                     current_item = map.c_str();
-                    current_item_index = i;
+
+                    const std::string levelTransition = MapStore::getLevelTransitionObjects().at(0)->GetProperties().GetStringProperty("level_transition");
+                    const std::string playerSpawn = MapStore::getLevelTransitionObjects().at(0)->GetProperties().GetStringProperty("player_spawn");
+                    MapStore::loadMap(std::string(map).erase(map.size() - 4, 4));
+                    PlayerStore::position = MapStore::getPlayerSpawnPoint(playerSpawn);
                 }
+
                 if (is_selected)
                 {
                     ImGui::SetItemDefaultFocus();
                 }
-                i++;
             }
             ImGui::EndCombo();
         }
         ImGui::PopItemWidth();
         ImGui::SameLine(0, spacing);
-        if (ImGui::ArrowButton("##r", ImGuiDir_Left))
-        {
-            current_item_index--;
-
-            if (current_item_index < 0)
-            {
-                current_item_index = 0;
-            }
-
-            current_item = MapStore::getMaps().at(current_item_index).c_str();
-        }
-        ImGui::SameLine(0, spacing);
-        if (ImGui::ArrowButton("##r", ImGuiDir_Right))
-        {
-            current_item_index++;
-            
-            if (current_item_index >= MapStore::getMaps().size()) {
-                current_item_index = 0;
-            }
-
-            current_item = MapStore::getMaps().at(current_item_index).c_str();
-        }
-        ImGui::SameLine(0, style.ItemInnerSpacing.x);
-        ImGui::Text("Custom Combo");
     }
     ImGui::End();
 }

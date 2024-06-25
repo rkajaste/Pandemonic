@@ -18,6 +18,7 @@ typedef std::vector<const Tmx::Object *> MapObjects;
 
 class MapStore {
     public:
+        static void preload();
         static std::vector<std::string> getMaps();
         static std::vector<TilesetInfo> getTilesetInfoArray();
         static std::vector<TileLocationInfo> getTileLocationInfoArray();

@@ -51,6 +51,7 @@ void Player::updateStore()
 
 void Player::update(GLfloat dt)
 {
+    this->coords = PlayerStore::position; // small hack to update position in level selector tool
     this->enableGravity(dt);
     this->handleIdling();
     if (this->hasState(GROUNDED))

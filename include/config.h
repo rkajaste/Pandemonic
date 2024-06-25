@@ -25,6 +25,8 @@ public:
     static bool isDebugMode;
     static bool isFullscreen;
     static std::string getRootDirectory();
+    static std::string getMapsDirectory();
+    static std::string getAssetsDirectory();
     static std::pair<GLfloat, GLfloat> getScreenResolution();
     static std::array<std::pair<GLfloat, GLfloat>, 4> getScreenResolutions();
     static GLfloat getScreenWidth();
@@ -37,6 +39,8 @@ public:
 private:
     Config(){};
     static std::string ROOT_DIRECTORY;
+    static std::string MAPS_DIRECTORY;
+    static std::string ASSETS_DIRECTORY;
     static GLfloat SCREEN_WIDTH;
     static GLfloat SCREEN_HEIGHT;
     static std::array<std::pair<GLfloat, GLfloat>, 4> screenResolutions;

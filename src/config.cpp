@@ -1,5 +1,6 @@
 #include "config.h"
 
+
 std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = {
     std::pair<GLfloat, GLfloat>(2560.0f, 1440.0f),
     std::pair<GLfloat, GLfloat>(1920.0f, 1080.0f),
@@ -7,6 +8,9 @@ std::array<std::pair<GLfloat, GLfloat>, 4> Config::screenResolutions = {
     std::pair<GLfloat, GLfloat>(800.0f, 600.0f)};
 
 std::string Config::ROOT_DIRECTORY = "";
+std::string Config::MAPS_DIRECTORY = "/assets/tilemaps/";
+std::string Config::ASSETS_DIRECTORY = "/assets";
+
 GLfloat Config::SCREEN_WIDTH = screenResolutions[1].first;
 GLfloat Config::SCREEN_HEIGHT = screenResolutions[1].second;
 bool Config::isFullscreen = false;
@@ -27,6 +31,16 @@ std::array<std::pair<GLfloat, GLfloat>, 4> Config::getScreenResolutions()
 std::string Config::getRootDirectory()
 {
     return ROOT_DIRECTORY;
+}
+
+std::string Config::getMapsDirectory()
+{
+    return Config::getRootDirectory() + MAPS_DIRECTORY;
+}
+
+std::string Config::getAssetsDirectory()
+{
+    return Config::getRootDirectory() + ASSETS_DIRECTORY;
 }
 
 void Config::setRootDirectory()

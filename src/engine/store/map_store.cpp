@@ -4,9 +4,6 @@
 #undef GetObject
 
 namespace fs = std::filesystem;
-const std::string mapsPath;
-const std::string assetsPath;
-
 std::string MapStore::collisionContext = "";
 std::vector<std::string> MapStore::maps;
 std::vector<TileLocationInfo> MapStore::tileLocationInfoArray;
@@ -23,6 +20,16 @@ MapObjects MapStore::interactionObjects;
 MapObjects MapStore::levelTransitionObjects;
 MapObjects MapStore::deathObjects;
 
+void MapStore::preload()
+{
+    for (const auto &entry : fs::directory_iterator(Config::getMapsDirectory()))
+    {
+        if (entry.path().filename().string() != "world.world")
+        {
+            maps.push_back(entry.path().filename().string());
+        }
+    }
+}
 
 void MapStore::setCollisionContext(std::string newContext)
 {
@@ -50,24 +57,15 @@ void MapStore::clearMapInfo()
 
 void MapStore::loadMap(std::string mapToLoad)
 {
-    const std::string mapsPath = Config::getRootDirectory() + "/assets/tilemaps/";
-    const std::string assetsPath = Config::getRootDirectory() + "/assets";
     clearMapInfo();
 
     Tmx::Map *map;
     map = new Tmx::Map();
 
-    for (const auto &entry : fs::directory_iterator(mapsPath))
-    {
-        if (entry.path().filename().string() != "world.world")
-        {
-            maps.push_back(entry.path().filename().string());
-        }
-    }
 
     currentMap = mapToLoad + ".tmx";
 
-    map->ParseFile(mapsPath + currentMap);
+    map->ParseFile(Config::getMapsDirectory() + currentMap);
     if (map->HasError())
     {
         printf("error code: %d\n", map->GetErrorCode());
@@ -82,7 +80,9 @@ void MapStore::loadMap(std::string mapToLoad)
     for (unsigned int i = 0; i < tilesets.size(); ++i)
     {
         Tmx::Tileset *tileset = tilesets.at(i);
-        std::string imagePath = assetsPath + std::string(tileset->GetImage()->GetSource()).erase(0, 2);
+        std::string imagePath =
+            Config::getAssetsDirectory() +
+            std::string(tileset->GetImage()->GetSource()).erase(0, 2);
         std::vector<TilesetAnimation> tilesetAnimations;
 
         if (tileset->GetTiles().size() > 0)

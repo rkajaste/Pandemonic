@@ -114,6 +114,7 @@ void Game::initRenderers()
 
 void Game::preload()
 {
+    MapStore::preload();
     DialogStore::preload();
     this->loadShaders();
     this->loadTextures();
